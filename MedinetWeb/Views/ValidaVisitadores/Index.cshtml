@@ -1,0 +1,67 @@
+﻿@{
+    ViewBag.Title = "Validación de visitadores";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.MirrorEntityModel.MMWS_ValidaVisitadores>()
+        // Grid Name
+    .Name("Grid")
+
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                     // Cretae all the columns base on Model
+                     columns.ForeignKey(p => p.ID_Region, (System.Collections.IEnumerable)ViewData["dvRegiones"], "ID", "TX")
+                        .Title("Región");
+                     columns.ForeignKey(p => p.ID_Linea, (System.Collections.IEnumerable)ViewData["dvLineas"], "ID", "TX")
+                        .Title("Línea");
+                     columns.ForeignKey(p => p.ID_Visitador, (System.Collections.IEnumerable)ViewData["dvVisitadores"], "ID", "TX")
+                        .Title("Visitador");
+                     columns.Bound(r => r.BO_Activo).Title("Activo")
+                         .ClientTemplate("<input type='checkbox' #= BO_Activo ? checked='checked' : '' # disabled='disabled'}></input>");
+                 })
+
+    // Declare ajax datasource.
+        // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+        // Set the model Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+
+                                .Model(model =>
+                                    {
+                                        model.Id(record => record.ID_ValidaVisitadores);
+                                    }
+                                )
+                                .Read(read => read.Action("GetAll", "ValidaVisitadores"))
+                                .Update(update => update.Action("Update", "ValidaVisitadores"))
+    )
+
+    .Events(e => e.Save("onSave"))
+
+    // Set grid editable.
+    .Editable(editable => editable.Mode(GridEditMode.InCell))
+
+    // Set grid sortable.
+    .Sortable()
+
+    // Set grid selectable.
+    .Selectable()
+
+    // Set grid groupable.
+    .Groupable()
+
+    // Set grid filterable.
+    .Filterable()
+
+)
+
+<script>
+    function onSave(e) {
+        setTimeout(function () {
+            $("#Grid").data("kendoGrid").dataSource.sync();
+        })
+    }
+</script>

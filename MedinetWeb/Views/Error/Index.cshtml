@@ -1,0 +1,59 @@
+﻿@model MedinetWeb.Models.ErrorModel
+
+@{
+    ViewBag.Title = "NotFound";
+    Layout = "~/Views/Shared/_LayoutError.cshtml";
+}
+
+<hgroup class="title">
+    <h1>Lo sentimos.</h1>
+</hgroup>
+
+<div>
+    Ha ocurrido un error inesperado. Por favor pongase en contacto con el administrador del sistema.
+</div>
+<div id="errorMessage">
+    @{
+        string message = null;
+        switch (Model.HttpStatusCode)
+        {
+            case 404:
+                message = "La página no ha sido encontrada.";
+                break;
+            case 500:
+                message = string.Concat("Se ha encontrado el siguiente error:<br /> ", Model.Exception.Message);
+                break;
+        }
+    }
+
+    @Html.Raw(message)
+</div>
+
+<aside>
+    <h3>Ir a:</h3>
+
+    <br />
+
+    @(Html.Kendo().TreeView()
+        .Name("LinksTreeView")
+        .Items(items =>
+        {
+            items.Add()
+                .Text("Inicio")
+                .Action("Index", "Home");
+            items.Add()
+                .Text("Contactenos")
+                .Action("Contact", "Home");
+        })
+    )
+
+</aside>
+
+<style>
+    #errorMessage {
+        color: red;
+        font-weight: bold;
+        padding-top: 20px;
+    }
+</style>
+

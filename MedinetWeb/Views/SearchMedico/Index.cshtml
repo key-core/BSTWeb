@@ -1,0 +1,147 @@
+﻿@{
+    ViewBag.Title = "Búsqueda de Médico";
+}
+@model IEnumerable<MedinetWeb.Models.MirrorEntityModel.MMW_Medicos>
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+<br />
+<div>
+    MEDICO:
+    @(Html.Kendo().AutoComplete()
+          .Name("products")
+          .DataTextField("")
+          .BindTo(Model)
+          .Filter("contains")
+          .MinLength(3)
+          .HtmlAttributes(new { style = "" })
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetAuto", "SearchMedico")
+                      .Data("onAdditionalData");
+              })
+              .ServerFiltering(true);
+          })
+    )
+    N° SANITARIO:
+    @(Html.Kendo().NumericTextBox()
+          .Name("number")
+          .Decimals(0)
+          .Min(0)
+          .Max(99999)
+          .Spinners(false)
+          .Format("#####")
+    )
+    <button class="k-button" id="getFicheroVis">Buscar</button>
+</div>
+<br />
+<script>
+    //$("#products").focus(function () {
+    //    $("#number").val();
+    //});
+    //$("#number").focus(function () {
+    //    $("#products").val("");
+    //});
+    function goToVisit(e) {
+        var tr = $(e.currentTarget).closest("tr");
+        var item = $("#Grid").data("kendoGrid").dataItem(tr);
+
+        var NUMERO = item.NU_RegistroSanitario;
+        //var A1 = item.TX_Apellido1 == null ? "" : item.TX_Apellido1;
+        //var A2 = item.TX_Apellido2 == null ? "" : item.TX_Apellido2;
+        //var N1 = item.TX_Nombre1 == null ? "" : item.TX_Nombre1;
+        //var N2 = item.TX_Nombre2 == null ? "" : item.TX_Nombre2;
+
+        var NOMBRE = item.TX_Apellido1 + ((item.TX_Apellido2 == null || item.TX_Apellido2 == "") ? ", " : (" " + item.TX_Apellido2) + ", ") + item.TX_Nombre1 + ((item.TX_Nombre2 == null || item.TX_Nombre2 == "") ? "" : (" " + item.TX_Nombre2));
+        //alert(REGISTRO);
+        window.location.href = "@Url.Action("Index","AltaMedico")?NUMERO=" + NUMERO + "&NOMBRE=" + NOMBRE;
+    }
+    function param() {
+        return {
+            text: $("#products").val(),
+            number: $("#number").val() != "" ? $("#number").val() : 0,
+            //    != "" ? $("#ddCiclos").val() : 0,
+            //lineaID: $("#ddLineas").val() != "" ? $("#ddLineas").val() : 0,
+            //regionID: $("#ddRegiones").val() != "" ? $("#ddRegiones").val() : 0,
+            //visitadorID: $("#ddVisitadores").val() != "" ? $("#ddVisitadores").val() : 0
+        }
+    }
+    function onAdditionalData() {
+        return {
+            text: $("#products").val()
+        }
+    }
+    $("#getFicheroVis").click(function () {
+
+        //document.getElementById("getFicheroVis").style.visibility = 'hidden';
+        if ($("#products").val() != '' || $("#number").val() != '') {
+            $("#Grid").data("kendoGrid").dataSource.read();
+        }
+    });
+</script>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.MirrorEntityModel.MMW_Medicos>()
+        // Grid Name
+    .Name("Grid")
+
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                     // Cretae all the columns base on Model
+                     //columns.Bound(r => r.ID_Medico).Title("ID")
+                     //    .Width(50);
+                     columns.Bound(r => r.NU_RegistroSanitario).Title("Nro Sanitario");
+                     columns.Bound(r => r.TX_Nombre1).Title("1er. Nombre");
+                     columns.Bound(r => r.TX_Nombre2).Title("2do. Nombre");
+                     columns.Bound(r => r.TX_Apellido1).Title("1er. Apellido");
+                     columns.Bound(r => r.TX_Apellido2).Title("2do. Apellido");
+                     columns.Command(c =>
+                     {
+                         c.Custom("VisitMedico").Text("Alta").Click("goToVisit");
+                     });
+                     //columns.Bound(c => c.TX_Sello).Title("Imagen sello")
+                     //    .Width(130)
+                     //    .HtmlAttributes(new { style = "text-align:center" })
+                     //    .ClientTemplate("<img src='" + Url.Content("~/Content/SelloMedicos/") +
+                     //                       "#=TX_Sello#' width='100' height='100'/>");
+                     //columns.Bound(r => r.BO_Activo).Title("Activo")
+                     //    .ClientTemplate("<input type='checkbox' #= BO_Activo ? checked='checked' : '' # disabled='disabled'}></input>")
+                     //    .Width(80);
+                 })
+
+    // Declare ajax datasource.
+        // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+        // Set the model Id
+            .AutoBind(false)
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+
+                                .Model(model =>
+                                    {
+                                        model.Id(record => record.ID_Medico);
+                                    }
+                                )
+                                    .Read(read => read.Action("GetAll", "SearchMedico").Data("param"))
+                                .PageSize(10)
+    )
+        // Set grid sortable.
+    .Sortable()
+
+    // Set grid selectable.
+    .Selectable()
+
+    // Set grid groupable.
+        //.Groupable()
+
+    // Set grid filterable.
+        //.Filterable()
+
+    // Set grid pagable.
+    .Pageable(pageable =>
+                  {
+                      pageable.Refresh(true);
+                      pageable.PageSizes(true);
+                  })
+)

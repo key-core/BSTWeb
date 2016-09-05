@@ -1,0 +1,16 @@
+﻿@model int
+
+@(Html.Kendo().DropDownListFor(m => m)
+                  .AutoBind(false)
+                  .OptionLabel("Select visitador")
+                  .DataTextField("Text")
+                  .DataValueField("Value")
+                  .DataSource(dataSource =>
+                  {
+                      dataSource.Read(read => read.Action("GetVisitadores", "VisitadoresHistorial"))
+                                .ServerFiltering(true);
+                  })
+                  .BindTo((SelectList)ViewData[ViewData.TemplateInfo.GetFullHtmlFieldName("") + "_Data"])
+
+            )
+            @Html.ValidationMessageFor(m => m)

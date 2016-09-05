@@ -1,0 +1,560 @@
+﻿@{
+    ViewBag.Title = "Configuración distribución";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+<table border="0" id="tableParametros"> 
+    <tr> 
+        <td>
+            @(Html.Kendo().DropDownList()
+                .Name("ddTipoArticulos")
+                .HtmlAttributes(new { style = "width:300px" })
+                .OptionLabel("Select tipo artículo")
+                .DataTextField("Text")
+                .DataValueField("Value")
+                .DataSource(source =>
+                {
+                    source.Read(read =>
+                    {
+                        read.Action("GetTipoArticulos", "TipoArticulos");
+                    });
+                })
+                .Events(evt =>
+                    {
+                        evt.Change("msConfigDist.tipoArticulosSegmentChange");
+                    })
+            )
+        </td> 
+        <td> 
+            @(Html.Kendo().DropDownList()
+                .Name("ddMarcas")
+                .HtmlAttributes(new { style = "width:288px" })
+                .OptionLabel("Select marca")
+                .DataTextField("Text")
+                .DataValueField("Value")
+                .DataSource(source =>
+                {
+                    source.Read(read =>
+                    {
+                        read.Action("GetMarcas_ConDis", "Marcas");
+                    });
+                })
+                .Events(evt =>
+                    {
+                        evt.Change("msConfigDist.marcasSegmentChange");
+                    })
+            )
+        </td> 
+        <td> 
+            @(Html.Kendo().DropDownList()
+                  .Name("ddArticulos")
+                  .HtmlAttributes(new { style = "width:600px" })
+                  .OptionLabel("Select artículo")
+                  .DataTextField("Text")
+                  .DataValueField("Value")
+                  .DataSource(source => {
+                      source.Read(read =>
+                      {
+                          read.Action("GetArticulos", "Articulos")
+                              .Data("filterArticulos");
+                      })
+                      .ServerFiltering(true);
+                  })
+                  .Enable(false)
+                  .AutoBind(false)
+                  .CascadeFrom("ddMarcas")
+            )
+        </td> 
+    </tr> 
+</table>
+<table>
+    <tr>
+        <td> 
+            @(Html.Kendo().MultiSelect()
+                .Name("msLineas")
+                .HtmlAttributes(new { style = "width:563px" })
+                .Filter(FilterType.Contains)
+                .DataValueField("Value")
+                .DataTextField("Text")
+                .HighlightFirst(true)
+                .Placeholder("Select líneas")
+                .Value(new[] {"-1"})
+                .Events(evt =>
+                    {
+                        evt.Change("msConfigDist.lineasSegmentChange");
+                        evt.Open("msConfigDist.lineasOpen");
+                        evt.Close("msConfigDist.lineasClose");
+                    })
+            )
+        </td> 
+        <td> 
+            @(Html.Kendo().MultiSelect()
+                .Name("msEspecialidades")
+                .HtmlAttributes(new { style = "width:563px" })
+                .Filter(FilterType.Contains)
+                .DataValueField("Value")
+                .DataTextField("Text")
+                .HighlightFirst(true)
+                .Placeholder("Select Especialidades")
+                .Value(new[] {"-1"})
+                .Events(evt =>
+                    {
+                        evt.Change("msConfigDist.especialidadesSegmentChange");
+                        evt.Open("msConfigDist.especialidadesOpen");
+                        evt.Close("msConfigDist.especialidadesClose");
+                    })
+            )        
+        </td> 
+        <td> 
+            <button class="k-button" id="getDistArt">Buscar</button>
+        </td> 
+    </tr>
+</table>
+
+<table border="1">
+    <tr>
+        <td style="width:1050px">
+            @(Html.Kendo().Grid<MedinetWeb.Models.SP_MWS_Existencias_ConDis_Result>()
+                // Grid Name
+                .Name("GridExistencias")
+    
+                // Declare grid column
+                .Columns(columns =>
+                             {
+                                 //columns.ForeignKey(p => p.ID_Articulo, (System.Collections.IEnumerable)ViewData["dvArticulos"], "ID", "TX")
+                                 //   .Title("Artículo")
+                                 //   .ClientFooterTemplate("<div>Totales: </div>");
+                                 columns.Bound(r => r.TX_Lote).Title("Lote")
+                                    .Width(150)
+                                    .ClientFooterTemplate("<div>Totales: </div>");
+                                 columns.Bound(r => r.TX_Ubicacion).Title("Ubicación")
+                                    .Width(150);
+                                 columns.Bound(r => r.NU_UnidadManejo).Title("Uni. Manejo")
+                                     .HtmlAttributes(new { style = "text-align:right" })
+                                     .Format("{0:n0}")
+                                     .Width(150);
+                                 columns.Bound(r => r.FE_VencimientoLote).Title("FE. Vencimiento")
+                                     .Width(150)
+                                     .Format("{0:dd/MM/yyyy}");
+                                 columns.Bound(r => r.NU_CantidadPrimaria).Title("Cantidad")
+                                     .HtmlAttributes(new { style = "text-align:right" })
+                                     .Format("{0:n0}")
+                                     .ClientFooterTemplate("<div style='text-align:right'>#= sum #  </div>")
+                                     .Width(120);
+                             })
+                 
+                .DataSource(datasoure => datasoure.Ajax()
+                                            .Events(events => events.Error("GridError"))
+                                            .Read(read => read.Action("GetExistencias", "ConfigDistribucion").Data("paramArt"))
+                                            
+                                            .Aggregates(aggregates =>
+                                            {
+                                                aggregates.Add(p => p.NU_CantidadPrimaria).Sum();
+                                            })
+                )
+            )
+        </td>
+        <td style="padding:0 5px 0 30px;" >NF:</td>
+        <td>
+            @(Html.Kendo().NumericTextBox<Int16>()
+                .Name("ntbNF")
+                .HtmlAttributes(new { style = "width:80px" })
+                .Format("{0:n0}")
+                .Decimals(0)
+                .Min(0)
+                .Max(Int16.MaxValue)
+                .Value(0)
+                .Enable(false)
+                .Events(evt =>
+                    {
+                        evt.Change("ntSetNF");
+                    })
+            )
+        </td>
+    </tr>
+</table>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.MirrorEntityModel.MMWS_ConfigDistribucion>()
+    // Grid Name
+    .Name("Grid")
+    
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                     // Cretae all the columns base on Model
+                     columns.ForeignKey(p => p.ID_Linea, (System.Collections.IEnumerable)ViewData["dvLineas"], "ID", "TX")
+                        .Title("Línea");
+                     columns.ForeignKey(p => p.ID_Especialidad, (System.Collections.IEnumerable)ViewData["dvEspecialidades"], "ID", "TX")
+                        .Title("Especialidad");
+                     columns.ForeignKey(p => p.ID_Clasificacion, (System.Collections.IEnumerable)ViewData["dvClasificaciones"], "ID", "TX")
+                        .Title("Clasificación");
+                     columns.Bound(r => r.NU_Fichados).Title("Fichados")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Width(90);
+                     columns.Bound(r => r.NU_Revisita).Title("Revisita")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Width(90);
+                     columns.Bound(r => r.NU_Contactos).Title("F + R")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Width(90);
+                     columns.Bound(r => r.NU_CantidadEntregar).Title("Entregar")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Width(90)
+                         .EditorTemplateName("Short");
+                 })
+                 
+    // Declare ajax datasource.
+    // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+    // Set the model Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+                                
+                                .Model(model =>
+                                    {
+                                        model.Id(record => record.ID_ConfigDistribucion);
+                                    }
+                                )
+                                .Read(read => read.Action("GetAll", "ConfigDistribucion").Data("paramDist"))
+                                .Update(update => update.Action("Update", "ConfigDistribucion"))
+    )
+
+    .Events(e => e.Save("onSave"))
+
+    // Set grid editable.
+    .Editable(editable => editable.Mode(GridEditMode.InCell))
+    
+    // Set grid selectable.
+    .Selectable()
+)
+
+
+<table id="tbBotonera">
+    <tr>
+       <td>
+            <button class="k-button" id="getPreDispensado">Visualizar</button>
+       </td>
+       <td>
+            <button class="k-button" id="setNotaEntrega">Dispensar</button>
+       </td>
+    </tr>
+</table>
+
+
+<style scoped>
+    #tableParametros {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+    #getDistArt {
+        float: right;
+        visibility: hidden;
+    }
+    #Grid {
+        margin-top: 10px;
+    }
+    td {
+        padding: 0em 0.5em 0.25em 0em;
+        border: 0 none;
+    }
+	#setNotaEntrega, #getPreDispensado {
+        visibility: hidden;
+	}
+    #tbBotonera {
+        float: right;
+		margin-top: 15px;
+    }
+</style>
+
+
+<script>
+    function filterArticulos() {
+        return {
+            IDMarca: $("#ddMarcas").val() != "" ? $("#ddMarcas").val() : 0,
+            IDTipoArticulo: $("#ddTipoArticulos").val() != "" ? $("#ddTipoArticulos").val() : 0
+        };
+    }
+
+    function filterLineas() {
+        return {
+            IDMarca: $("#ddMarcas").val() != "" ? $("#ddMarcas").val() : 0
+        };
+    }
+
+    function paramDist() {
+        var msLineas = $('#msLineas').data('kendoMultiSelect');
+        var msEspecialidades = $('#msEspecialidades').data('kendoMultiSelect');
+
+        return {
+            articuloID: $("#ddArticulos").val() != "" ? $("#ddArticulos").val() : 0,
+            lineasIDs: (msLineas.value().toString() != "") ? msLineas.value().toString() : "0",
+            especialidadesIDs: (msEspecialidades.value().toString() != "") ? msEspecialidades.value().toString() : "0"
+        }
+    }
+
+    function paramArt() {
+        return {
+            articuloID: $("#ddArticulos").val() != "" ? $("#ddArticulos").val() : 0
+        }
+    }
+
+    function onSave(e) {
+        setTimeout(function () {
+            $("#Grid").data("kendoGrid").dataSource.sync();
+        })
+    }
+
+    var msConfigDist = (function () {
+
+        var _TipoArticulosSegmentChange = function () {
+
+            var ddMarcas = $("#ddMarcas").data("kendoDropDownList");
+            ddMarcas.select(0);
+            _MarcasSegmentChange();
+            _LineasSegmentChange();
+        };
+
+        var _MarcasSegmentChange = function () {
+            var IDMarca = $("#ddMarcas").val() != "" ? $("#ddMarcas").val() : 0;
+
+            //Reset controles multilinea
+            var msLineasSegments = $('#msLineas').data('kendoMultiSelect');
+            msLineasSegments.value('');
+            var msEspecialidadesSegments = $('#msEspecialidades').data('kendoMultiSelect');
+            msEspecialidadesSegments.value('');
+            document.getElementById("getDistArt").style.visibility = 'hidden';
+
+            _bindMarcasSegments(IDMarca);
+        };
+
+        var _LineasSegmentChange = function () {
+            var IDMarca = $("#ddMarcas").val() != "" ? $("#ddMarcas").val() : 0;
+
+            //Reset multiselect
+            var msEspecialidadesSegments = $('#msEspecialidades').data('kendoMultiSelect');
+            msEspecialidadesSegments.value('');
+            document.getElementById("getDistArt").style.visibility = 'hidden';
+
+            var msLineasSegments = $('#msLineas').data('kendoMultiSelect');
+
+            var variables = {
+                lineasIds: (msLineasSegments.value().toString() != "")? msLineasSegments.value().toString() : "0"
+            };
+
+            _bindLineasSegments(variables);
+        };
+
+        var _EspecialidadesSegmentChange = function () {
+            var msEspecialidadesSegments = $('#msEspecialidades').data('kendoMultiSelect');
+
+            if (msEspecialidadesSegments.value().toString() == "") {
+                document.getElementById("getDistArt").style.visibility = 'hidden';
+            }
+            else {
+                document.getElementById("getDistArt").style.visibility = 'visible';
+            }
+        };
+
+        var _bindMarcasSegments = function (IDMarca) {
+                var kendoDs = new kendo.data.DataSource({
+                    transport: {
+                        read: {
+                            url: '@Url.Action("GetLineas_ConDis", "Lineas")?IDMarca=' + IDMarca 
+                    }
+                }
+            });
+
+            var msLineas = $('#msLineas').data('kendoMultiSelect');
+            msLineas.setDataSource(kendoDs);
+            msLineas.refresh();
+        };
+
+        var _bindLineasSegments = function (variables) {
+            var kendoDs = new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: '@Url.Action("GetEspecialidades_ConDis", "Especialidades")?IDsLineas=' + variables.lineasIds
+                    }
+                }
+            });
+
+            var msEspecialidades = $('#msEspecialidades').data('kendoMultiSelect');
+            msEspecialidades.setDataSource(kendoDs);
+            msEspecialidades.refresh();
+        };
+
+        var _lineasOpen = function () {
+            var msLineas = $('#msLineas').data('kendoMultiSelect');
+            var msValue = msLineas.value();
+            if (msValue[0] && msValue[0] === '-1') {
+                msLineas.value('');
+            }
+        };
+
+        var _lineasClose = function () {
+            var msLineas = $('#msLineas').data('kendoMultiSelect');
+            var msValue = msLineas.value();
+            if (msValue.length === 0) {
+                msLineas.value('-1');
+            }
+        };
+
+        var _especialidadesOpen = function () {
+            var msEspecialidades = $('#msEspecialidades').data('kendoMultiSelect');
+            var msValue = msEspecialidades.value();
+            if (msValue[0] && msValue[0] === '-1') {
+                msEspecialidades.value('');
+            }
+        };
+
+        var _especialidadesClose = function () {
+            var msEspecialidades = $('#msEspecialidades').data('kendoMultiSelect');
+            var msValue = msEspecialidades.value();
+            if (msValue.length === 0) {
+                msEspecialidades.value('-1');
+            }
+        };
+
+        return {
+            tipoArticulosSegmentChange: _TipoArticulosSegmentChange,
+            marcasSegmentChange: _MarcasSegmentChange,
+            lineasSegmentChange: _LineasSegmentChange,
+            especialidadesSegmentChange: _EspecialidadesSegmentChange,
+            lineasOpen: _lineasOpen,
+            lineasClose: _lineasClose,
+            especialidadesOpen: _especialidadesOpen,
+            especialidadesClose: _especialidadesClose
+        };
+    }());
+
+    $("#getDistArt").click(function () {
+        var ddTipoArticulos = $("#ddTipoArticulos").data("kendoDropDownList");
+        var ddMarcas = $("#ddMarcas").data("kendoDropDownList");
+        var ddArticulos = $("#ddArticulos").data("kendoDropDownList");
+        var msLineas = $('#msLineas').data('kendoMultiSelect');
+        var msEspecialidades = $('#msEspecialidades').data('kendoMultiSelect');
+        var ntbNF = $("#ntbNF").data("kendoNumericTextBox");
+
+        ddTipoArticulos.enable(false);
+        ddMarcas.enable(false);
+        ddArticulos.enable(false);
+        msLineas.enable(false);
+        msEspecialidades.enable(false);
+        ntbNF.enable(true);
+
+        document.getElementById("getDistArt").style.visibility = 'hidden';
+        document.getElementById("setNotaEntrega").style.visibility = 'visible';
+        document.getElementById("getPreDispensado").style.visibility = 'visible';
+
+        $("#GridExistencias").data("kendoGrid").dataSource.read();
+        $("#Grid").data("kendoGrid").dataSource.read();
+
+        $.ajax({
+            url: "/ConfigDistribucion/GetNoContFichero",
+            type: "POST",
+            async: false,
+            data: {
+                articuloID: $("#ddArticulos").val()
+            },
+            success: function (result) {
+                var ntbNF = $('#ntbNF').data('kendoNumericTextBox');
+                ntbNF.value(result != "" ? result : 0);
+            }
+        });
+    });
+
+    $("#getPreDispensado").click(function () {
+        if ($("#ntbNF").val() != "") {
+            $.ajax({
+                url: "/ConfigDistribucion/GetInvPosDispensado",
+                type: "POST",
+                async: false,
+                data: {
+                    articuloID: $("#ddArticulos").val() != "" ? $("#ddArticulos").val() : 0,
+                    lineasIDs: ($('#msLineas').data('kendoMultiSelect').value().toString() != "") ?
+                        $('#msLineas').data('kendoMultiSelect').value().toString() : "0",
+                    especialidadesIDs: ($('#msEspecialidades').data('kendoMultiSelect').value().toString() != "") ?
+                        $('#msEspecialidades').data('kendoMultiSelect').value().toString() : "0",
+                    nuNF: $("#ntbNF").val() != "" ? $("#ntbNF").val() : 0
+                },
+                success: function (result) {
+                    if (result >= 0)
+                        window.open('/ConfigDistribucion/PreDispensado?articuloID=' + $("#ddArticulos").val() +
+                            '&lineasIDs=' + $('#msLineas').data('kendoMultiSelect').value().toString() +
+                            '&especialidadesIDs=' + $('#msEspecialidades').data('kendoMultiSelect').value().toString() +
+                            '&nuNF=' + $("#ntbNF").val(), "_blank", "width=1000, height=700");
+                    else
+                        alert('Error en distribución:\n\nLa cantidad a dispensar supera el inventario.');
+                }
+            });
+        }
+        else {
+            alert('Fallo en ejecución:\n\nNo es posible mostrar el PreDispensado. Error: ' + 'NF con valor inválido.');
+        }
+    });
+
+    $("#setNotaEntrega").click(function () {
+        if ($("#ntbNF").val() != "") {
+            $.ajax({
+                url: "/ConfigDistribucion/GetInvPosDispensado",
+                type: "POST",
+                async: false,
+                data: {
+                    articuloID: $("#ddArticulos").val() != "" ? $("#ddArticulos").val() : 0,
+                    lineasIDs: ($('#msLineas').data('kendoMultiSelect').value().toString() != "") ?
+                        $('#msLineas').data('kendoMultiSelect').value().toString() : "0",
+                    especialidadesIDs: ($('#msEspecialidades').data('kendoMultiSelect').value().toString() != "") ?
+                        $('#msEspecialidades').data('kendoMultiSelect').value().toString() : "0",
+                    nuNF: $("#ntbNF").val() != "" ? $("#ntbNF").val() : 0
+                },
+                success: function (result) {
+                    if (result >= 0)
+                        $.ajax({
+                            url: "/ConfigDistribucion/SetNotaEntrega",
+                            type: "POST",
+                            async: false,
+                            data: {
+                                articuloID: $("#ddArticulos").val() != "" ? $("#ddArticulos").val() : 0,
+                                lineasIDs: ($('#msLineas').data('kendoMultiSelect').value().toString() != "") ?
+                                    $('#msLineas').data('kendoMultiSelect').value().toString() : "0",
+                                especialidadesIDs: ($('#msEspecialidades').data('kendoMultiSelect').value().toString() != "") ?
+                                    $('#msEspecialidades').data('kendoMultiSelect').value().toString() : "0",
+                                nuNF: $("#ntbNF").val() != "" ? $("#ntbNF").val() : 0
+                            },
+                            success: function (result) {
+                                alert('Notificación:\n\nSe han emitido todas las notas de entrega para este artículo.');
+
+                                location.reload();
+                            },
+                            error: function (e) {
+                                alert('Fallo en ejecución:\n\nNo fue posible emitir las notas de entrega. Error:' + e.responseText);
+                            }
+                        });
+                    else
+                        alert('Error en distribución:\n\nLa cantidad a dispensar supera el inventario.');
+                },
+                error: function (e) {
+                    alert('Fallo en ejecución:\n\nNo fue posible emitir las notas de entrega. Error:' + e.responseText);
+                }
+            });
+        }
+        else {
+            alert('Fallo en ejecución:\n\nNo fue posible emitir las notas de entrega. Error: ' + 'NF con valor inválido.');
+        }
+    });
+
+    var ntSetNF = (function () {
+        $.ajax({
+            url: "/ConfigDistribucion/SetNoContFichero",
+            type: "POST",
+            async: false,
+            data: {
+                articuloID: $("#ddArticulos").val() != "" ? $("#ddArticulos").val() : 0,
+                nuNF: $("#ntbNF").val() != "" ? $("#ntbNF").val() : 0
+            }
+        });
+    });
+</script>
+

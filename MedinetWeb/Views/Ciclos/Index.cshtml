@@ -1,0 +1,138 @@
+﻿@{
+    ViewBag.Title = "Ciclos";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.MirrorEntityModel.MMW_Ciclos>()
+    // Grid Name
+    .Name("Grid")
+    
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                     // Cretae all the columns base on Model
+                     columns.Bound(r => r.ID_Ciclo).Title("ID")
+                        .Width(50);
+                     columns.Bound(r => r.NU_Ano).Title("Número año")
+                        .Width(150);
+                     columns.Bound(r => r.NU_Ciclo).Title("Número ciclo")
+                        .Width(150);
+                     columns.Bound(r => r.FE_CicloIni).Title("Fecha inicio")
+                         .Width(150)
+                         .Format("{0:dd/MM/yyyy}");
+                     columns.Bound(r => r.FE_CicloFin).Title("Fecha fin")
+                         .Width(150)
+                         .Format("{0:dd/MM/yyyy}");
+                     columns.Bound(r => r.FE_CicloProrroga).Title("Fecha prorroga")
+                         .Width(150)
+                         .Format("{0:dd/MM/yyyy}");
+                     columns.Bound(r => r.NU_DiasCancelarVehiculo).Title("Días cancelar vehículo")
+                        .Width(210);
+                     columns.Bound(r => r.NU_DiasHabiles).Title("Días hábiles")
+                        .Width(150);
+                     columns.Bound(r => r.FE_CargaInv).Title("FE. Carga Inv.")
+                         .Width(150)
+                         .Format("{0:dd/MM/yyyy}");
+                     columns.Bound(r => r.FE_IniDistribucion).Title("FEIni. Dist.")
+                         .Width(150)
+                         .Format("{0:dd/MM/yyyy}");
+                     columns.Bound(r => r.FE_FinDistribucion).Title("FEFin. Dist.")
+                         .Width(150)
+                         .Format("{0:dd/MM/yyyy}");
+                     columns.ForeignKey(p => p.NU_Estatus, (System.Collections.IEnumerable)ViewData["dvEstatus"], "ID", "TX")
+                        .Title("Estatus")
+                        .Width(100);
+                     columns.Bound(r => r.BO_Activo).Title("Activo")
+                        .Width(100)
+                        .ClientTemplate("<input type='checkbox' #= BO_Activo ? checked='checked' : '' # disabled='disabled'}></input>");
+
+                     // Edit and Delete button column
+                     columns.Command(command =>
+                                         {
+                                             command.Edit().Text("Editar");
+                                             command.Destroy().Text("Eliminar");
+                                         }).Width(180);
+                 })
+                 
+    // Declare ajax datasource.
+    // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+    // Set the model Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+                                
+                                .Model(model =>
+                                    {
+                                        model.Id(record => record.ID_Ciclo);
+                                        model.Field(record => record.NU_Estatus).DefaultValue(3);
+                                        model.Field(record => record.BO_Activo).DefaultValue(true);
+                                    }
+                                )
+                                .Read(read => read.Action("GetAll", "Ciclos"))
+                                .Create(create => create.Action("Add", "Ciclos"))
+                                .Update(update => update.Action("Update", "Ciclos"))
+                                .Destroy(delete => delete.Action("Delete", "Ciclos"))
+                                .PageSize(5)
+    )
+    
+    .Events(e => e.Save("onSave"))
+    
+    // Add tool bar with Create button
+    .ToolBar(toolbar => toolbar.Create().Text("Agregar registro"))
+    
+    // Set grid editable.
+    .Editable(editable => editable.Mode(GridEditMode.InLine))
+    
+    // Set grid sortable.
+    .Sortable()
+    
+    // Set grid selectable.
+    .Selectable()
+    
+    // Set grid groupable.
+    .Groupable()
+    
+    // Set grid filterable.
+    .Filterable()    
+    
+    // Set grid Scrollable.
+    .Scrollable(scrolling => scrolling.Enabled(true).Height(220))
+    
+    // Set grid pagable.
+    .Pageable(pageable =>
+                  {
+                      pageable.Refresh(true);
+                      pageable.PageSizes(true);
+                  })
+)
+
+<script>
+    function onSave(e) {
+        var currentRecordNU_A = e.model.NU_Ano;
+        var currentRecordNU_C = e.model.NU_Ciclo;
+        var currentRecordID = e.model.ID_Ciclo;
+        var data = this.dataSource.data();
+
+        var countCicloAct = 0;
+        for (item in data) {
+            if ($.isNumeric(item)){
+                if (data[item].NU_Ano == currentRecordNU_A &&
+                    data[item].NU_Ciclo == currentRecordNU_C &&
+                    data[item].ID_Ciclo != currentRecordID) {
+                    e.preventDefault();
+                    alert("Ciclo duplicado.");
+                }
+
+                if (data[item].NU_Estatus == 1) {
+                    countCicloAct++;
+                    if (countCicloAct >= 2) {
+                        e.preventDefault();
+                        alert("No pueden existir dos ciclos abiertos.");
+                    }
+                }
+            }
+        }
+    }
+</script>

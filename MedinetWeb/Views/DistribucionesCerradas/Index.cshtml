@@ -1,0 +1,47 @@
+﻿@{
+    ViewBag.Title = "Distribuciones cerradas";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.MirrorEntityModel.MMWS_CierreDistribucion>()
+        // Grid Name
+    .Name("Grid")
+
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                     columns.ForeignKey(p => p.ID_Usuario, (System.Collections.IEnumerable)ViewData["dvUsuarios"], "ID", "TX")
+                        .Title("Usuario");
+                     columns.Bound(r => r.FE_Registro).Title("FE. Cierre")
+                        .Format("{0:dd/MM/yyyy}");
+
+                     // Edit and Delete button column
+                     columns.Command(command =>
+                                         {
+                                             command.Destroy().Text("Eliminar");
+                                         }).Width(180);
+                 })
+
+    // Declare ajax datasource.
+        // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+        // Set the model Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+
+                                .Model(model =>
+                                {
+                                    model.Id(record => record.ID_CierreDistribucion);
+                                })
+                                .Read(read => read.Action("GetAll", "DistribucionesCerradas"))
+                                .Destroy(delete => delete.Action("Delete", "DistribucionesCerradas"))
+    )
+
+    // Set grid sortable.
+    .Sortable()
+
+    // Set grid selectable.
+    .Selectable()
+)

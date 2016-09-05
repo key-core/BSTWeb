@@ -1,0 +1,105 @@
+﻿@{
+    ViewBag.Title = "Salida SIDEX";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+
+<table border="0" id="tableParametros">
+    <tr>
+        <td>
+            <label class="ciclo-label">Ciclo:</label>
+            @(Html.Kendo().DropDownList()
+                  .Name("ddCiclos")
+                  .HtmlAttributes(new { style = "width:150px" })
+                  .DataTextField("TX")
+                  .DataValueField("ID")
+                  .DataSource(source =>
+                  {
+                      source.Read(read =>
+                      {
+                          read.Action("GetCiclosDistribucion", "Ciclos");
+                      });
+                  })
+            )
+        </td>
+        <td>
+            <label class="tipo-label">Tipo salida:</label>
+            @(Html.Kendo().DropDownList()
+                  .Name("ddTipoSalida")
+                  .HtmlAttributes(new { style = "width:150px" })
+                  .DataTextField("TX")
+                  .DataValueField("ID")
+                  .DataSource(source =>
+                  {
+                      source.Read(read =>
+                      {
+                          read.Action("GetTipoSalida", "SalidaSIDEX");
+                      });
+                  })
+                  .Events(evt => evt.Change("ddTipoSalidaEvent"))
+            )
+        </td>
+        <td>
+            <label class="tipo-label">Separador para .txt:</label>
+            @(Html.Kendo().DropDownList()
+                  .Name("ddTipoCaracter")
+                  .HtmlAttributes(new { style = "width:150px" })
+                  .DataTextField("TX")
+                  .DataValueField("ID")
+                  .Enable(false)
+                  .DataSource(source =>
+                  {
+                      source.Read(read =>
+                      {
+                          read.Action("GetTipoCaracter", "SalidaSIDEX");
+                      });
+                  })
+            )
+        </td>
+        <td>
+            <button class="k-button" id="getSalidaSIDEX">Notas de entrega</button>
+        </td>
+    </tr>
+</table>
+
+<script>
+    $("#getSalidaSIDEX").click(function () {
+        if ($("#ddCiclos").val() != "") {
+            if ($("#ddTipoSalida").val() == 1) {
+                window.location.href = "/SalidaSIDEX/GetSalidaXmlSIDEX?cicloID=" + $("#ddCiclos").val();
+            }
+            else {
+                window.location.href = "/SalidaSIDEX/GetSalidaTxtSIDEX?cicloID=" + $("#ddCiclos").val() +
+                    '&tipoCaracter=' + $("#ddTipoCaracter").val();
+            }
+        }
+        else {
+            alert('Fallo en ejecución:\n\nNo es posible emitir las notas de entrega. Error: ' + 'Ciclo inválido.');
+        }
+    });
+
+    var ddTipoSalidaEvent = (function () {
+        var ddTipoCaracter = $("#ddTipoCaracter").data("kendoDropDownList");
+        if ($("#ddTipoSalida").val() == 1) {
+            ddTipoCaracter.enable(false);
+        }
+        else {
+            ddTipoCaracter.enable(true);
+        }
+    });
+</script>
+
+<style scoped="scoped">
+    .ciclo-label .tipo-label {
+        vertical-align: middle;
+        padding-right: .5em;
+    }
+
+    label {
+        display: inline-block;
+        vertical-align: middle;
+    }
+</style >

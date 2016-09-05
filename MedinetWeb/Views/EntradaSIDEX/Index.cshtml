@@ -1,0 +1,188 @@
+﻿@{
+    ViewBag.Title = "Entrada SIDEX";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+<table border="0" id="tableParametros">
+    <tr>
+        <td>
+            <label class="tipoArticulos-label">Tipo de artículos:</label>
+        </td>
+        <td>
+            @(Html.Kendo().Upload()
+                .Name("upTipoArticulos")
+                .Multiple(false)
+                .HtmlAttributes(new { accept = ".txt" })
+                .Async(a => a
+                    .Save("SaveTipoArticulos", "EntradaSIDEX")
+                    .AutoUpload(true)
+                )
+            )
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="unidadManejo-label">Unidades de manejo:</label>
+        </td>
+        <td>
+            @(Html.Kendo().Upload()
+                .Name("upUnidadesManejo")
+                .Multiple(false)
+                .HtmlAttributes(new { accept = ".txt" })
+                .Async(a => a
+                    .Save("SaveUnidadesManejo", "EntradaSIDEX")
+                    .AutoUpload(true)
+                )
+            )
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="marcasSidex-label">Marcas:</label>
+        </td>
+        <td>
+            @(Html.Kendo().Upload()
+                .Name("upMarcas")
+                .Multiple(false)
+                .HtmlAttributes(new { accept = ".txt" })
+                .Async(a => a
+                    .Save("SaveMarcas", "EntradaSIDEX")
+                    .AutoUpload(true)
+                )
+            )
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="articulos-label">Artículos:</label>
+        </td>
+        <td>
+            @(Html.Kendo().Upload()
+                .Name("upArticulos")
+                .Multiple(false)
+                .HtmlAttributes(new { accept = ".txt" })
+                .Async(a => a
+                    .Save("SaveArticulos", "EntradaSIDEX")
+                    .AutoUpload(true)
+                )
+                .Events(e => e
+                    .Success("onSuccess")
+                )
+            )
+        </td>
+        <td style="width:700px">
+            <label class="articulosRechazados-label"><strong>Artículos rechazados:</strong></label>
+            @(Html.Kendo().Grid<MedinetWeb.Models.MWS_ArticulosRechazados>()
+                // Grid Name
+                .Name("GridArticulos")
+                //.HtmlAttributes(new { @style = "display:none" })
+
+                // Declare grid column
+                .Columns(columns =>
+                             {
+                                 columns.Bound(r => r.TX_IDArticuloCliente).Title("ID");
+                                 columns.Bound(r => r.TX_Articulo).Title("Artículo");
+                             })
+
+                .DataSource(datasoure => datasoure.Ajax()
+                                            .Read(read => read.Action("GetArtRechazados", "EntradaSIDEX"))
+                                            .PageSize(5)
+                )
+                
+                // Set grid sortable.
+                .Sortable()
+
+                // Set grid filterable.
+                .Filterable()    
+
+                // Set grid pagable.
+                .Pageable(pageable =>
+                          {
+                              pageable.PageSizes(true);
+                          })
+            )
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="existencias-label">Existencias:</label>
+        </td>
+        <td>
+            @(Html.Kendo().Upload()
+                .Name("upExistencias")
+                .Multiple(false)
+                .HtmlAttributes(new { accept = ".txt" })
+                .Async(a => a
+                    .Save("SaveExistencias", "EntradaSIDEX")
+                    .AutoUpload(true)
+                )
+                .Events(e => e
+                    .Success("onSuccess")
+                )
+            )
+        </td>
+        <td style="width:700px">
+            <label class="existenciasRechazadas-label"><strong>Existencias rechazadas:</strong></label>
+            @(Html.Kendo().Grid<MedinetWeb.Models.MWS_ExistenciasRechazadas>()
+                    // Grid Name
+                .Name("GridExistencias")
+
+                // Declare grid column
+                .Columns(columns =>
+                             {
+                                 columns.Bound(r => r.TX_Ubicacion).Title("Ubicación");
+                                 columns.Bound(r => r.TX_IDArticuloCliente).Title("ID Artículo");
+                                 columns.Bound(r => r.TX_Lote).Title("Lote");
+                                 columns.Bound(r => r.FE_VencimientoLote).Title("FE Venc.")
+                                     .Format("{0:dd/MM/yyyy}");
+                                 columns.Bound(r => r.NU_CantidadPrimaria).Title("Cant. Prim.")
+                                     .HtmlAttributes(new { style = "text-align:right" });
+                             })
+
+                .DataSource(datasoure => datasoure.Ajax()
+                                            .Read(read => read.Action("GetExistRechazadas", "EntradaSIDEX"))
+                                            .PageSize(5)
+                )
+
+                // Set grid sortable.
+                .Sortable()
+
+                // Set grid filterable.
+                .Filterable()
+
+                // Set grid pagable.
+                .Pageable(pageable =>
+                          {
+                              pageable.PageSizes(true);
+                          })
+            )
+        </td>
+    </tr>
+</table>
+
+
+<style scoped="scoped">
+    .tipoArticulos-label .unidadManejo-label .marcasSidex-label .articulos-label .existencias-label {
+        vertical-align: middle;
+        padding-right: .5em;
+    }
+</style>
+
+<script>
+    function onSuccess(e) {
+        if (getFileInfo(e).toUpperCase() == "MWS_ARTICULOS.TXT")
+            $("#GridArticulos").data("kendoGrid").dataSource.read();
+        else
+            $("#GridExistencias").data("kendoGrid").dataSource.read();
+    }
+
+    function getFileInfo(e) {
+        return $.map(e.files, function (file) {
+            var info = file.name;
+            return info;
+        }).join(", ");
+    }
+</script>

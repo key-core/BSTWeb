@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "Resumen distribuciones";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.SP_MWS_ResumenDistribuciones_AprDis_Result>()
+    // Grid Name
+    .Name("Grid")
+
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                     columns.ForeignKey(p => p.ID_Usuario, (System.Collections.IEnumerable)ViewData["dvUsuarios"], "ID", "TX")
+                        .Title("Usuario");
+                     columns.Bound(r => r.FE_Registro).Title("FE. Cierre")
+                        .Format("{0:dd/MM/yyyy}");
+                 })
+
+    // Declare ajax datasource.
+    // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+    // Set themodel Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+
+                                .Read(read => read.Action("GetAllResumenDist", "AprDistribucion"))
+    )
+
+    // Set grid sortable.
+    .Sortable()
+
+    // Set grid selectable.
+    .Selectable()
+)
+
+<table id="tbBotonera">
+    <tr>
+        <td>
+            <button class="k-button" onclick="window.location.href = '/AprDistribucion/Index'">Siguiente</button>
+        </td>
+    </tr>
+</table>
+
+<style scoped>
+    td {
+        padding: 0em 0.5em 0.25em 0em;
+        border: 0 none;
+    }
+
+    #tbBotonera {
+        float: right;
+        margin-top: 15px;
+    }
+</style>

@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "Contactenos";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+    @*<h2>@ViewBag.Message</h2>*@
+</hgroup>
+
+    @(Html.Kendo().TabStrip()
+        .Name("ContactsTabStrip")
+        .Items(items =>
+        {
+            items.Add()
+                .Text("Telefonos")
+                .Selected(true)
+                .Content(@<text>
+                    <p>
+                        <span class="label">Local:</span>
+                        <span>+58 212 4090149</span>
+                    </p>
+                    <p>
+                        <span class="label">Móvil:</span>
+                        <span>+58 414 9896118</span>
+                    </p>
+                </text>)
+                .ContentHtmlAttributes(new { style = "min-height: 200px" });
+            items.Add()
+                .Text("Email")
+                .Content(@<text>
+                    <p>
+                        <span class="label">Soporte y servicio:</span>
+                        <span><a href="mailto:soporte@medinetla.com">soporte@medinetla.com</a></span>
+                    </p>
+                    <p>
+                        <span class="label">Ventas:</span>
+                        <span><a href="mailto:ventas@medinetla.com">ventas@medinetla.com</a></span>
+                    </p>
+                    <p>
+                        <span class="label">Informacion general:</span>
+                        <span><a href="mailto:informacion@medinetla.com">informacion@medinetla.com</a></span>
+                    </p>
+                </text>)
+                .ContentHtmlAttributes(new { style = "min-height: 200px" });
+            items.Add()
+                .Text("Dirección")
+                .Content(@<text>
+                    <p>
+                        Av. Oeste 20<br />
+                        Edificio Pulmobronk<br />
+                        Urb. Quinta Crespo. Caracas - Venezuela
+                    </p>
+                </text>)
+                .ContentHtmlAttributes(new { style = "min-height: 200px" });
+        })
+    )

@@ -1,0 +1,2109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://Localhost/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://Localhost/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://Localhost/">
+      <s:element name="getMedicosTodos">
+        <s:complexType />
+      </s:element>
+      <s:element name="getMedicosTodosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getMedicosTodosResult" type="tns:ArrayOfMedico" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfMedico">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Medico" nillable="true" type="tns:Medico" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Medico">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="nroSanitario" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="doctor" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="getMedicosNroSanitario">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="nroSanitario" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getMedicosNroSanitarioResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getMedicosNroSanitarioResult" type="tns:ArrayOfMedico" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getMedicosCadena">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="cadena" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getMedicosCadenaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getMedicosCadenaResult" type="tns:ArrayOfMedico" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getMaestraFarmacias">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="region" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getMaestraFarmaciasResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getMaestraFarmaciasResult" type="tns:ArrayOfFarmacia" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfFarmacia">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Farmacia" nillable="true" type="tns:Farmacia" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Farmacia">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="numero" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="brick" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="ruta" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="farmacia" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="direccion" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ciudad" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="estado" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="cadena" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="telefono1" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="telefono2" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="rif" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="getMaestraHospitales">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="region" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getMaestraHospitalesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getMaestraHospitalesResult" type="tns:ArrayOfHospital" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfHospital">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Hospital" nillable="true" type="tns:Hospital" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Hospital">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="numero" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="brick" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="ruta" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="hospital" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="institucion" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="direccion" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="cliente" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="docente" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="getEsquemaPromocionalHibrido">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ano" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="ciclo" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="linea" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getEsquemaPromocionalHibridoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getEsquemaPromocionalHibridoResult" type="tns:ArrayOfEsquemaPromocional" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfEsquemaPromocional">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="EsquemaPromocional" nillable="true" type="tns:EsquemaPromocional" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="EsquemaPromocional">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="posicion" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="especialidad" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="marca" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="posicionamiento" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="getCiclosHibrido">
+        <s:complexType />
+      </s:element>
+      <s:element name="getCiclosHibridoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getCiclosHibridoResult" type="tns:ArrayOfCiclo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfCiclo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Ciclo" nillable="true" type="tns:Ciclo" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Ciclo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="fechaICiclo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="fechaFCiclo" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="nroCiclo" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="cicloCerrado" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="diasHabiles" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="estatus" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="getFichasHibrido">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="idRegion" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="idLinea" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getFichasHibridoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getFichasHibridoResult" type="tns:ArrayOfFicha" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfFicha">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Ficha" nillable="true" type="tns:Ficha" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Ficha">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="codigo" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="v1" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="v2" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="v3" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="e1" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="e2" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="e3" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="r1" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="r2" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="r3" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="getTablasMaestras">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="nombreTabla" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getTablasMaestrasResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getTablasMaestrasResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getInfoPorLinea">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="nombreTabla" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="ID_Linea" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getInfoPorLineaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getInfoPorLineaResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getEsquemaPromocional">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ID_Linea" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="ID_Ciclo" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getEsquemaPromocionalResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getEsquemaPromocionalResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getEstructura">
+        <s:complexType />
+      </s:element>
+      <s:element name="getEstructuraResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getEstructuraResult" type="tns:ArrayOfTabla" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfTabla">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Tabla" nillable="true" type="tns:Tabla" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Tabla">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Nombre" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Estructura" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="guardarArchivo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="docbinaryarray" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="docname" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="guardarArchivoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="guardarArchivoResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getTamanoArchivo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DocumentName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getTamanoArchivoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="getTamanoArchivoResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getArchivo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DocumentName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getArchivoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getArchivoResult" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="registrarErrorEnCierre">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="idVisitadorHistorial" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="registrarErrorEnCierreResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="prepararSMS">
+        <s:complexType />
+      </s:element>
+      <s:element name="prepararSMSResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="SolicitarInformacion">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="imei" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SolicitarInformacionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SolicitarInformacionResult" type="tns:ArrayOfTipoGerente" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfTipoGerente">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="TipoGerente" nillable="true" type="tns:TipoGerente" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="TipoGerente">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="tipo" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="codigo" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SolicitarDataGerenteNacional">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="codigo" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SolicitarDataGerenteNacionalResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SolicitarDataGerenteNacionalResult" type="tns:ArrayOfDataGerenteNacional" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfDataGerenteNacional">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="DataGerenteNacional" nillable="true" type="tns:DataGerenteNacional" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="DataGerenteNacional">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="co_gerente_nac" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="co_region" type="s:short" />
+          <s:element minOccurs="0" maxOccurs="1" name="nombre" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="apellido" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="nu_vm" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="nu_rm" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="nu_pdr" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="nu_mix" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="nu_ranking" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="nu_vm_total" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="nu_rm_total" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="nu_pdr_total" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="nu_mix_total" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SolicitarDataGerenteNacionalHijos">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="codigo" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SolicitarDataGerenteNacionalHijosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SolicitarDataGerenteNacionalHijosResult" type="tns:ArrayOfDataGerenteRegional" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfDataGerenteRegional">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="DataGerenteRegional" nillable="true" type="tns:DataGerenteRegional" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="DataGerenteRegional">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="co_gerente_nac" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="co_gerente_reg" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="co_linea" type="s:short" />
+          <s:element minOccurs="1" maxOccurs="1" name="co_region" type="s:short" />
+          <s:element minOccurs="0" maxOccurs="1" name="nombre" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="apellido" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="nu_vm" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="nu_rm" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="nu_pdr" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="nu_mix" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="nu_ranking" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="nu_vm_total" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="nu_rm_total" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="nu_pdr_total" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="nu_mix_total" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SolicitarDataGerenteRegional">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="codigo" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SolicitarDataGerenteRegionalResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SolicitarDataGerenteRegionalResult" type="tns:ArrayOfDataGerenteRegional" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SolicitarDataGerenteRegionalHijos">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="codigo" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SolicitarDataGerenteRegionalHijosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SolicitarDataGerenteRegionalHijosResult" type="tns:ArrayOfDataVisitadorMedico" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfDataVisitadorMedico">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="DataVisitadorMedico" nillable="true" type="tns:DataVisitadorMedico" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="DataVisitadorMedico">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="co_visitador" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="co_gerente_reg" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="co_linea" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="nombre" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="apellido" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="nu_vm" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="nu_rm" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="nu_pdr" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="nu_mix" type="s:double" />
+          <s:element minOccurs="0" maxOccurs="1" name="nu_ranking" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="nu_vm_total" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="nu_rm_total" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="nu_pdr_total" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="nu_mix_total" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="da_transmision" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SolicitarDataGerenteRegionalHijosII">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="codigo" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SolicitarDataGerenteRegionalHijosIIResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SolicitarDataGerenteRegionalHijosIIResult" type="tns:ArrayOfDataVisitadorMedicoII" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfDataVisitadorMedicoII">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="DataVisitadorMedicoII" nillable="true" type="tns:DataVisitadorMedicoII" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="DataVisitadorMedicoII">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="co_visitador" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="co_gerente_reg" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="co_linea" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="co_region" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="nombre" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="apellido" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="nu_vm" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="nu_rm" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="nu_pdr" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="nu_mix" type="s:double" />
+          <s:element minOccurs="0" maxOccurs="1" name="nu_ranking" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="nu_vm_total" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="nu_rm_total" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="nu_pdr_total" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="nu_mix_total" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="da_transmision" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SolicitarDataGerenteRegionalHijosFarmacias">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="codigo" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SolicitarDataGerenteRegionalHijosFarmaciasResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SolicitarDataGerenteRegionalHijosFarmaciasResult" type="tns:ArrayOfDataVisitadorMedicoFarmacias" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfDataVisitadorMedicoFarmacias">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="DataVisitadorMedicoFarmacias" nillable="true" type="tns:DataVisitadorMedicoFarmacias" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="DataVisitadorMedicoFarmacias">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="co_visitador" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="co_gerente_reg" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="co_region" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="co_linea" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="nombre" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="apellido" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="nu_fichados" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="nu_visitados" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="nu_cobertura" type="s:decimal" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SolicitarDataGerenteRegionalHijosHospitales">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="codigo" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SolicitarDataGerenteRegionalHijosHospitalesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SolicitarDataGerenteRegionalHijosHospitalesResult" type="tns:ArrayOfDataVisitadorMedicoHospitales" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfDataVisitadorMedicoHospitales">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="DataVisitadorMedicoHospitales" nillable="true" type="tns:DataVisitadorMedicoHospitales" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="DataVisitadorMedicoHospitales">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="co_visitador" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="co_gerente_reg" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="co_region" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="co_linea" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="nombre" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="apellido" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="nu_fichados" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="nu_visitados" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="nu_cobertura" type="s:decimal" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SolicitarDataGerenteRegionalHijosHojaRuta">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="codigo" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SolicitarDataGerenteRegionalHijosHojaRutaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SolicitarDataGerenteRegionalHijosHojaRutaResult" type="tns:ArrayOfDataVisitadorMedicoHojaRuta" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfDataVisitadorMedicoHojaRuta">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="DataVisitadorMedicoHojaRuta" nillable="true" type="tns:DataVisitadorMedicoHojaRuta" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="DataVisitadorMedicoHojaRuta">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="co_visitador" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="co_gerente_reg" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="co_region" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="co_linea" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="nombre" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="apellido" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AM" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PM" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SolicitarDataGerenteRegionalHijosAgenda">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="codigo" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SolicitarDataGerenteRegionalHijosAgendaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SolicitarDataGerenteRegionalHijosAgendaResult" type="tns:ArrayOfDataVisitadorMedicoAgenda" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfDataVisitadorMedicoAgenda">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="DataVisitadorMedicoAgenda" nillable="true" type="tns:DataVisitadorMedicoAgenda" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="DataVisitadorMedicoAgenda">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="co_visitador" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="co_gerente_reg" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="co_region" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="co_linea" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="nombre" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="apellido" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="doctor" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="especialidad" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="clinica" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="clasificacion" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="hora" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ampm" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="tipo" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Lineas">
+        <s:complexType />
+      </s:element>
+      <s:element name="LineasResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LineasResult" type="tns:ArrayOfLinea" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfLinea">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Linea" nillable="true" type="tns:Linea" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Linea">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="co_linea" type="s:short" />
+          <s:element minOccurs="0" maxOccurs="1" name="linea" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Regiones">
+        <s:complexType />
+      </s:element>
+      <s:element name="RegionesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RegionesResult" type="tns:ArrayOfRegion" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfRegion">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Region" nillable="true" type="tns:Region" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Region">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="co_region" type="s:short" />
+          <s:element minOccurs="0" maxOccurs="1" name="region" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Umbrales">
+        <s:complexType />
+      </s:element>
+      <s:element name="UmbralesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UmbralesResult" type="tns:ArrayOfUmbral" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfUmbral">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Umbral" nillable="true" type="tns:Umbral" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Umbral">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="vm" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="vm_valor_umbral" type="s:double" />
+          <s:element minOccurs="0" maxOccurs="1" name="rm" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="rm_valor_umbral" type="s:double" />
+          <s:element minOccurs="0" maxOccurs="1" name="pdr" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="pdr_valor_umbral" type="s:double" />
+          <s:element minOccurs="0" maxOccurs="1" name="mix" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="mix_valor_umbral" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="RegionesNacional">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="codigo" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RegionesNacionalResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RegionesNacionalResult" type="tns:ArrayOfRegionNacional" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfRegionNacional">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="RegionNacional" nillable="true" type="tns:RegionNacional" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="RegionNacional">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="co_gerente_nac" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="co_region" type="s:short" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="LineasRegional">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="codigo" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LineasRegionalResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LineasRegionalResult" type="tns:ArrayOfLineaRegional" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfLineaRegional">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="LineaRegional" nillable="true" type="tns:LineaRegional" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="LineaRegional">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="co_gerente_reg" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="co_region" type="s:short" />
+          <s:element minOccurs="1" maxOccurs="1" name="co_linea" type="s:short" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="RegistroDispositivo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="idVisitadorHistorial" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="idRegistroGoogle" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="imei" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RegistroDispositivoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="RegistroDispositivoResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="setInstruccionesSqlPrueba">
+        <s:complexType />
+      </s:element>
+      <s:element name="setInstruccionesSqlPruebaResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="setMensajePrueba">
+        <s:complexType />
+      </s:element>
+      <s:element name="setMensajePruebaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="setMensajePruebaResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="setInstruccionesSql">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="instrucciones" type="tns:ArrayOfString" />
+            <s:element minOccurs="0" maxOccurs="1" name="registrationIds" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="setInstruccionesSqlResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="setInstruccionesSqlResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="setMensajes">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="titulo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="mensaje" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="registrationIds" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="setMensajesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="setMensajesResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getDroguerias">
+        <s:complexType />
+      </s:element>
+      <s:element name="getDrogueriasResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getDrogueriasResult" type="tns:ArrayOfDroguerias" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfDroguerias">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Droguerias" nillable="true" type="tns:Droguerias" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Droguerias">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ID_Drogueria" type="s:short" />
+          <s:element minOccurs="0" maxOccurs="1" name="TX_Drogueria" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="BO_Activo" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="getProductos">
+        <s:complexType />
+      </s:element>
+      <s:element name="getProductosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getProductosResult" type="tns:ArrayOfProductos" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfProductos">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Productos" nillable="true" type="tns:Productos" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Productos">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ID_Producto" type="s:short" />
+          <s:element minOccurs="0" maxOccurs="1" name="TX_Producto" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TX_ProductoDesc" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="BO_Activo" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="getDrogueriasProductos">
+        <s:complexType />
+      </s:element>
+      <s:element name="getDrogueriasProductosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getDrogueriasProductosResult" type="tns:ArrayOfDrogueriasProductos" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfDrogueriasProductos">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="DrogueriasProductos" nillable="true" type="tns:DrogueriasProductos" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="DrogueriasProductos">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ID_DrogueriaProducto" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ID_Drogueria" type="s:short" />
+          <s:element minOccurs="1" maxOccurs="1" name="ID_Producto" type="s:short" />
+          <s:element minOccurs="0" maxOccurs="1" name="TX_IDProducto" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="NU_PrecioProducto" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="NU_InvProducto" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="BO_Activo" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="getPedidos">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="zipPedidos" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getPedidosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="getPedidosResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="getMedicosTodosSoapIn">
+    <wsdl:part name="parameters" element="tns:getMedicosTodos" />
+  </wsdl:message>
+  <wsdl:message name="getMedicosTodosSoapOut">
+    <wsdl:part name="parameters" element="tns:getMedicosTodosResponse" />
+  </wsdl:message>
+  <wsdl:message name="getMedicosNroSanitarioSoapIn">
+    <wsdl:part name="parameters" element="tns:getMedicosNroSanitario" />
+  </wsdl:message>
+  <wsdl:message name="getMedicosNroSanitarioSoapOut">
+    <wsdl:part name="parameters" element="tns:getMedicosNroSanitarioResponse" />
+  </wsdl:message>
+  <wsdl:message name="getMedicosCadenaSoapIn">
+    <wsdl:part name="parameters" element="tns:getMedicosCadena" />
+  </wsdl:message>
+  <wsdl:message name="getMedicosCadenaSoapOut">
+    <wsdl:part name="parameters" element="tns:getMedicosCadenaResponse" />
+  </wsdl:message>
+  <wsdl:message name="getMaestraFarmaciasSoapIn">
+    <wsdl:part name="parameters" element="tns:getMaestraFarmacias" />
+  </wsdl:message>
+  <wsdl:message name="getMaestraFarmaciasSoapOut">
+    <wsdl:part name="parameters" element="tns:getMaestraFarmaciasResponse" />
+  </wsdl:message>
+  <wsdl:message name="getMaestraHospitalesSoapIn">
+    <wsdl:part name="parameters" element="tns:getMaestraHospitales" />
+  </wsdl:message>
+  <wsdl:message name="getMaestraHospitalesSoapOut">
+    <wsdl:part name="parameters" element="tns:getMaestraHospitalesResponse" />
+  </wsdl:message>
+  <wsdl:message name="getEsquemaPromocionalHibridoSoapIn">
+    <wsdl:part name="parameters" element="tns:getEsquemaPromocionalHibrido" />
+  </wsdl:message>
+  <wsdl:message name="getEsquemaPromocionalHibridoSoapOut">
+    <wsdl:part name="parameters" element="tns:getEsquemaPromocionalHibridoResponse" />
+  </wsdl:message>
+  <wsdl:message name="getCiclosHibridoSoapIn">
+    <wsdl:part name="parameters" element="tns:getCiclosHibrido" />
+  </wsdl:message>
+  <wsdl:message name="getCiclosHibridoSoapOut">
+    <wsdl:part name="parameters" element="tns:getCiclosHibridoResponse" />
+  </wsdl:message>
+  <wsdl:message name="getFichasHibridoSoapIn">
+    <wsdl:part name="parameters" element="tns:getFichasHibrido" />
+  </wsdl:message>
+  <wsdl:message name="getFichasHibridoSoapOut">
+    <wsdl:part name="parameters" element="tns:getFichasHibridoResponse" />
+  </wsdl:message>
+  <wsdl:message name="getTablasMaestrasSoapIn">
+    <wsdl:part name="parameters" element="tns:getTablasMaestras" />
+  </wsdl:message>
+  <wsdl:message name="getTablasMaestrasSoapOut">
+    <wsdl:part name="parameters" element="tns:getTablasMaestrasResponse" />
+  </wsdl:message>
+  <wsdl:message name="getInfoPorLineaSoapIn">
+    <wsdl:part name="parameters" element="tns:getInfoPorLinea" />
+  </wsdl:message>
+  <wsdl:message name="getInfoPorLineaSoapOut">
+    <wsdl:part name="parameters" element="tns:getInfoPorLineaResponse" />
+  </wsdl:message>
+  <wsdl:message name="getEsquemaPromocionalSoapIn">
+    <wsdl:part name="parameters" element="tns:getEsquemaPromocional" />
+  </wsdl:message>
+  <wsdl:message name="getEsquemaPromocionalSoapOut">
+    <wsdl:part name="parameters" element="tns:getEsquemaPromocionalResponse" />
+  </wsdl:message>
+  <wsdl:message name="getEstructuraSoapIn">
+    <wsdl:part name="parameters" element="tns:getEstructura" />
+  </wsdl:message>
+  <wsdl:message name="getEstructuraSoapOut">
+    <wsdl:part name="parameters" element="tns:getEstructuraResponse" />
+  </wsdl:message>
+  <wsdl:message name="guardarArchivoSoapIn">
+    <wsdl:part name="parameters" element="tns:guardarArchivo" />
+  </wsdl:message>
+  <wsdl:message name="guardarArchivoSoapOut">
+    <wsdl:part name="parameters" element="tns:guardarArchivoResponse" />
+  </wsdl:message>
+  <wsdl:message name="getTamanoArchivoSoapIn">
+    <wsdl:part name="parameters" element="tns:getTamanoArchivo" />
+  </wsdl:message>
+  <wsdl:message name="getTamanoArchivoSoapOut">
+    <wsdl:part name="parameters" element="tns:getTamanoArchivoResponse" />
+  </wsdl:message>
+  <wsdl:message name="getArchivoSoapIn">
+    <wsdl:part name="parameters" element="tns:getArchivo" />
+  </wsdl:message>
+  <wsdl:message name="getArchivoSoapOut">
+    <wsdl:part name="parameters" element="tns:getArchivoResponse" />
+  </wsdl:message>
+  <wsdl:message name="registrarErrorEnCierreSoapIn">
+    <wsdl:part name="parameters" element="tns:registrarErrorEnCierre" />
+  </wsdl:message>
+  <wsdl:message name="registrarErrorEnCierreSoapOut">
+    <wsdl:part name="parameters" element="tns:registrarErrorEnCierreResponse" />
+  </wsdl:message>
+  <wsdl:message name="prepararSMSSoapIn">
+    <wsdl:part name="parameters" element="tns:prepararSMS" />
+  </wsdl:message>
+  <wsdl:message name="prepararSMSSoapOut">
+    <wsdl:part name="parameters" element="tns:prepararSMSResponse" />
+  </wsdl:message>
+  <wsdl:message name="SolicitarInformacionSoapIn">
+    <wsdl:part name="parameters" element="tns:SolicitarInformacion" />
+  </wsdl:message>
+  <wsdl:message name="SolicitarInformacionSoapOut">
+    <wsdl:part name="parameters" element="tns:SolicitarInformacionResponse" />
+  </wsdl:message>
+  <wsdl:message name="SolicitarDataGerenteNacionalSoapIn">
+    <wsdl:part name="parameters" element="tns:SolicitarDataGerenteNacional" />
+  </wsdl:message>
+  <wsdl:message name="SolicitarDataGerenteNacionalSoapOut">
+    <wsdl:part name="parameters" element="tns:SolicitarDataGerenteNacionalResponse" />
+  </wsdl:message>
+  <wsdl:message name="SolicitarDataGerenteNacionalHijosSoapIn">
+    <wsdl:part name="parameters" element="tns:SolicitarDataGerenteNacionalHijos" />
+  </wsdl:message>
+  <wsdl:message name="SolicitarDataGerenteNacionalHijosSoapOut">
+    <wsdl:part name="parameters" element="tns:SolicitarDataGerenteNacionalHijosResponse" />
+  </wsdl:message>
+  <wsdl:message name="SolicitarDataGerenteRegionalSoapIn">
+    <wsdl:part name="parameters" element="tns:SolicitarDataGerenteRegional" />
+  </wsdl:message>
+  <wsdl:message name="SolicitarDataGerenteRegionalSoapOut">
+    <wsdl:part name="parameters" element="tns:SolicitarDataGerenteRegionalResponse" />
+  </wsdl:message>
+  <wsdl:message name="SolicitarDataGerenteRegionalHijosSoapIn">
+    <wsdl:part name="parameters" element="tns:SolicitarDataGerenteRegionalHijos" />
+  </wsdl:message>
+  <wsdl:message name="SolicitarDataGerenteRegionalHijosSoapOut">
+    <wsdl:part name="parameters" element="tns:SolicitarDataGerenteRegionalHijosResponse" />
+  </wsdl:message>
+  <wsdl:message name="SolicitarDataGerenteRegionalHijosIISoapIn">
+    <wsdl:part name="parameters" element="tns:SolicitarDataGerenteRegionalHijosII" />
+  </wsdl:message>
+  <wsdl:message name="SolicitarDataGerenteRegionalHijosIISoapOut">
+    <wsdl:part name="parameters" element="tns:SolicitarDataGerenteRegionalHijosIIResponse" />
+  </wsdl:message>
+  <wsdl:message name="SolicitarDataGerenteRegionalHijosFarmaciasSoapIn">
+    <wsdl:part name="parameters" element="tns:SolicitarDataGerenteRegionalHijosFarmacias" />
+  </wsdl:message>
+  <wsdl:message name="SolicitarDataGerenteRegionalHijosFarmaciasSoapOut">
+    <wsdl:part name="parameters" element="tns:SolicitarDataGerenteRegionalHijosFarmaciasResponse" />
+  </wsdl:message>
+  <wsdl:message name="SolicitarDataGerenteRegionalHijosHospitalesSoapIn">
+    <wsdl:part name="parameters" element="tns:SolicitarDataGerenteRegionalHijosHospitales" />
+  </wsdl:message>
+  <wsdl:message name="SolicitarDataGerenteRegionalHijosHospitalesSoapOut">
+    <wsdl:part name="parameters" element="tns:SolicitarDataGerenteRegionalHijosHospitalesResponse" />
+  </wsdl:message>
+  <wsdl:message name="SolicitarDataGerenteRegionalHijosHojaRutaSoapIn">
+    <wsdl:part name="parameters" element="tns:SolicitarDataGerenteRegionalHijosHojaRuta" />
+  </wsdl:message>
+  <wsdl:message name="SolicitarDataGerenteRegionalHijosHojaRutaSoapOut">
+    <wsdl:part name="parameters" element="tns:SolicitarDataGerenteRegionalHijosHojaRutaResponse" />
+  </wsdl:message>
+  <wsdl:message name="SolicitarDataGerenteRegionalHijosAgendaSoapIn">
+    <wsdl:part name="parameters" element="tns:SolicitarDataGerenteRegionalHijosAgenda" />
+  </wsdl:message>
+  <wsdl:message name="SolicitarDataGerenteRegionalHijosAgendaSoapOut">
+    <wsdl:part name="parameters" element="tns:SolicitarDataGerenteRegionalHijosAgendaResponse" />
+  </wsdl:message>
+  <wsdl:message name="LineasSoapIn">
+    <wsdl:part name="parameters" element="tns:Lineas" />
+  </wsdl:message>
+  <wsdl:message name="LineasSoapOut">
+    <wsdl:part name="parameters" element="tns:LineasResponse" />
+  </wsdl:message>
+  <wsdl:message name="RegionesSoapIn">
+    <wsdl:part name="parameters" element="tns:Regiones" />
+  </wsdl:message>
+  <wsdl:message name="RegionesSoapOut">
+    <wsdl:part name="parameters" element="tns:RegionesResponse" />
+  </wsdl:message>
+  <wsdl:message name="UmbralesSoapIn">
+    <wsdl:part name="parameters" element="tns:Umbrales" />
+  </wsdl:message>
+  <wsdl:message name="UmbralesSoapOut">
+    <wsdl:part name="parameters" element="tns:UmbralesResponse" />
+  </wsdl:message>
+  <wsdl:message name="RegionesNacionalSoapIn">
+    <wsdl:part name="parameters" element="tns:RegionesNacional" />
+  </wsdl:message>
+  <wsdl:message name="RegionesNacionalSoapOut">
+    <wsdl:part name="parameters" element="tns:RegionesNacionalResponse" />
+  </wsdl:message>
+  <wsdl:message name="LineasRegionalSoapIn">
+    <wsdl:part name="parameters" element="tns:LineasRegional" />
+  </wsdl:message>
+  <wsdl:message name="LineasRegionalSoapOut">
+    <wsdl:part name="parameters" element="tns:LineasRegionalResponse" />
+  </wsdl:message>
+  <wsdl:message name="RegistroDispositivoSoapIn">
+    <wsdl:part name="parameters" element="tns:RegistroDispositivo" />
+  </wsdl:message>
+  <wsdl:message name="RegistroDispositivoSoapOut">
+    <wsdl:part name="parameters" element="tns:RegistroDispositivoResponse" />
+  </wsdl:message>
+  <wsdl:message name="setInstruccionesSqlPruebaSoapIn">
+    <wsdl:part name="parameters" element="tns:setInstruccionesSqlPrueba" />
+  </wsdl:message>
+  <wsdl:message name="setInstruccionesSqlPruebaSoapOut">
+    <wsdl:part name="parameters" element="tns:setInstruccionesSqlPruebaResponse" />
+  </wsdl:message>
+  <wsdl:message name="setMensajePruebaSoapIn">
+    <wsdl:part name="parameters" element="tns:setMensajePrueba" />
+  </wsdl:message>
+  <wsdl:message name="setMensajePruebaSoapOut">
+    <wsdl:part name="parameters" element="tns:setMensajePruebaResponse" />
+  </wsdl:message>
+  <wsdl:message name="setInstruccionesSqlSoapIn">
+    <wsdl:part name="parameters" element="tns:setInstruccionesSql" />
+  </wsdl:message>
+  <wsdl:message name="setInstruccionesSqlSoapOut">
+    <wsdl:part name="parameters" element="tns:setInstruccionesSqlResponse" />
+  </wsdl:message>
+  <wsdl:message name="setMensajesSoapIn">
+    <wsdl:part name="parameters" element="tns:setMensajes" />
+  </wsdl:message>
+  <wsdl:message name="setMensajesSoapOut">
+    <wsdl:part name="parameters" element="tns:setMensajesResponse" />
+  </wsdl:message>
+  <wsdl:message name="getDrogueriasSoapIn">
+    <wsdl:part name="parameters" element="tns:getDroguerias" />
+  </wsdl:message>
+  <wsdl:message name="getDrogueriasSoapOut">
+    <wsdl:part name="parameters" element="tns:getDrogueriasResponse" />
+  </wsdl:message>
+  <wsdl:message name="getProductosSoapIn">
+    <wsdl:part name="parameters" element="tns:getProductos" />
+  </wsdl:message>
+  <wsdl:message name="getProductosSoapOut">
+    <wsdl:part name="parameters" element="tns:getProductosResponse" />
+  </wsdl:message>
+  <wsdl:message name="getDrogueriasProductosSoapIn">
+    <wsdl:part name="parameters" element="tns:getDrogueriasProductos" />
+  </wsdl:message>
+  <wsdl:message name="getDrogueriasProductosSoapOut">
+    <wsdl:part name="parameters" element="tns:getDrogueriasProductosResponse" />
+  </wsdl:message>
+  <wsdl:message name="getPedidosSoapIn">
+    <wsdl:part name="parameters" element="tns:getPedidos" />
+  </wsdl:message>
+  <wsdl:message name="getPedidosSoapOut">
+    <wsdl:part name="parameters" element="tns:getPedidosResponse" />
+  </wsdl:message>
+  <wsdl:portType name="MedinetCRMServiceSoap">
+    <wsdl:operation name="getMedicosTodos">
+      <wsdl:input message="tns:getMedicosTodosSoapIn" />
+      <wsdl:output message="tns:getMedicosTodosSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getMedicosNroSanitario">
+      <wsdl:input message="tns:getMedicosNroSanitarioSoapIn" />
+      <wsdl:output message="tns:getMedicosNroSanitarioSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getMedicosCadena">
+      <wsdl:input message="tns:getMedicosCadenaSoapIn" />
+      <wsdl:output message="tns:getMedicosCadenaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getMaestraFarmacias">
+      <wsdl:input message="tns:getMaestraFarmaciasSoapIn" />
+      <wsdl:output message="tns:getMaestraFarmaciasSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getMaestraHospitales">
+      <wsdl:input message="tns:getMaestraHospitalesSoapIn" />
+      <wsdl:output message="tns:getMaestraHospitalesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getEsquemaPromocionalHibrido">
+      <wsdl:input message="tns:getEsquemaPromocionalHibridoSoapIn" />
+      <wsdl:output message="tns:getEsquemaPromocionalHibridoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getCiclosHibrido">
+      <wsdl:input message="tns:getCiclosHibridoSoapIn" />
+      <wsdl:output message="tns:getCiclosHibridoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getFichasHibrido">
+      <wsdl:input message="tns:getFichasHibridoSoapIn" />
+      <wsdl:output message="tns:getFichasHibridoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getTablasMaestras">
+      <wsdl:input message="tns:getTablasMaestrasSoapIn" />
+      <wsdl:output message="tns:getTablasMaestrasSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getInfoPorLinea">
+      <wsdl:input message="tns:getInfoPorLineaSoapIn" />
+      <wsdl:output message="tns:getInfoPorLineaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getEsquemaPromocional">
+      <wsdl:input message="tns:getEsquemaPromocionalSoapIn" />
+      <wsdl:output message="tns:getEsquemaPromocionalSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getEstructura">
+      <wsdl:input message="tns:getEstructuraSoapIn" />
+      <wsdl:output message="tns:getEstructuraSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="guardarArchivo">
+      <wsdl:input message="tns:guardarArchivoSoapIn" />
+      <wsdl:output message="tns:guardarArchivoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getTamanoArchivo">
+      <wsdl:input message="tns:getTamanoArchivoSoapIn" />
+      <wsdl:output message="tns:getTamanoArchivoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getArchivo">
+      <wsdl:input message="tns:getArchivoSoapIn" />
+      <wsdl:output message="tns:getArchivoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="registrarErrorEnCierre">
+      <wsdl:input message="tns:registrarErrorEnCierreSoapIn" />
+      <wsdl:output message="tns:registrarErrorEnCierreSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="prepararSMS">
+      <wsdl:input message="tns:prepararSMSSoapIn" />
+      <wsdl:output message="tns:prepararSMSSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SolicitarInformacion">
+      <wsdl:input message="tns:SolicitarInformacionSoapIn" />
+      <wsdl:output message="tns:SolicitarInformacionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SolicitarDataGerenteNacional">
+      <wsdl:input message="tns:SolicitarDataGerenteNacionalSoapIn" />
+      <wsdl:output message="tns:SolicitarDataGerenteNacionalSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SolicitarDataGerenteNacionalHijos">
+      <wsdl:input message="tns:SolicitarDataGerenteNacionalHijosSoapIn" />
+      <wsdl:output message="tns:SolicitarDataGerenteNacionalHijosSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SolicitarDataGerenteRegional">
+      <wsdl:input message="tns:SolicitarDataGerenteRegionalSoapIn" />
+      <wsdl:output message="tns:SolicitarDataGerenteRegionalSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SolicitarDataGerenteRegionalHijos">
+      <wsdl:input message="tns:SolicitarDataGerenteRegionalHijosSoapIn" />
+      <wsdl:output message="tns:SolicitarDataGerenteRegionalHijosSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SolicitarDataGerenteRegionalHijosII">
+      <wsdl:input message="tns:SolicitarDataGerenteRegionalHijosIISoapIn" />
+      <wsdl:output message="tns:SolicitarDataGerenteRegionalHijosIISoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SolicitarDataGerenteRegionalHijosFarmacias">
+      <wsdl:input message="tns:SolicitarDataGerenteRegionalHijosFarmaciasSoapIn" />
+      <wsdl:output message="tns:SolicitarDataGerenteRegionalHijosFarmaciasSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SolicitarDataGerenteRegionalHijosHospitales">
+      <wsdl:input message="tns:SolicitarDataGerenteRegionalHijosHospitalesSoapIn" />
+      <wsdl:output message="tns:SolicitarDataGerenteRegionalHijosHospitalesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SolicitarDataGerenteRegionalHijosHojaRuta">
+      <wsdl:input message="tns:SolicitarDataGerenteRegionalHijosHojaRutaSoapIn" />
+      <wsdl:output message="tns:SolicitarDataGerenteRegionalHijosHojaRutaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SolicitarDataGerenteRegionalHijosAgenda">
+      <wsdl:input message="tns:SolicitarDataGerenteRegionalHijosAgendaSoapIn" />
+      <wsdl:output message="tns:SolicitarDataGerenteRegionalHijosAgendaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Lineas">
+      <wsdl:input message="tns:LineasSoapIn" />
+      <wsdl:output message="tns:LineasSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Regiones">
+      <wsdl:input message="tns:RegionesSoapIn" />
+      <wsdl:output message="tns:RegionesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Umbrales">
+      <wsdl:input message="tns:UmbralesSoapIn" />
+      <wsdl:output message="tns:UmbralesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RegionesNacional">
+      <wsdl:input message="tns:RegionesNacionalSoapIn" />
+      <wsdl:output message="tns:RegionesNacionalSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LineasRegional">
+      <wsdl:input message="tns:LineasRegionalSoapIn" />
+      <wsdl:output message="tns:LineasRegionalSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RegistroDispositivo">
+      <wsdl:input message="tns:RegistroDispositivoSoapIn" />
+      <wsdl:output message="tns:RegistroDispositivoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="setInstruccionesSqlPrueba">
+      <wsdl:input message="tns:setInstruccionesSqlPruebaSoapIn" />
+      <wsdl:output message="tns:setInstruccionesSqlPruebaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="setMensajePrueba">
+      <wsdl:input message="tns:setMensajePruebaSoapIn" />
+      <wsdl:output message="tns:setMensajePruebaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="setInstruccionesSql">
+      <wsdl:input message="tns:setInstruccionesSqlSoapIn" />
+      <wsdl:output message="tns:setInstruccionesSqlSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="setMensajes">
+      <wsdl:input message="tns:setMensajesSoapIn" />
+      <wsdl:output message="tns:setMensajesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getDroguerias">
+      <wsdl:input message="tns:getDrogueriasSoapIn" />
+      <wsdl:output message="tns:getDrogueriasSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getProductos">
+      <wsdl:input message="tns:getProductosSoapIn" />
+      <wsdl:output message="tns:getProductosSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getDrogueriasProductos">
+      <wsdl:input message="tns:getDrogueriasProductosSoapIn" />
+      <wsdl:output message="tns:getDrogueriasProductosSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getPedidos">
+      <wsdl:input message="tns:getPedidosSoapIn" />
+      <wsdl:output message="tns:getPedidosSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="MedinetCRMServiceSoap" type="tns:MedinetCRMServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getMedicosTodos">
+      <soap:operation soapAction="http://Localhost/getMedicosTodos" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMedicosNroSanitario">
+      <soap:operation soapAction="http://Localhost/getMedicosNroSanitario" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMedicosCadena">
+      <soap:operation soapAction="http://Localhost/getMedicosCadena" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMaestraFarmacias">
+      <soap:operation soapAction="http://Localhost/getMaestraFarmacias" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMaestraHospitales">
+      <soap:operation soapAction="http://Localhost/getMaestraHospitales" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getEsquemaPromocionalHibrido">
+      <soap:operation soapAction="http://Localhost/getEsquemaPromocionalHibrido" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCiclosHibrido">
+      <soap:operation soapAction="http://Localhost/getCiclosHibrido" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getFichasHibrido">
+      <soap:operation soapAction="http://Localhost/getFichasHibrido" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getTablasMaestras">
+      <soap:operation soapAction="http://Localhost/getTablasMaestras" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getInfoPorLinea">
+      <soap:operation soapAction="http://Localhost/getInfoPorLinea" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getEsquemaPromocional">
+      <soap:operation soapAction="http://Localhost/getEsquemaPromocional" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getEstructura">
+      <soap:operation soapAction="http://Localhost/getEstructura" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="guardarArchivo">
+      <soap:operation soapAction="http://Localhost/guardarArchivo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getTamanoArchivo">
+      <soap:operation soapAction="http://Localhost/getTamanoArchivo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getArchivo">
+      <soap:operation soapAction="http://Localhost/getArchivo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="registrarErrorEnCierre">
+      <soap:operation soapAction="http://Localhost/registrarErrorEnCierre" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="prepararSMS">
+      <soap:operation soapAction="http://Localhost/prepararSMS" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SolicitarInformacion">
+      <soap:operation soapAction="http://Localhost/SolicitarInformacion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SolicitarDataGerenteNacional">
+      <soap:operation soapAction="http://Localhost/SolicitarDataGerenteNacional" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SolicitarDataGerenteNacionalHijos">
+      <soap:operation soapAction="http://Localhost/SolicitarDataGerenteNacionalHijos" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SolicitarDataGerenteRegional">
+      <soap:operation soapAction="http://Localhost/SolicitarDataGerenteRegional" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SolicitarDataGerenteRegionalHijos">
+      <soap:operation soapAction="http://Localhost/SolicitarDataGerenteRegionalHijos" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SolicitarDataGerenteRegionalHijosII">
+      <soap:operation soapAction="http://Localhost/SolicitarDataGerenteRegionalHijosII" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SolicitarDataGerenteRegionalHijosFarmacias">
+      <soap:operation soapAction="http://Localhost/SolicitarDataGerenteRegionalHijosFarmacias" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SolicitarDataGerenteRegionalHijosHospitales">
+      <soap:operation soapAction="http://Localhost/SolicitarDataGerenteRegionalHijosHospitales" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SolicitarDataGerenteRegionalHijosHojaRuta">
+      <soap:operation soapAction="http://Localhost/SolicitarDataGerenteRegionalHijosHojaRuta" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SolicitarDataGerenteRegionalHijosAgenda">
+      <soap:operation soapAction="http://Localhost/SolicitarDataGerenteRegionalHijosAgenda" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Lineas">
+      <soap:operation soapAction="http://Localhost/Lineas" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Regiones">
+      <soap:operation soapAction="http://Localhost/Regiones" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Umbrales">
+      <soap:operation soapAction="http://Localhost/Umbrales" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegionesNacional">
+      <soap:operation soapAction="http://Localhost/RegionesNacional" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LineasRegional">
+      <soap:operation soapAction="http://Localhost/LineasRegional" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegistroDispositivo">
+      <soap:operation soapAction="http://Localhost/RegistroDispositivo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setInstruccionesSqlPrueba">
+      <soap:operation soapAction="http://Localhost/setInstruccionesSqlPrueba" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setMensajePrueba">
+      <soap:operation soapAction="http://Localhost/setMensajePrueba" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setInstruccionesSql">
+      <soap:operation soapAction="http://Localhost/setInstruccionesSql" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setMensajes">
+      <soap:operation soapAction="http://Localhost/setMensajes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDroguerias">
+      <soap:operation soapAction="http://Localhost/getDroguerias" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getProductos">
+      <soap:operation soapAction="http://Localhost/getProductos" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDrogueriasProductos">
+      <soap:operation soapAction="http://Localhost/getDrogueriasProductos" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getPedidos">
+      <soap:operation soapAction="http://Localhost/getPedidos" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="MedinetCRMServiceSoap12" type="tns:MedinetCRMServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getMedicosTodos">
+      <soap12:operation soapAction="http://Localhost/getMedicosTodos" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMedicosNroSanitario">
+      <soap12:operation soapAction="http://Localhost/getMedicosNroSanitario" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMedicosCadena">
+      <soap12:operation soapAction="http://Localhost/getMedicosCadena" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMaestraFarmacias">
+      <soap12:operation soapAction="http://Localhost/getMaestraFarmacias" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMaestraHospitales">
+      <soap12:operation soapAction="http://Localhost/getMaestraHospitales" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getEsquemaPromocionalHibrido">
+      <soap12:operation soapAction="http://Localhost/getEsquemaPromocionalHibrido" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCiclosHibrido">
+      <soap12:operation soapAction="http://Localhost/getCiclosHibrido" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getFichasHibrido">
+      <soap12:operation soapAction="http://Localhost/getFichasHibrido" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getTablasMaestras">
+      <soap12:operation soapAction="http://Localhost/getTablasMaestras" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getInfoPorLinea">
+      <soap12:operation soapAction="http://Localhost/getInfoPorLinea" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getEsquemaPromocional">
+      <soap12:operation soapAction="http://Localhost/getEsquemaPromocional" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getEstructura">
+      <soap12:operation soapAction="http://Localhost/getEstructura" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="guardarArchivo">
+      <soap12:operation soapAction="http://Localhost/guardarArchivo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getTamanoArchivo">
+      <soap12:operation soapAction="http://Localhost/getTamanoArchivo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getArchivo">
+      <soap12:operation soapAction="http://Localhost/getArchivo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="registrarErrorEnCierre">
+      <soap12:operation soapAction="http://Localhost/registrarErrorEnCierre" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="prepararSMS">
+      <soap12:operation soapAction="http://Localhost/prepararSMS" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SolicitarInformacion">
+      <soap12:operation soapAction="http://Localhost/SolicitarInformacion" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SolicitarDataGerenteNacional">
+      <soap12:operation soapAction="http://Localhost/SolicitarDataGerenteNacional" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SolicitarDataGerenteNacionalHijos">
+      <soap12:operation soapAction="http://Localhost/SolicitarDataGerenteNacionalHijos" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SolicitarDataGerenteRegional">
+      <soap12:operation soapAction="http://Localhost/SolicitarDataGerenteRegional" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SolicitarDataGerenteRegionalHijos">
+      <soap12:operation soapAction="http://Localhost/SolicitarDataGerenteRegionalHijos" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SolicitarDataGerenteRegionalHijosII">
+      <soap12:operation soapAction="http://Localhost/SolicitarDataGerenteRegionalHijosII" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SolicitarDataGerenteRegionalHijosFarmacias">
+      <soap12:operation soapAction="http://Localhost/SolicitarDataGerenteRegionalHijosFarmacias" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SolicitarDataGerenteRegionalHijosHospitales">
+      <soap12:operation soapAction="http://Localhost/SolicitarDataGerenteRegionalHijosHospitales" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SolicitarDataGerenteRegionalHijosHojaRuta">
+      <soap12:operation soapAction="http://Localhost/SolicitarDataGerenteRegionalHijosHojaRuta" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SolicitarDataGerenteRegionalHijosAgenda">
+      <soap12:operation soapAction="http://Localhost/SolicitarDataGerenteRegionalHijosAgenda" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Lineas">
+      <soap12:operation soapAction="http://Localhost/Lineas" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Regiones">
+      <soap12:operation soapAction="http://Localhost/Regiones" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Umbrales">
+      <soap12:operation soapAction="http://Localhost/Umbrales" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegionesNacional">
+      <soap12:operation soapAction="http://Localhost/RegionesNacional" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LineasRegional">
+      <soap12:operation soapAction="http://Localhost/LineasRegional" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegistroDispositivo">
+      <soap12:operation soapAction="http://Localhost/RegistroDispositivo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setInstruccionesSqlPrueba">
+      <soap12:operation soapAction="http://Localhost/setInstruccionesSqlPrueba" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setMensajePrueba">
+      <soap12:operation soapAction="http://Localhost/setMensajePrueba" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setInstruccionesSql">
+      <soap12:operation soapAction="http://Localhost/setInstruccionesSql" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setMensajes">
+      <soap12:operation soapAction="http://Localhost/setMensajes" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDroguerias">
+      <soap12:operation soapAction="http://Localhost/getDroguerias" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getProductos">
+      <soap12:operation soapAction="http://Localhost/getProductos" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDrogueriasProductos">
+      <soap12:operation soapAction="http://Localhost/getDrogueriasProductos" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getPedidos">
+      <soap12:operation soapAction="http://Localhost/getPedidos" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="MedinetCRMService">
+    <wsdl:port name="MedinetCRMServiceSoap" binding="tns:MedinetCRMServiceSoap">
+      <soap:address location="http://medilab:1016/MedinetCRMService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="MedinetCRMServiceSoap12" binding="tns:MedinetCRMServiceSoap12">
+      <soap12:address location="http://medilab:1016/MedinetCRMService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

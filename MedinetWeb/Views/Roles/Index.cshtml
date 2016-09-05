@@ -1,0 +1,83 @@
+﻿@{
+    ViewBag.Title = "Roles";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.MirrorEntityModel.MMW_Roles>()
+    // Grid Name
+    .Name("Grid")
+    
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                     // Cretae all the columns base on Model
+                     columns.Bound(r => r.ID_Rol).Title("ID");
+                     columns.Bound(r => r.TX_Rol).Title("Nombre");
+                     columns.Bound(r => r.BO_Activo).Title("Activo")
+                        .ClientTemplate("<input type='checkbox' #= BO_Activo ? checked='checked' : '' # disabled='disabled'}></input>");
+                                              
+                 })
+                 
+    // Declare ajax datasource.
+    // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+    // Set the model Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+                                
+                                .Model(model =>
+                                    {
+                                        model.Id(record => record.ID_Rol);
+                                        model.Field(record => record.BO_Activo).DefaultValue(true);
+                                    }
+                                )
+                                .Read(read => read.Action("GetAll", "Roles"))
+                                .Create(create => create.Action("Add", "Roles"))
+                                .Update(update => update.Action("Update", "Roles"))
+                                .Destroy(delete => delete.Action("Delete", "Roles"))
+                                .PageSize(5)
+    )
+
+    .Events(e => e.Save("onSave"))
+    
+    // Set grid editable.
+    .Editable(editable => editable.Mode(GridEditMode.InLine))
+    
+    // Set grid sortable.
+    .Sortable()
+    
+    // Set grid selectable.
+    .Selectable()
+    
+    // Set grid groupable.
+    .Groupable()
+    
+    // Set grid filterable.
+    .Filterable()    
+
+    // Set grid pagable.
+    .Pageable(pageable =>
+                  {
+                      pageable.Refresh(true);
+                      pageable.PageSizes(true);
+                  })
+)
+
+<script>
+    function onSave(e) {
+        var currentRecordTX = e.model.TX_Rol;
+        var currentRecordID = e.model.ID_Rol;
+        var data = this.dataSource.data();
+
+        for (item in data) {
+            if ($.isNumeric(item))
+                if (data[item].TX_Rol.toUpperCase() == currentRecordTX.toUpperCase() &&
+                    data[item].ID_Rol != currentRecordID) {
+                    e.preventDefault();
+                    alert("Nombre de rol duplicado.");
+                }
+        }
+    }
+</script>

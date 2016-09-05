@@ -1,0 +1,240 @@
+﻿@{
+    ViewBag.Title = "Aprobaciones";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.MirrorEntityModel.MMW_Aprobaciones>()
+    // Grid Name
+    .Name("Grid")
+    
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                     // Cretae all the columns base on Model
+                     columns.ForeignKey(p => p.ID_Ciclo, (System.Collections.IEnumerable)ViewData["dvCiclos"], "ID", "TX")
+                        .Title("Ciclo")
+                        .Width(70);
+                     columns.ForeignKey(p => p.ID_Region, (System.Collections.IEnumerable)ViewData["dvRegiones"], "ID", "TX")
+                        .Title("Región")
+                        .Width(90);
+                     columns.ForeignKey(p => p.ID_Linea, (System.Collections.IEnumerable)ViewData["dvLineas"], "ID", "TX")
+                        .Title("Línea")
+                        .Width(90);
+                     columns.Bound(r => r.BO_CierreCiclo).Title("Cerrado")
+                        .Width(90)
+                        .ClientTemplate("<input type='checkbox' #= BO_CierreCiclo ? checked='checked' : '' # disabled='disabled'}></input>");
+                     columns.ForeignKey(p => p.ID_VisitadoresHistorial, (System.Collections.IEnumerable)ViewData["dvVisitadoresHistorial"], "ID", "TX")
+                        .Title("Visitador")
+                        .Width(150);
+                     columns.Bound(r => r.FE_Transmision).Title("Fecha")
+                         .Width(100)
+                         .Format("{0:dd/MM/yyyy}");
+                     columns.Bound(r => r.NU_PorcentajeVisita).Title("Visita")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Format("{0:n}%")
+                         .Width(100);
+                     columns.Bound(r => r.NU_PorcentajeRevisita).Title("Revisita")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Format("{0:n}%")
+                         .Width(100);
+                     columns.Bound(r => r.NU_MIX).Title("MIX")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Format("{0:n}%")
+                         .Width(80);
+                     columns.Bound(r => r.NU_PDR).Title("PDR")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Format("{0:n}")
+                         .Width(80);
+                     columns.Bound(r => r.NU_PP).Title("PP")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Format("{0:n}")
+                         .Width(80);
+                     columns.Bound(r => r.NU_AltasAprob).Title("Altas Aprob.")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Width(130);
+                     columns.Bound(r => r.NU_BajasAprob).Title("Bajas Aprob.")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Width(130);
+                     columns.Bound(r => r.NU_PorcentajeVisitaFarmacia).Title("Visita Farm.")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Format("{0:n}%")
+                         .Width(130);
+                     columns.Bound(r => r.NU_PorcentajeVisitaHospital).Title("Visita Hosp.")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Format("{0:n}%")
+                         .Width(130);
+                     columns.Bound(r => r.NU_DCS).Title("DCS")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Format("{0:n}")
+                         .Width(80);
+                     columns.Bound(r => r.NU_DCN).Title("DCN")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Format("{0:n}")
+                         .Width(80);
+                     columns.Bound(r => r.NU_DVN).Title("DVN")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Format("{0:n}")
+                         .Width(80);
+                     columns.Bound(r => r.NU_Total).Title("Total")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Format("{0:n}")
+                         .Width(90)
+                         .EditorTemplateName("DoubleStep05");
+                     columns.Bound(r => r.NU_Ajuste).Title("Ajuste")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Format("{0:n}")
+                         .Width(80)
+                         .EditorTemplateName("CurrencyEnableFalseSpinnersFalse");
+                     columns.Bound(r => r.TX_Observacion).Title("Observación")
+                         .Width(200);
+
+                     // Edit and Delete button column
+                     columns.Command(command =>
+                                         {
+                                             command.Edit().Text("Editar");
+                                         }).Width(180);
+                 })
+                 
+    // Declare ajax datasource.
+    // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+    // Set the model Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+                                
+                                .Model(model =>
+                                    {
+                                        model.Id(record => record.ID_Aprobacion);
+                                    }
+                                )
+                                .Read(read => read.Action("GetAll", "Aprobaciones"))
+                                .Update(update => update.Action("Update", "Aprobaciones"))
+                                .PageSize(5)
+    )
+
+    .Events(e => e.Edit("onEdit").Save("onSave"))
+
+    // Set grid editable.
+    .Editable(editable => editable.Mode(GridEditMode.InLine))
+    
+    // Set grid sortable.
+    .Sortable()
+    
+    // Set grid selectable.
+    .Selectable()
+    
+    // Set grid groupable.
+    .Groupable()
+    
+    // Set grid filterable.
+    .Filterable()    
+
+    // Set grid Scrollable.
+    .Scrollable(scrolling => scrolling.Enabled(true).Height(220))
+
+    // Set grid pagable.
+    .Pageable(pageable =>
+                  {
+                      pageable.Refresh(true);
+                      pageable.PageSizes(true);
+                  })
+)
+
+
+<button class="k-button" id="setAprobacion" >Aprobar</button>
+
+
+<style scoped>
+	#setAprobacion {
+        float: right;
+		margin-top: 15px;
+	}
+</style>
+
+
+<script>
+    var functionCreated = 0;
+    function onEdit(e) {
+        functionCreated = 0;
+        var ciclo = e.model.ID_Ciclo;
+        var ntbTotal = $("#NU_Total").data("kendoNumericTextBox");
+
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "./Aprobaciones/GetMaxValue",
+            data: "ciclo=" + ciclo,
+            success: function (data) {
+                ntbTotal.max(data.maxValue);
+            }
+        });
+
+        if (functionCreated == 0) {
+            ntbTotal.bind("change", function (e) {
+                var grid = e.sender.wrapper.closest(".k-grid").data("kendoGrid");
+                var dataItem = grid.dataItem(e.sender.wrapper.closest("tr"));
+
+               $.ajax({
+                    type: "GET",
+                    url: "./Aprobaciones/GetMaxValue",
+                    data: "ciclo=" + ciclo,
+                    success: function (data) {
+                        dataItem.set('NU_Ajuste', (data.maxValue - dataItem.NU_DVN - dataItem.NU_Total) * -1);
+                    }
+                });
+            })
+
+            functionCreated = 1;
+        }
+    }
+
+    function onSave(e) {
+        //var ciclo = e.model.ID_Ciclo;
+        //$.ajax({
+        //    type: "GET",
+        //    url: "./Aprobaciones/GetMaxValue",
+        //    data: "ciclo=" + ciclo,
+        //    success: function (data) {
+        //        e.model.NU_Ajuste = (data.maxValue - e.model.NU_DVN - e.model.NU_Total) * -1;
+        //    }
+        //});
+    }
+
+    $(document).ready(function () {
+        $.ajax({
+            type: "POST",
+            async: false,
+            url: "./Aprobaciones/AprobacionIsAllow",
+            success: function (data) {
+                document.getElementById("setAprobacion").style.visibility = (data == 0 ? 'hidden' : 'visible')
+                
+                if (data == 0) {
+                    var grid = $("#Grid").data("kendoGrid");
+                    grid.hideColumn(21);
+                }
+            },
+        });
+
+
+        $("#setAprobacion").click(function () {
+
+            if (confirm('Esta seguro que desea aprobar este ciclo?')) {
+                $.ajax({
+                    type: "POST",
+                    async: false,
+                    url: "./Aprobaciones/SetAprobacion",
+                    success: function (result) {
+                        //$('#Info').html(response);
+                        location.reload();
+                    },
+                    error: function (e) {
+                        alert('Fallo en ejecución:\n\nNo fue posible realizar la aprobación. Error:' + e.responseText);
+                    }
+                });
+            }
+        });
+    });
+
+</script>

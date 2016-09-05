@@ -1,0 +1,226 @@
+﻿@{
+    ViewBag.Title = "Usuarios responsabilidades";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.MirrorEntityModel.MMW_UsuariosResponsabilidades>()
+    // Grid Name
+    .Name("Grid")
+    
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                     // Cretae all the columns base on Model
+                     columns.Bound(r => r.ID_UsuariosResponsabilidades).Title("ID")
+                         .Width(50);
+                     columns.ForeignKey(p => p.ID_Usuario, (System.Collections.IEnumerable)ViewData["dvUsuarios"], "ID", "TX")
+                        .Title("Usuario")
+                        .Width(200)
+                        .EditorTemplateName("IDUsuarios");
+                     columns.ForeignKey(p => p.ID_Region, (System.Collections.IEnumerable)ViewData["dvRegiones"], "ID", "TX")
+                        .Title("Región")
+                        .Width(130)
+                        .EditorTemplateName("IDRegionesAllowNull");
+                     columns.ForeignKey(p => p.ID_Marca, (System.Collections.IEnumerable)ViewData["dvMarcas"], "ID", "TX")
+                        .Title("Marca")
+                        .Width(130)
+                        .EditorTemplateName("IDMarcasMedinetAllowNull");
+                     columns.ForeignKey(p => p.ID_Linea, (System.Collections.IEnumerable)ViewData["dvLineas"], "ID", "TX")
+                        .Title("Línea")
+                        .Width(130)
+                        .EditorTemplateName("IDLineasAllowNull");
+                     columns.ForeignKey(p => p.ID_CicloIni, (System.Collections.IEnumerable)ViewData["dvCiclos"], "ID", "TX")
+                         .Title("Ciclo inicio")
+                         .Width(130)
+                         .EditorTemplateName("IDCiclosIni");
+                     columns.ForeignKey(p => p.ID_CicloFin, (System.Collections.IEnumerable)ViewData["dvCiclosFin"], "ID", "TX")
+                        .Title("Ciclo fin")
+                        .Width(130)
+                        .EditorTemplateName("IDCiclosFin");
+                     columns.Bound(r => r.BO_Activo).Title("Activo")
+                         .Width(80)
+                         .ClientTemplate("<input type='checkbox' #= BO_Activo ? checked='checked' : '' # disabled='disabled'}></input>");
+                                              
+                     // Edit and Delete button column
+                     columns.Command(command =>
+                                         {
+                                             command.Edit().Text("Editar");
+                                             command.Destroy().Text("Eliminar");
+                                         }).Width(180);
+                 })
+                 
+    // Declare ajax datasource.
+    // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+    // Set the model Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+                                
+                                .Model(model =>
+                                    {
+                                        model.Id(record => record.ID_UsuariosResponsabilidades);
+                                        model.Field(record => record.BO_Activo).DefaultValue(true);
+                                    }
+                                )
+                                .Read(read => read.Action("GetAll", "UsuariosResponsabilidades"))
+                                .Create(create => create.Action("Add", "UsuariosResponsabilidades"))
+                                .Update(update => update.Action("Update", "UsuariosResponsabilidades"))
+                                .Destroy(delete => delete.Action("Delete", "UsuariosResponsabilidades"))
+                                .PageSize(5)
+    )
+    
+    .Events(e => e.Edit("onEdit"))
+
+    // Add tool bar with Create button
+    .ToolBar(toolbar => toolbar.Create().Text("Agregar registro"))
+    
+    // Set grid editable.
+    .Editable(editable => editable.Mode(GridEditMode.InLine))
+    
+    // Set grid sortable.
+    .Sortable()
+    
+    // Set grid selectable.
+    .Selectable()
+    
+    // Set grid groupable.
+    .Groupable()
+    
+    // Set grid filterable.
+    .Filterable()    
+
+    // Set grid pagable.
+    .Pageable(pageable =>
+                  {
+                      pageable.Refresh(true);
+                      pageable.PageSizes(true);
+                  })
+)
+
+<script>
+    function filterCicloFin() {
+        return {
+            ID_CicloIni: $("#ID_CicloIni").val()
+        };
+    }
+
+    function filterCicloIni() {
+        var isNew = false;
+
+        var ciclo = $("#ID_CicloIni").val();
+
+        var dropDown = $("#ID_CicloIni").data("kendoDropDownList");
+        if (dropDown._selectedValue == 0)
+            isNew = true;
+
+        return {
+            ID_CicloIni: dropDown._selectedValue,
+            newRegistro: isNew
+        };
+    }
+
+    function onEdit(e) {
+        var dropDown = $("#ID_CicloFin").data("kendoDropDownList");
+
+        if (dropDown) {
+            if (dropDown._optionID == "ID_CicloFin_option_selected") {
+                dropDown.bind("change", function (e) {
+                    var grid = e.sender.wrapper.closest(".k-grid").data("kendoGrid");
+                    var dataItem = grid.dataItem(e.sender.wrapper.closest("tr"));
+                    //If current value is null
+                    if (!dataItem.ID_CicloFin) {
+                        //change the model value
+                        dataItem.ID_CicloFin = 0;
+                        //get the currently selected value from the DDL
+                        var currentlySelectedValue = e.sender.value();
+                        //set the value to the model
+                        dataItem.set('ID_CicloFin', currentlySelectedValue);
+                    }
+                })
+            }
+        }
+
+        dropDown = $("#ID_Region").data("kendoDropDownList");
+
+        if (dropDown) {
+            if (dropDown._optionID == "ID_Region_option_selected") {
+                dropDown.bind("change", function (e) {
+                    var grid = e.sender.wrapper.closest(".k-grid").data("kendoGrid");
+                    var dataItem = grid.dataItem(e.sender.wrapper.closest("tr"));
+                    //If current value is null
+                    if (!dataItem.ID_Region) {
+                        //change the model value
+                        dataItem.ID_Region = 0;
+                        //get the currently selected value from the DDL
+                        var currentlySelectedValue = e.sender.value();
+                        //set the value to the model
+                        dataItem.set('ID_Region', currentlySelectedValue);
+                    }
+                })
+            }
+        }
+
+        dropDown = $("#ID_Marca").data("kendoDropDownList");
+
+        if (dropDown) {
+            if (dropDown._optionID == "ID_Marca_option_selected") {
+                dropDown.bind("change", function (e) {
+                    var grid = e.sender.wrapper.closest(".k-grid").data("kendoGrid");
+                    var dataItem = grid.dataItem(e.sender.wrapper.closest("tr"));
+                    //If current value is null
+                    if (!dataItem.ID_Marca) {
+                        //change the model value
+                        dataItem.ID_Marca = 0;
+                        //get the currently selected value from the DDL
+                        var currentlySelectedValue = e.sender.value();
+                        //set the value to the model
+                        dataItem.set('ID_Marca', currentlySelectedValue);
+                    }
+                })
+            }
+        }
+
+        dropDown = $("#ID_Linea").data("kendoDropDownList");
+
+        if (dropDown) {
+            if (dropDown._optionID == "ID_Linea_option_selected") {
+                dropDown.bind("change", function (e) {
+                    var grid = e.sender.wrapper.closest(".k-grid").data("kendoGrid");
+                    var dataItem = grid.dataItem(e.sender.wrapper.closest("tr"));
+                    //If current value is null
+                    if (!dataItem.ID_Linea) {
+                        //change the model value
+                        dataItem.ID_Linea = 0;
+                        //get the currently selected value from the DDL
+                        var currentlySelectedValue = e.sender.value();
+                        //set the value to the model
+                        dataItem.set('ID_Linea', currentlySelectedValue);
+                    }
+                })
+            }
+        }
+
+        dropDown = $("#ID_Especialidad").data("kendoDropDownList");
+
+        if (dropDown) {
+            if (dropDown._optionID == "ID_Especialidad_option_selected") {
+                dropDown.bind("change", function (e) {
+                    var grid = e.sender.wrapper.closest(".k-grid").data("kendoGrid");
+                    var dataItem = grid.dataItem(e.sender.wrapper.closest("tr"));
+                    //If current value is null
+                    if (!dataItem.ID_Especialidad) {
+                        //change the model value
+                        dataItem.ID_Especialidad = 0;
+                        //get the currently selected value from the DDL
+                        var currentlySelectedValue = e.sender.value();
+                        //set the value to the model
+                        dataItem.set('ID_Especialidad', currentlySelectedValue);
+                    }
+                })
+            }
+        }
+
+    }
+</script>

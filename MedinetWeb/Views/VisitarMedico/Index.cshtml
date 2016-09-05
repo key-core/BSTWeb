@@ -1,0 +1,266 @@
+﻿@{
+    ViewBag.Title = "Visitas a Médicos de Consulta Privada";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+<br />
+<table border="0" id="tableParametros">
+    <tr>
+        <td>
+            <span>FECHA DE VISITA: </span>
+        </td>
+        <td>
+            <input id="fVisita" />
+            <script>
+                $("#fVisita").kendoDatePicker({
+                    format: "dd/MM/yyyy",
+                    max: new Date(@ViewBag.AnoFin, @ViewBag.MesFin-1, @ViewBag.DiaFin),
+                    min: new Date(@ViewBag.AnoIni, @ViewBag.MesIni-1, @ViewBag.DiaIni),
+                    value:"@ViewBag.F"
+                });
+                $("#fVisita").keypress(function(event) {event.preventDefault();});
+            </script>
+        </td>
+        <td rowspan="4" valign="top">
+            @(Html.Kendo().Window()
+    .Name("window")
+    .Title(false)
+    .Content(@<text>
+
+        <table width="400">
+            <tr>
+                <td valign="top">
+                    <span style="color:#2B399B"><b>DATOS DEL MÉDICO</b></span>
+                    <br />
+                    <span><b>REGISTRO:</b></span> <span id="tvRegistro">@ViewBag.REG</span>
+                    <br />
+                    <span><b>NOMBRE:</b> @ViewBag.DOCTOR</span>
+                    <br />
+                    <span><b>RUTA:</b> @ViewBag.RUTA</span>
+                    <br />
+                    <span><b>CLINICA:</b> @ViewBag.CLINICA</span>
+                    <br />
+                    <span><b>ESPECIALIDAD:</b> @ViewBag.ESPECIALIDAD</span>
+                    <br />
+                    <span><b>CLASIFICACIÓN:</b> @ViewBag.CLASIFICACION</span>
+                    <br />
+                    <span><b>REVISITA:</b> @ViewBag.REVISITA</span>
+                </td>
+                @if (ViewBag.ANO != null && ViewBag.ANO > 0)
+                {
+                    <td valign="top">
+                        <span style="color:#2B399B"><b>ÚLTIMA VISITA</b></span>
+                        <br />
+                        <span><b>ANO:</b> @ViewBag.ANO</span>
+                        <br />
+                        <span><b>CICLO:</b> @ViewBag.CICLO</span>
+                        <br />
+                        <span><b>FECHA:</b> @ViewBag.FECHA</span>
+                        <br />
+                        <span><b>TIPO:</b> @ViewBag.TIPO</span>
+
+                    </td>
+                }
+            </tr>
+        </table>
+    </text>))
+            <script>
+                $(document).ready(function() {
+                    // $("#undo").bind("click", function() {
+                    $("#window").data("kendoWindow").open();
+                    //  $("#undo").hide();
+                    // });
+                });
+                $("#window").kendoWindow({
+                    position: {
+                        top: 210, // or "100px"
+                        left: 600
+                    },
+                    title:false
+                });
+            </script>
+            <style>
+            </style>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span>TIPO DE VISITA: </span>
+        </td>
+        <td>
+
+
+            @(Html.Kendo().DropDownList()
+                .Name("ddTipo")
+                .HtmlAttributes(new { style = "width:300px" })
+                  .OptionLabel("Seleccione")
+                .DataTextField("Text")
+                        .DataValueField("Text")
+                .DataSource(source =>
+                {
+                    source.Read(read =>
+                    {
+                        read.Action("GetTipoVisitas", "VisitarMedico")
+                            .Data("getRegistro");
+                    });
+                })
+                .Value(@ViewBag.A)
+            )
+
+            @*
+                        <input id="ddTipo" />
+                <script>$("#ddTipo").kendoDropDownList({
+                        dataSource: {
+                            data: ["EFECTIVA", "REVISITA"]
+                        },
+                        animation: false,
+                        optionLabel:"Seleccione",
+                        value:"@ViewBag.T"
+                    });
+                    </script>*@
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span>EN COMPAÑÍA DE: </span>
+        </td>
+        <td>
+            @(Html.Kendo().DropDownList()
+                .Name("ddCargo")
+                .HtmlAttributes(new { style = "width:300px" })
+                  .OptionLabel("Seleccione")
+                .DataTextField("Text")
+                        .DataValueField("Text")
+                .DataSource(source =>
+                {
+                    source.Read(read =>
+                    {
+                        read.Action("GetCargosVisitantes", "Cargos");
+                    });
+                })
+                .Value(@ViewBag.A)
+            )
+        </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>
+            <br />
+            <button id="btnSave" type="button">Guardar</button>
+            <script>
+                $("#btnSave").kendoButton({
+                    click: function(e) {
+                        var fechaVisita = $("#fVisita").val();
+                        //alert(fechaVisita);
+                        var tipoVisita = $("#ddTipo").val();
+                        //alert(tipoVisita);
+                        var acompanante = $("#ddCargo").val();
+                        //alert(acompanante);
+
+                        var REGISTRO = getUrlVars()["REG"];
+
+                        if(fechaVisita != ''){
+                            if(tipoVisita != 'Seleccione'){
+                                if(acompanante == 'Seleccione'){
+                                    acompanante = '';
+                                }
+                                window.location.href = "@Url.Action("Index","VisitarMedico")?REG=" + REGISTRO+"&F="+fechaVisita+"&T="+tipoVisita+"&A="+acompanante+"&AC=V";
+
+                            }else{
+                                alert("¡Por favor, seleccione el tipo de visita!");
+                            }
+                        }else{
+                            alert("¡Por favor, seleccione una fecha!");
+
+                        }}
+                });
+            </script>
+            <button id="btnCancel" type="button">Cancelar</button>
+            <script>
+                $("#btnCancel").kendoButton({
+                    click: function(e) {
+
+                        window.location.href = "@Url.Action("Index", "SelectMedico")";
+
+                    }
+                });
+            </script>
+        </td>
+
+    </tr>
+</table>
+<br />
+<br />
+<br />
+<style scoped>
+    #tableParametros {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
+    #getDistArt {
+        float: right;
+        visibility: hidden;
+    }
+
+    #Grid {
+        margin-top: 10px;
+    }
+
+    td {
+        padding: 0em 0.5em 0.25em 0em;
+        border: 0 none;
+    }
+
+    #setNotaEntrega, #getPreDispensado {
+        visibility: hidden;
+    }
+
+    #tbBotonera {
+        float: right;
+        margin-top: 15px;
+    }
+
+    #btnCancel {
+        background-color: red;
+        color: white;
+    }
+
+        #btnCancel:hover {
+            background-color: lightgray;
+            color: black;
+        }
+
+    #btnSave {
+        background-color: #2B399B;
+        color: white;
+    }
+
+        #btnSave:hover {
+            background-color: lightgray;
+            color: black;
+        }
+</style>
+
+
+<script>
+
+    function getRegistro() {
+        
+        return {
+            REGISTRO: $("#tvRegistro").text()
+        };
+    }
+
+    function getUrlVars() {
+        var vars = {};
+        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+            vars[key] = value;
+        });
+        return vars;
+    }
+
+</script>
+

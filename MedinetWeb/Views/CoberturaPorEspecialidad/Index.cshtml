@@ -1,0 +1,447 @@
+﻿@{
+    ViewBag.Title = "Cobertura por especialidad";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.SP_MW_CoberturaPorEsp_Result>()
+        // Grid Name
+    .Name("Grid")
+
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                     columns.ForeignKey(p => p.ID_Especialidad, (System.Collections.IEnumerable)ViewData["dvEspecialidades"], "ID", "TX")
+                         .Title("Especialidad")
+                         .Width(40);
+                     columns.Bound(r => r.Fichados).Title("Fichados")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Format("{0:n0}")
+                         .Width(40);
+                     columns.Bound(r => r.Visita).Title("Visita")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Format("{0:n0}")
+                         .Width(40);
+                     columns.Bound(r => r.PCJVisita).Title("%")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Format("{0:n}%")
+                         .Width(40);
+                     columns.Bound(r => r.REVisita).Title("Revisita")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Format("{0:n0}")
+                         .Width(40);
+                     columns.Bound(r => r.REVisitado).Title("Rvstdo.")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Format("{0:n0}")
+                         .Width(40);
+                     columns.Bound(r => r.PCJREVisita).Title("%")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Format("{0:n}%")
+                         .Width(40);
+                     columns.Bound(r => r.FmasR).Title("F + R")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Format("{0:n0}")
+                         .Width(40);
+                     columns.Bound(r => r.VmasR).Title("V + R")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Format("{0:n0}")
+                         .Width(40);
+                     columns.Bound(r => r.PCJFVRR).Title("MIX")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Format("{0:n}%")
+                         .Width(40);
+                     columns.Bound(r => r.Proyeccion).Title("Perf. Real")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Format("{0:n}%")
+                         .Width(40);
+                 })
+                 
+
+
+    .ToolBar(toolbar =>
+    {
+        toolbar.Template(@<text>
+        <div class="toolbar">
+            <label class="ciclo-label" for="ciclo">Ciclo:</label>
+            @(Html.Kendo().DropDownList()
+                                    .Name("ddCiclos")
+                                    .OptionLabel("Select")
+                                    .DataTextField("TX")
+                                    .DataValueField("ID")
+                                    .AutoBind(false)
+                                    .Events(e => e.Change("ciclosChange"))
+                                    .DataSource(ds =>
+                                    {
+                                        ds.Read("GetCiclosConData", "Ciclos");
+                                    })
+                                )
+        </div>
+        </text>);
+    })
+
+    // Declare ajax datasource.
+        // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+        // Set the model Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+
+                                .Read(read => read.Action("GetAllEsp", "CoberturaPorEspecialidad").Data("paramCobertura"))
+    )
+
+    // Set grid sortable.
+    .Sortable(sortable => sortable
+    .AllowUnsort(true)
+    .SortMode(GridSortMode.MultipleColumn))
+
+    // Set grid selectable.
+    .Selectable()
+    
+    // Llama al detalle
+    .ClientDetailTemplateId("templateEspReg")
+)
+
+<script>
+    function ciclosChange() {
+        $("#Grid").data("kendoGrid").dataSource.read();
+    }
+
+    function paramCobertura() {
+        return {
+            cicloID: $("#ddCiclos").val() != "" ? $("#ddCiclos").val() : 0
+        }
+    }
+</script>
+
+<script id="templateEspReg" type="text/kendo-tmpl">
+    @(Html.Kendo().Grid<MedinetWeb.Models.SP_MW_CoberturaPorEspReg_Result>()
+            .Name("Grid_#=ID_Especialidad#")
+            .Columns(columns =>
+            {
+                    columns.ForeignKey(p => p.ID_Region, (System.Collections.IEnumerable)ViewData["dvRegiones"], "ID", "TX")
+                        .Title("Región")
+                        .Width(40);
+                    columns.Bound(r => r.Fichados).Title("Fichados")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n0}")
+                        .Width(40);
+                    columns.Bound(r => r.Visita).Title("Visita")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n0}")
+                        .Width(40);
+                    columns.Bound(r => r.PCJVisita).Title("%")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n}%")
+                        .Width(40);
+                    columns.Bound(r => r.REVisita).Title("Revisita")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n0}")
+                        .Width(40);
+                    columns.Bound(r => r.REVisitado).Title("Rvstdo.")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n0}")
+                        .Width(40);
+                    columns.Bound(r => r.PCJREVisita).Title("%")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n}%")
+                        .Width(40);
+                    columns.Bound(r => r.FmasR).Title("F + R")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n0}")
+                        .Width(40);
+                    columns.Bound(r => r.VmasR).Title("V + R")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n0}")
+                        .Width(40);
+                    columns.Bound(r => r.PCJFVRR).Title("MIX")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n}%")
+                        .Width(40);
+                    columns.Bound(r => r.Proyeccion).Title("Perf. Real")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n}%")
+                        .Width(40);
+
+            })
+            
+            // Llama al detalle
+            .ClientDetailTemplateId("templateEspRegLin")
+
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                //.PageSize(10)
+                .Read(read => read.Action("GetAllEspReg", "CoberturaPorEspecialidad", 
+                    new { cicloID = "#=ID_Ciclo#", especialidadID = "#=ID_Especialidad#" }))
+            )
+            //.Pageable()
+            
+            // Set grid selectable.
+            .Selectable()
+            
+            // Set grid sortable.
+            .Sortable(sortable => sortable
+            .AllowUnsort(true)
+            .SortMode(GridSortMode.MultipleColumn))
+            
+            .ToClientTemplate()
+    )
+
+</script>
+
+<script id="templateEspRegLin" type="text/kendo-tmpl">
+    @(Html.Kendo().Grid<MedinetWeb.Models.SP_MW_CoberturaPorEspRegLin_Result>()
+            .Name("Grid_#=ID_Especialidad#_#=ID_Region#")
+            .Columns(columns =>
+            {
+                    columns.ForeignKey(p => p.ID_Linea, (System.Collections.IEnumerable)ViewData["dvLineas"], "ID", "TX")
+                        .Title("Línea")
+                        .Width(40);
+                    columns.Bound(r => r.Fichados).Title("Fichados")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n0}")
+                        .Width(40);
+                    columns.Bound(r => r.Visita).Title("Visita")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n0}")
+                        .Width(40);
+                    columns.Bound(r => r.PCJVisita).Title("%")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n}%")
+                        .Width(40);
+                    columns.Bound(r => r.REVisita).Title("Revisita")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n0}")
+                        .Width(40);
+                    columns.Bound(r => r.REVisitado).Title("Rvstdo.")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n0}")
+                        .Width(40);
+                    columns.Bound(r => r.PCJREVisita).Title("%")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n}%")
+                        .Width(40);
+                    columns.Bound(r => r.FmasR).Title("F + R")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n0}")
+                        .Width(40);
+                    columns.Bound(r => r.VmasR).Title("V + R")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n0}")
+                        .Width(40);
+                    columns.Bound(r => r.PCJFVRR).Title("MIX")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n}%")
+                        .Width(40);
+                    columns.Bound(r => r.Proyeccion).Title("Perf. Real")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n}%")
+                        .Width(40);
+
+            })
+                        
+            // Llama al detalle
+            .ClientDetailTemplateId("templateEspRegLinVis")
+
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                //.PageSize(10)
+                .Read(read => read.Action("GetAllEspRegLin", "CoberturaPorEspecialidad", 
+                    new { cicloID = "#=ID_Ciclo#", especialidadID = "#=ID_Especialidad#", regionID = "#=ID_Region#" }))
+            )
+            //.Pageable()
+            
+            // Set grid selectable.
+            .Selectable()
+            
+            // Set grid sortable.
+            .Sortable(sortable => sortable
+            .AllowUnsort(true)
+            .SortMode(GridSortMode.MultipleColumn))
+            
+            .ToClientTemplate()
+    )
+</script>
+
+<script id="templateEspRegLinVis" type="text/kendo-tmpl">
+    @(Html.Kendo().Grid<MedinetWeb.Models.SP_MW_CoberturaPorEspRegLinVis_Result>()
+            .Name("Grid_#=ID_Especialidad#_#=ID_Region#_#=ID_Linea#")
+            .Columns(columns =>
+            {
+                columns.ForeignKey(p => p.ID_Usuario, (System.Collections.IEnumerable)ViewData["dvVisitadores"], "ID", "TX")
+                        .Title("Visitador")
+                        .Width(60); 
+                    columns.Bound(r => r.Fichados).Title("Fichados")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n0}")
+                        .Width(40);
+                    columns.Bound(r => r.Visita).Title("Visita")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n0}")
+                        .Width(40);
+                    columns.Bound(r => r.PCJVisita).Title("%")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n}%")
+                        .Width(40);
+                    columns.Bound(r => r.REVisita).Title("Revisita")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n0}")
+                        .Width(40);
+                    columns.Bound(r => r.REVisitado).Title("Rvstdo.")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n0}")
+                        .Width(40);
+                    columns.Bound(r => r.PCJREVisita).Title("%")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n}%")
+                        .Width(40);
+                    columns.Bound(r => r.FmasR).Title("F + R")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n0}")
+                        .Width(40);
+                    columns.Bound(r => r.VmasR).Title("V + R")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n0}")
+                        .Width(40);
+                    columns.Bound(r => r.PCJFVRR).Title("MIX")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n}%")
+                        .Width(40);
+                    columns.Bound(r => r.Proyeccion).Title("Perf. Real")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n}%")
+                        .Width(40);
+
+            })
+
+            // Llama al detalle
+            .ClientDetailTemplateId("templateEspRegLinVisMed")
+
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                //.PageSize(10)
+                .Read(read => read.Action("GetAllEspRegLinVis", "CoberturaPorEspecialidad", 
+                    new { cicloID = "#=ID_Ciclo#", especialidadID = "#=ID_Especialidad#", regionID = "#=ID_Region#", 
+                        lineaID = "#=ID_Linea#" }))
+            )
+            //.Pageable()
+            
+            // Set grid selectable.
+            .Selectable()
+            
+            // Set grid sortable.
+            .Sortable(sortable => sortable
+            .AllowUnsort(true)
+            .SortMode(GridSortMode.MultipleColumn))
+            
+            .ToClientTemplate()
+    )
+</script>
+
+<script id="templateEspRegLinVisMed" type="text/kendo-tmpl">
+    @(Html.Kendo().Grid<MedinetWeb.Models.SP_MW_CoberturaPorEspRegLinVisMed_Result>()
+            .Name("Grid_#=ID_Especialidad#_#=ID_Region#_#=ID_Linea#_#=ID_Usuario#")
+            .Columns(columns =>
+            {
+                    columns.Bound(r => r.Medico)
+                        .Title("Médico")
+                        .Width(60);
+                    columns.Bound(r => r.Fichados).Title("Fichados")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n0}")
+                        .Width(40);
+                    columns.Bound(r => r.Visita).Title("Visita")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n0}")
+                        .Width(40);
+                    columns.Bound(r => r.PCJVisita).Title("%")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n}%")
+                        .Width(40);
+                    columns.Bound(r => r.REVisita).Title("Revisita")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n0}")
+                        .Width(40);
+                    columns.Bound(r => r.REVisitado).Title("Rvstdo.")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n0}")
+                        .Width(40);
+                    columns.Bound(r => r.PCJREVisita).Title("%")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n}%")
+                        .Width(40);
+                    columns.Bound(r => r.FmasR).Title("F + R")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n0}")
+                        .Width(40);
+                    columns.Bound(r => r.VmasR).Title("V + R")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n0}")
+                        .Width(40);
+                    columns.Bound(r => r.PCJFVRR).Title("MIX")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n}%")
+                        .Width(40);
+                    columns.Bound(r => r.Proyeccion).Title("Perf. Real")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n}%")
+                        .Width(40);
+
+            })
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                //.PageSize(10)
+                .Read(read => read.Action("GetAllEspRegLinVisMed", "CoberturaPorEspecialidad", 
+                    new { cicloID = "#=ID_Ciclo#", especialidadID = "#=ID_Especialidad#", regionID = "#=ID_Region#", 
+                        lineaID = "#=ID_Linea#", visitadorID = "#=ID_Usuario#" }))
+            )
+            //.Pageable()
+            
+            // Set grid selectable.
+            .Selectable()
+            
+            // Set grid sortable.
+            .Sortable(sortable => sortable
+            .AllowUnsort(true)
+            .SortMode(GridSortMode.MultipleColumn))
+            
+            .ToClientTemplate()
+    )
+</script>
+
+
+<script>
+
+    //function dataBound() {
+    //    this.expandRow(this.tbody.find("tr.k-master-row").first());
+    //}
+</script>
+
+<style scoped="scoped">
+    /*#Grid .k-toolbar {
+        min-height: 27px;
+        padding: 1.3em;
+    }*/
+
+    .ciclo-label {
+        vertical-align: middle;
+        padding-right: .5em;
+    }
+
+    #ciclo {
+        vertical-align: middle;
+    }
+
+    .toolbar {
+        float: right;
+    }
+
+    label {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .k-grid .k-hierarchy-col {
+      width: 5px;
+    }
+</style>

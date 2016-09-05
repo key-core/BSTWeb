@@ -1,0 +1,155 @@
+﻿@{
+    ViewBag.Title = "Usuarios";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.MirrorEntityModel.MMW_Usuarios>()
+    // Grid Name
+    .Name("Grid")
+    
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                     // Cretae all the columns base on Model
+                     columns.Bound(r => r.ID_Usuario).Title("ID")
+                         .Width(50);
+                     columns.Bound(r => r.TX_Usuario).Title("Usuario")
+                         .Width(120);
+                     columns.Bound(r => r.TX_Clave).Title("Clave")
+                         .Width(150);
+                     columns.Bound(r => r.TX_Nombre).Title("Nombre")
+                         .Width(150);
+                     columns.Bound(r => r.TX_Apellido).Title("Apellido")
+                         .Width(150);
+                     columns.Bound(r => r.NU_Cedula).Title("Cédula")
+                         .Width(120);
+                     columns.ForeignKey(r => r.ID_Cargo, (System.Collections.IEnumerable)ViewData["dvCargos"], "ID", "TX")
+                        .Title("Cargo")
+                        .Width(150)
+                        .EditorTemplateName("IDCargos");
+                     columns.Bound(r => r.TX_Email1).Title("Email 1")
+                         .Width(200);
+                     columns.Bound(r => r.TX_Email2).Title("Email 2")
+                         .Width(200);
+                     columns.Bound(r => r.TX_Telefono1).Title("Teléfono 1")
+                         .Width(150);
+                     columns.Bound(r => r.TX_Telefono2).Title("Teléfono 2")
+                         .Width(150);
+                     columns.Bound(r => r.TX_Direccion).Title("Dirección")
+                         .Width(250);
+                     columns.ForeignKey(r => r.ID_Estado, (System.Collections.IEnumerable)ViewData["dvEstados"], "ID", "TX")
+                        .Title("Estado")
+                        .Width(150)
+                        .EditorTemplateName("IDEstados");
+                     columns.Bound(r => r.TX_Imei).Title("Imei")
+                         .Width(120);
+                     columns.Bound(r => r.BO_Expiro).Title("Expiró")
+                        .Width(100)
+                        .ClientTemplate("<input type='checkbox' #= BO_Expiro ? checked='checked' : '' # disabled='disabled'}></input>");
+                     columns.Bound(r => r.FE_Registro).Title("Fecha registro")
+                         .Width(150)
+                         .Format("{0:dd/MM/yyyy}");
+                     columns.Bound(r => r.BO_Activo).Title("Activo")
+                        .Width(100)
+                        .ClientTemplate("<input type='checkbox' #= BO_Activo ? checked='checked' : '' # disabled='disabled'}></input>");
+                                              
+                     // Edit and Delete button column
+                     columns.Command(command =>
+                                         {
+                                             command.Edit().Text("Editar");
+                                             command.Destroy().Text("Eliminar");
+                                         }).Width(180);
+                 })
+    
+                 
+    // Declare ajax datasource.
+    // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+    // Set the model Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+
+                                //.Model(model => model.Id(record => record.ID_Usuario))
+                                .Model(model =>
+                                    {
+                                        model.Id(record => record.ID_Usuario);
+                                        model.Field(record => record.BO_Activo).DefaultValue(true);
+                                    }
+                                )
+                                .Read(read => read.Action("GetAll", "Usuarios"))
+                                .Create(create => create.Action("Add", "Usuarios"))
+                                .Update(update => update.Action("Update", "Usuarios"))
+                                .Destroy(delete => delete.Action("Delete", "Usuarios"))
+                                .PageSize(5)
+        )
+    
+    .Events(e => e.Edit("onEdit").Save("onSave").Change("onChange"))
+    
+    // Add tool bar with Create button
+    .ToolBar(toolbar => toolbar.Create().Text("Agregar registro"))
+    
+    // Set grid editable.
+    .Editable(editable => editable.Mode(GridEditMode.InLine))
+    
+    // Set grid sortable.
+    .Sortable()
+    
+    // Set grid selectable.
+    .Selectable()
+    
+    // Set grid groupable.
+    .Groupable()
+    
+    // Set grid filterable.
+    .Filterable()    
+    
+    // Set grid Scrollable.
+    .Scrollable(scrolling => scrolling.Enabled(true).Height(220))
+
+    // Set grid pagable.
+    .Pageable(pageable =>
+                  {
+                      pageable.Refresh(true);
+                      pageable.PageSizes(true);
+                  })
+                  
+)
+
+<script>
+    function onEdit(e) {
+        if (e.model.isNew() == false) {                                                  
+            $('input[name=TX_Usuario]').parent().html(e.model.TX_Usuario);
+        }
+    }
+
+    function onSave(e) {
+        var currentRecordTX = e.model.TX_Usuario;
+        var currentRecordNU = e.model.NU_Cedula;
+        var currentRecordID = e.model.ID_Usuario;
+        var data = this.dataSource.data();
+        for (item in data) {
+            if ($.isNumeric(item)){
+                if (data[item].TX_Usuario == currentRecordTX &&
+                   data[item].ID_Usuario != currentRecordID) {
+                    alert("Nombre de usuario duplicado.");
+                    e.preventDefault();
+                }
+
+                if (data[item].NU_Cedula == currentRecordNU &&
+                    data[item].ID_Usuario != currentRecordID) {
+                    alert("Número de cédula duplicado.");
+                    e.preventDefault();
+                }
+            }
+        }
+    }
+
+    function onChange(e) {
+        //$("#Grid").data("kendoGrid").dataSource.sync();
+        //$('#Grid').data('kendoGrid').dataSource.read();
+        //$('#Grid').data('kendoGrid').refresh();
+    }
+</script>
+

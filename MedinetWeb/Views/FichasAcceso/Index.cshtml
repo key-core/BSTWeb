@@ -1,0 +1,141 @@
+﻿@{
+    ViewBag.Title = "Fichas acceso";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.MirrorEntityModel.MMW_FichasAcceso>()
+        // Grid Name
+    .Name("Grid")
+
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                     // Cretae all the columns base on Model
+                     columns.Bound(r => r.ID_FichaAcceso).Title("ID")
+                         .Width(50);
+                     columns.ForeignKey(p => p.ID_Usuario, (System.Collections.IEnumerable)ViewData["dvUsuarios"], "ID", "TX")
+                        .Title("Usuario")
+                        .EditorTemplateName("IDUsuariosExist");
+                     columns.Bound(r => r.FE_Registro).Title("Fecha Registro")
+                         .Width(150)
+                         .Format("{0:dd/MM/yyyy}");
+                     columns.Bound(r => r.BO_Activo).Title("Activo")
+                         .Width(80)
+                         .ClientTemplate("<input type='checkbox' #= BO_Activo ? checked='checked' : '' # disabled='disabled'}></input>");
+
+                     // Edit and Delete button column
+                     columns.Command(command =>
+                                         {
+                                             command.Edit().Text("Editar");
+                                         }).Width(180);
+                 })
+
+    // Declare ajax datasource.
+        // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+        // Set the model Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+
+                                .Model(model =>
+                                    {
+                                        model.Id(record => record.ID_FichaAcceso);
+                                        model.Field(record => record.NU_M1).DefaultValue(0);
+                                        model.Field(record => record.NU_M2).DefaultValue(0);
+                                        model.Field(record => record.NU_M3).DefaultValue(0);
+                                        model.Field(record => record.NU_D1).DefaultValue(0);
+                                        model.Field(record => record.NU_D2).DefaultValue(0);
+                                        model.Field(record => record.NU_D3).DefaultValue(0);
+                                        model.Field(record => record.NU_N1).DefaultValue(0);
+                                        model.Field(record => record.NU_N2).DefaultValue(0);
+                                        model.Field(record => record.NU_N3).DefaultValue(0);
+                                        model.Field(record => record.BO_Activo).DefaultValue(true);
+                                    }
+                                )
+                                .Read(read => read.Action("GetAll", "FichasAcceso"))
+                                .Create(create => create.Action("Add", "FichasAcceso"))
+                                .Update(update => update.Action("Update", "FichasAcceso"))
+                                .PageSize(5)
+    )
+
+    // Llama al detalle
+    .ClientDetailTemplateId("templateFichaAcceso")
+
+    // Add tool bar with Create button
+    .ToolBar(toolbar => toolbar.Create().Text("Agregar registro"))
+
+    // Set grid editable.
+    .Editable(editable => editable.Mode(GridEditMode.InLine))
+
+    // Set grid sortable.
+    .Sortable()
+
+    // Set grid selectable.
+    .Selectable()
+
+    // Set grid groupable.
+    .Groupable()
+
+    // Set grid filterable.
+    .Filterable()
+
+    // Set grid pagable.
+    .Pageable(pageable =>
+                  {
+                      pageable.Refresh(true);
+                      pageable.PageSizes(true);
+                  })
+)
+
+<script id="templateFichaAcceso" type="text/kendo-tmpl">
+    @(Html.Kendo().Grid<MedinetWeb.Models.SP_MW_FichaAcceso_Result>()
+            .Name("Grid_#=ID_FichaAcceso#")
+            .Columns(columns =>
+            {
+                columns.Bound(r => r.Nro).Title(" ")
+                    .Width(40);
+                columns.Bound(r => r.M).Title("M")
+                    .HtmlAttributes(new { style = "text-align:right" })
+                    .Format("{0:n0}")
+                    .Width(40);
+                columns.Bound(r => r.D).Title("D")
+                    .HtmlAttributes(new { style = "text-align:right" })
+                    .Format("{0:n0}")
+                    .Width(40);
+                columns.Bound(r => r.N).Title("N")
+                    .HtmlAttributes(new { style = "text-align:right" })
+                    .Format("{0:n0}")
+                    .Width(40);
+            })
+
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                //.PageSize(10)
+                .Read(read => read.Action("GetFichaAcceso", "FichasAcceso", 
+                    new { fichaAccesoID = "#=ID_FichaAcceso#" }))
+            )
+            //.Pageable()
+
+            // Set grid selectable.
+            .Selectable()
+
+            .ToClientTemplate()
+    )
+</script>
+
+<script>
+    function filterUsuario() {
+        var isNew = false;
+
+        var dropDown = $("#ID_Usuario").data("kendoDropDownList");
+        if (dropDown._selectedValue == 0)
+            isNew = true;
+
+        return {
+            ID_Usuario: dropDown._selectedValue,
+            newRegistro: isNew
+        };
+    }
+</script>

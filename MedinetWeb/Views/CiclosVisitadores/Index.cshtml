@@ -1,0 +1,47 @@
+﻿@{
+    ViewBag.Title = "Ciclos visitadores";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.SP_MW_CiclosVisitadores_Result>()
+        // Grid Name
+    .Name("Grid")
+
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                     // Cretae all the columns base on Model
+                     columns.ForeignKey(r => r.ID_Region, (System.Collections.IEnumerable)ViewData["dvRegiones"], "ID", "TX")
+                         .Title("Región");
+                     columns.ForeignKey(r => r.ID_Linea, (System.Collections.IEnumerable)ViewData["dvLineas"], "ID", "TX")
+                         .Title("Línea");
+                     columns.ForeignKey(r => r.ID_Usuario, (System.Collections.IEnumerable)ViewData["dvVisitadores"], "ID", "TX")
+                         .Title("Visitador");
+                     columns.ForeignKey(r => r.ID_Ciclo, (System.Collections.IEnumerable)ViewData["dvCiclos"], "ID", "TX")
+                         .Title("Ciclo");
+                 })
+
+    // Declare ajax datasource.
+        // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+        // Set the model Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+
+                                .Read(read => read.Action("GetAll", "CiclosVisitadores"))
+    )
+
+    // Set grid sortable.
+    .Sortable()
+
+    // Set grid selectable.
+    .Selectable()
+
+    // Set grid groupable.
+    .Groupable()
+
+    // Set grid filterable.
+    .Filterable()
+)

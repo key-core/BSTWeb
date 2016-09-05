@@ -1,0 +1,278 @@
+﻿@{
+    ViewBag.Title = "Alta a Médico de Consulta Privada";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+<br />
+<table border="0" id="tableParametros">
+    <tr>
+        <td>
+            <span>N° SANITARIO:</span>
+        </td>
+        <td>
+            <input style="padding-left:3px" class="k-input" id="NUMERO" type="text" readonly="readonly" value="@ViewBag.NUMERO" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span>DOCTOR: </span>
+        </td>
+        <td>
+            <input style="padding-left:3px" class="k-input" id="DOCTOR" type="text" readonly="readonly" value="@ViewBag.DOCTOR" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span>ESPECIALIDAD: </span>
+        </td>
+        <td>
+            @(Html.Kendo().DropDownList()
+                .Name("ddEspecialidad")
+                .HtmlAttributes(new { style = "width:300px" })
+                  .OptionLabel("Seleccione")
+                        .DataTextField("Text")
+                        .DataValueField("Text")
+                .DataSource(source =>
+                {
+                    source.Read(read =>
+                    {
+                        read.Action("GetEspecialidades", "AltaMedico");
+                    });
+                })
+            )
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span>CLASIFICACIÓN: </span>
+        </td>
+        <td>
+            @(Html.Kendo().DropDownList()
+                .Name("ddClasificacion")
+                .HtmlAttributes(new { style = "width:300px" })
+                  .OptionLabel("Seleccione")
+                .DataTextField("Text")
+                        .DataValueField("Text")
+                .DataSource(source =>
+                {
+                    source.Read(read =>
+                    {
+                        read.Action("GetClasificaciones", "AltaMedico");
+                    });
+                })
+            )
+        </td>
+    </tr>
+    <tr>
+        <td>RUTA: </td>
+        <td>
+            @(Html.Kendo().AutoComplete()
+          .Name("ruta")
+              .HtmlAttributes(new { style = "width:300px" })
+          .DataTextField("")
+          .Filter("contains")
+          .MinLength(1)
+          .HtmlAttributes(new { style = "" })
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetRutas", "AltaMedico").Data("onAdditionalDataRutas");
+              })
+              .ServerFiltering(true);
+          }))
+            Introduce un * para que aparezca toda la lista
+        </td>
+    </tr>
+    <tr>
+        <td>CLINICA: </td>
+        <td>
+            @(Html.Kendo().AutoComplete()
+          .Name("clinica")
+                  .HtmlAttributes(new { style = "width:300px" })
+          .DataTextField("")
+          .Filter("contains")
+          .MinLength(1)
+          .HtmlAttributes(new { style = "" })
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetClinicas", "AltaMedico").Data("onAdditionalDataClinicas");
+              })
+              .ServerFiltering(true);
+          }))
+            Introduce un * para que aparezca toda la lista
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span>DIRECCIÓN: </span>
+        </td>
+        <td>
+            <textarea id="DIRECCION" maxlength="150" cols="25" rows="3"></textarea>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span>REVISITA: </span>
+        </td>
+        <td>
+            <select class="k-input k-dropdown k-header" id="REVISITA" name="REVISITA">
+                <option value="NO">NO</option>
+                <option value="SI">SI</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>
+            <br />
+            <button id="btnSave" type="button">Guardar</button>
+            
+            <button id="btnCancel" type="button">Cancelar</button>
+            <script>
+                $("#btnCancel").kendoButton({
+                    click: function (e) {
+
+                        window.location.href = "@Url.Action("Index", "SearchMedico")";
+
+                    }
+                });
+            </script>
+        </td>
+
+    </tr>
+</table>
+<br />
+<br />
+<br />
+<style scoped>
+    #tableParametros {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
+    #getDistArt {
+        float: right;
+        visibility: hidden;
+    }
+
+    #Grid {
+        margin-top: 10px;
+    }
+
+    td {
+        padding: 0em 0.5em 0.25em 0em;
+        border: 0 none;
+    }
+
+    #setNotaEntrega, #getPreDispensado {
+        visibility: hidden;
+    }
+
+    #tbBotonera {
+        float: right;
+        margin-top: 15px;
+    }
+
+    #btnCancel {
+        background-color: red;
+        color: white;
+    }
+
+        #btnCancel:hover {
+            background-color: lightgray;
+            color: black;
+        }
+
+    #btnSave {
+        background-color: #2B399B;
+        color: white;
+    }
+
+        #btnSave:hover {
+            background-color: lightgray;
+            color: black;
+        }
+</style>
+
+
+<script>
+    $("#btnSave").click(function () {
+       
+        if ($("#ddEspecialidad").val() == "" || $("#ddEspecialidad").val() == "Seleccione") {
+            alert("Debes seleccionar una especialidad");
+            return false;
+        }
+        if ($("#ddClasificacion").val() == "" || $("#ddClasificacion").val() == "Seleccione") {
+            alert("Debes seleccionar una clasificación");
+            return false;
+        }
+        if ($("#ruta").val() == "" || $("#ruta").val() == "*") {
+            alert("Debes introducir o seleccionar una ruta");
+            return false;
+        }
+        if ($("#clinica").val() == "" || $("#clinica").val() == "*") {
+            alert("Debes introducir o seleccionar una clinica");
+            return false;
+        }
+        if ($("#DIRECCION").val() == "") {
+            alert("Debes introducir una dirección");
+            return false;
+        }
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("FicharMedico")',
+            dataType: 'json',
+            beforeSend: function () {
+                $("#btnSave").html("Guardando");
+                $("#btnSave").addClass("disabled");
+            },
+            data: {
+                nroSanitario: $("#NUMERO").val(), doctor: $("#DOCTOR").val(), especialidad: $("#ddEspecialidad").val(), clasificacion: $("#ddClasificacion").val(), ruta: $("#ruta").val(),
+                clinica: $("#clinica").val(), direccion: $("#DIRECCION").val(), revisita: $("#REVISITA").val()
+            },
+            success: function (resp) {
+               
+                if (resp) {
+                    alert("¡Médico agregado exitosamente!");
+                    window.location.href = "@Url.Action("Index","SearchMedico")";
+                } else {
+                    alert("¡El médico no pudo ser agregado correctamente! Contacte con el administrador");
+                }
+                //alert(resp.mensaje);
+            },
+            error: function (ex) {
+                alert('Falló guardando médico...');
+            }
+        });
+    });
+    function getRegistro() {
+
+        return {
+            REGISTRO: $("#tvRegistro").text()
+        };
+    }
+
+    function getUrlVars() {
+        var vars = {};
+        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+            vars[key] = value;
+        });
+        return vars;
+    }
+    function onAdditionalDataRutas() {
+        return {
+            text: $("#ruta").val()
+        }
+    }
+    function onAdditionalDataClinicas() {
+        return {
+            text: $("#clinica").val()
+        }
+    }
+</script>
+

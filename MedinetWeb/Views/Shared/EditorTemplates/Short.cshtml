@@ -1,0 +1,8 @@
+﻿@model Int16?
+
+@(Html.Kendo().NumericTextBoxFor(m => m)
+      .HtmlAttributes(new { style = "width:100%" })
+      .HtmlAttributes(new { style = "text-align:right" })
+      .Min(0)
+      .Max(Int16.MaxValue)
+)

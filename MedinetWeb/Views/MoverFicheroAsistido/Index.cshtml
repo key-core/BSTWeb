@@ -1,0 +1,304 @@
+﻿@{
+    ViewBag.Title = "Movimiento de Fichero Asistido";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+<table border="0" id="tableParametrosOrigen">
+    <tr>
+        <td width="80">ORIGEN</td>
+        <td>
+            @(Html.Kendo().DropDownList()
+                  .Name("ddCiclosOrigen")
+                  .HtmlAttributes(new { style = "width:120px" })
+                  .OptionLabel("Select ciclo")
+                  .DataTextField("TX")
+                  .DataValueField("ID")
+                  .DataSource(source =>
+                  {
+                      source.Read(read =>
+                      {
+                          read.Action("GetCiclosConData", "Ciclos");
+                      });
+                  })
+                  .AutoBind(false)
+                  .Events(evt =>
+                  {
+                      evt.Close("ficheroVisOrigen.variablesChange");
+                  })
+            )
+        </td>
+        <td>
+            @(Html.Kendo().DropDownList()
+                  .Name("ddLineasOrigen")
+                  .HtmlAttributes(new { style = "width:150px" })
+                  .OptionLabel("Select línea")
+                  .DataTextField("Text")
+                  .DataValueField("Value")
+                  .DataSource(source =>
+                  {
+                      source.Read(read =>
+                      {
+                          read.Action("GetLineas", "Lineas");
+                      });
+                  })
+                  .AutoBind(false)
+                  .Events(evt =>
+                  {
+                      evt.Close("ficheroVisOrigen.variablesChange");
+                  })
+            )
+        </td>
+        <td>
+            @(Html.Kendo().DropDownList()
+                  .Name("ddRegionesOrigen")
+                  .HtmlAttributes(new { style = "width:150px" })
+                  .OptionLabel("Select región")
+                  .DataTextField("Text")
+                  .DataValueField("Value")
+                  .DataSource(source =>
+                  {
+                      source.Read(read =>
+                      {
+                          read.Action("GetRegiones", "Regiones");
+                      });
+                  })
+                  .AutoBind(false)
+                  .Events(evt =>
+                  {
+                      evt.Close("ficheroVisOrigen.variablesChange");
+                  })
+            )
+        </td>
+        <td>
+            @(Html.Kendo().DropDownList()
+                  .Name("ddVisitadoresOrigen")
+                  .HtmlAttributes(new { style = "width:200px" })
+                  .OptionLabel("Select visitador")
+                  .DataTextField("Text")
+                  .DataValueField("Value")
+                  .DataSource(source =>
+                  {
+                      source.Read(read =>
+                      {
+                          read.Action("GetVisitadores_FicVis", "VisitadoresHistorial")
+                              .Data("filterVisitadoresOrigen");
+                      })
+                      .ServerFiltering(true);
+                  })
+                  .Enable(false)
+                  .AutoBind(false)
+                          .CascadeFrom("ddRegionesOrigen")
+                  .Events(evt =>
+                  {
+                      evt.Change("ficheroVisOrigen.visitadorChange");
+                  })
+            )
+        </td>
+        <td>
+            
+        </td>
+    </tr>
+</table>
+<table border="0" id="tableParametrosDestino">
+    <tr>
+        <td width="80">DESTINO</td>
+        <td>
+            @(Html.Kendo().DropDownList()
+                          .Name("ddCiclosDestino")
+                  .HtmlAttributes(new { style = "width:120px" })
+                  .OptionLabel("Select ciclo")
+                  .DataTextField("TX")
+                  .DataValueField("ID")
+                  .DataSource(source =>
+                  {
+                      source.Read(read =>
+                      {
+                          read.Action("GetCiclosConData", "Ciclos");
+                      });
+                  })
+                  .AutoBind(false)
+                  .Events(evt =>
+                  {
+                      evt.Close("ficheroVisDestino.variablesChange");
+                  })
+            )
+        </td>
+        <td>
+            @(Html.Kendo().DropDownList()
+                          .Name("ddLineasDestino")
+                  .HtmlAttributes(new { style = "width:150px" })
+                  .OptionLabel("Select línea")
+                  .DataTextField("Text")
+                  .DataValueField("Value")
+                  .DataSource(source =>
+                  {
+                      source.Read(read =>
+                      {
+                          read.Action("GetLineas", "Lineas");
+                      });
+                  })
+                  .AutoBind(false)
+                  .Events(evt =>
+                  {
+                      evt.Close("ficheroVisDestino.variablesChange");
+                  })
+            )
+        </td>
+        <td>
+            @(Html.Kendo().DropDownList()
+                          .Name("ddRegionesDestino")
+                  .HtmlAttributes(new { style = "width:150px" })
+                  .OptionLabel("Select región")
+                  .DataTextField("Text")
+                  .DataValueField("Value")
+                  .DataSource(source =>
+                  {
+                      source.Read(read =>
+                      {
+                          read.Action("GetRegiones", "Regiones");
+                      });
+                  })
+                  .AutoBind(false)
+                  .Events(evt =>
+                  {
+                      evt.Close("ficheroVisDestino.variablesChange");
+                  })
+            )
+        </td>
+        <td>
+            @(Html.Kendo().DropDownList()
+                          .Name("ddVisitadoresDestino")
+                  .HtmlAttributes(new { style = "width:200px" })
+                  .OptionLabel("Select visitador")
+                  .DataTextField("Text")
+                  .DataValueField("Value")
+                  .DataSource(source =>
+                  {
+                      source.Read(read =>
+                      {
+                          read.Action("GetVisitadores_FicVi2", "VisitadoresHistorial")
+                              .Data("filterVisitadoresDestino");
+                      })
+                      .ServerFiltering(true);
+                  })
+                  .Enable(false)
+                  .AutoBind(false)
+                          .CascadeFrom("ddRegionesDestino")
+                  .Events(evt =>
+                  {
+                      evt.Change("ficheroVisDestino.visitadorChange");
+                  })
+            )
+        </td>
+        <td>
+            <button class="k-button" id="btnCopiar">Copiar Fichero</button>
+        </td>
+    </tr>
+</table>
+<script>
+    function filterVisitadoresOrigen() {
+        return {
+            IDCiclo: $("#ddCiclosOrigen").val(),
+            IDLinea: $("#ddLineasOrigen").val(),
+            IDRegion: $("#ddRegionesOrigen").val()
+        };
+    }
+    function filterVisitadoresDestino() {
+        return {
+            IDCiclo: $("#ddCiclosDestino").val(),
+            IDLinea: $("#ddLineasDestino").val(),
+            IDRegion: $("#ddRegionesDestino").val()
+        };
+    }
+    var ficheroVisOrigen = (function () {
+        var _visitadorChange = function () {
+            if ($("#ddVisitadoresOrigen").val() == "") {
+                //document.getElementById("getFicheroVis").style.visibility = 'hidden';
+            }
+            else {
+                //document.getElementById("getFicheroVis").style.visibility = 'visible';
+            }
+        };
+
+        var _variablesChange = function () {
+            var ddVisitadores = $('#ddVisitadoresOrigen').data('kendoDropDownList');
+            ddVisitadores.value('');
+
+            //document.getElementById("getFicheroVis").style.visibility = 'hidden';
+        };
+
+        return {
+            visitadorChange: _visitadorChange,
+            variablesChange: _variablesChange
+        };
+    }());
+    var ficheroVisDestino = (function () {
+        var _visitadorChange = function () {
+            if ($("#ddVisitadoresDestino").val() == "") {
+                //document.getElementById("getFicheroVis").style.visibility = 'hidden';
+            }
+            else {
+                //document.getElementById("getFicheroVis").style.visibility = 'visible';
+            }
+        };
+
+        var _variablesChange = function () {
+            var ddVisitadores = $('#ddVisitadoresDestino').data('kendoDropDownList');
+            ddVisitadores.value('');
+
+            //document.getElementById("getFicheroVis").style.visibility = 'hidden';
+        };
+
+        return {
+            visitadorChange: _visitadorChange,
+            variablesChange: _variablesChange
+        };
+    }());
+    $("#btnCopiar").click(function () {
+       
+        if ($("#ddCiclosOrigen").val() == "" || $("#ddCiclosOrigen").val() == "Select ciclo") {
+            alert("Debes seleccionar el ciclo origen");
+            return false;
+        }
+        if ($("#ddCiclosDestino").val() == "" || $("#ddCiclosDestino").val() == "Select ciclo") {
+            alert("Debes seleccionar el ciclo desino");
+            return false;
+        }
+        if ($("#ddVisitadoresOrigen").val() == "" || $("#ddVisitadoresOrigen").val() == "Select visitador") {
+            alert("Debes seleccionar el visitador origen");
+            return false;
+        }
+        if ($("#ddVisitadoresDestino").val() == "" || $("#ddVisitadoresDestino").val() == "Select visitador") {
+            alert("Debes seleccionar el visitador desino");
+            return false;
+        }
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("CopiarFichero")',
+            dataType: 'json',
+            beforeSend: function () {
+                $("#btnSave").html("Guardando");
+                $("#btnSave").addClass("disabled");
+            },
+            data: {
+                idCicloOrigen: $("#ddCiclosOrigen").val(), idCicloDestino: $("#ddCiclosDestino").val(),
+                iDOrigen: $("#ddVisitadoresOrigen").val(), iDDestino: $("#ddVisitadoresDestino").val()
+
+            },
+            success: function (resp) {
+               
+                if (resp) {
+                    alert("¡Fichero copiado exitosamente!");
+                    window.location.href = "@Url.Action("Index", "MoverFicheroAsistido")";
+                } else {
+                    alert("¡El fichero no pudo ser copiado correctamente! Contacte con el administrador");
+                }
+                //alert(resp.mensaje);
+            },
+            error: function (ex) {
+                alert('Falló copiando fichero...');
+            }
+        });
+    });
+</script>

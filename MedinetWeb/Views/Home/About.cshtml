@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "Acerca de Medinet";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+    @*<h2>@ViewBag.Message</h2>*@
+</hgroup>
+
+<article>
+    <p>
+        <strong>MDN Consultores, C.A.</strong> es una empresa de desarrollo de software, que se especializa en la conceptualización y diseño de herramientas y aplicaciones para la industria farmacéutica.
+    </p>
+
+    <p>
+        El desarrollo e implantación por más de 13 años, de la aplicación Android para la gestión de procesos de la fuerza de ventas de la industria farmacéutica, denominada  <strong>Medinet  ®</strong>, significó el punto de partida para el reciente nacimiento de <strong>MDN Consultores, C.A.</strong>
+    </p>
+
+    <p>
+        Como desarrolladores formados y especializados en la industria, ofrecemos a nuestros clientes una robusta plataforma de acompañamiento en la gestión de los procesos medulares de su operación.
+    </p>
+
+    <p>
+        Como organización, identificamos las oportunidades de desarrollo vinculados a los principales procesos, abordando las posibles soluciones desde la experiencia y el conocimiento otorgado por más de 20 años de desempeño en múltiples roles de la industria farmacéutica venezolana. 
+    </p>
+</article>
+
+<aside>
+    <h3>Para mas información:</h3>
+    
+    <br />
+
+    @(Html.Kendo().TreeView()
+        .Name("LinksTreeView")
+        .Items(items =>
+        {
+            items.Add()
+                .Text("Medinet")
+                .Url("http://www.medinetla.com/");
+            items.Add()
+                .Text("Contactenos")
+                .Action("Contact", "Home");
+        })
+    )
+
+</aside>

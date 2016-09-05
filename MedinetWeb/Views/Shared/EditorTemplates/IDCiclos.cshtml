@@ -1,0 +1,24 @@
+﻿@model Int16
+
+@(Html.Kendo().DropDownListFor(m => m)
+                  .AutoBind(false)
+                  .OptionLabel("Select ciclo")
+                  .DataTextField("Text")
+                  .DataValueField("Value")
+                  .DataSource(dataSource =>
+                  {
+                      dataSource.Read(read => read.Action("GetCiclos", "Ciclos"))
+                                .ServerFiltering(true);
+                  })
+                  .BindTo((SelectList)ViewData[ViewData.TemplateInfo.GetFullHtmlFieldName("") + "_Data"])
+
+            )
+            @Html.ValidationMessageFor(m => m)
+@*@model Int16
+           
+@(
+ Html.Kendo().DropDownListFor(m => m)    
+        .OptionLabel("Select ciclo") 
+        .BindTo((SelectList)ViewData[ViewData.TemplateInfo.GetFullHtmlFieldName("") + "_Data"])
+)*@
+

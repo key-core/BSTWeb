@@ -1,0 +1,94 @@
+﻿@{
+    ViewBag.Title = "Cierre distribución";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.SP_MWS_ResumenCierreDistribucion_CieDis_Result>()
+        // Grid Name
+    .Name("Grid")
+
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                     columns.ForeignKey(p => p.ID_Marca, (System.Collections.IEnumerable)ViewData["dvMarcas"], "ID", "TX")
+                        .Title("Marca");
+                     columns.ForeignKey(p => p.ID_Articulo, (System.Collections.IEnumerable)ViewData["dvArticulos"], "ID", "TX")
+                        .Title("Artículo");
+                     columns.ForeignKey(p => p.ID_TipoArticulo, (System.Collections.IEnumerable)ViewData["dvTipoArticulos"], "ID", "TX")
+                        .Title("Tipo artículo");
+                     columns.Bound(r => r.StockInicial).Title("Stock inicial")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Format("{0:n0}");
+                     columns.Bound(r => r.Dispensado).Title("Dispensado")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Format("{0:n0}");
+                     columns.Bound(r => r.StockFinal).Title("Stock final")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Format("{0:n0}");
+                 })
+
+    // Declare ajax datasource.
+        // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+        // Set the model Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+
+                                .Read(read => read.Action("GetAll", "CierreDistribucion"))
+    )
+
+    // Set grid sortable.
+    .Sortable()
+
+    // Set grid selectable.
+    .Selectable()
+
+    // Set grid groupable.
+    .Groupable()
+
+    // Set grid filterable.
+    .Filterable()
+)
+
+<table id="tbBotonera">
+    <tr>
+        <td>
+            <button class="k-button" id="setCierreDist">Cerrar distribución</button>
+        </td>
+    </tr>
+</table>
+
+<style scoped>
+    td {
+        padding: 0em 0.5em 0.25em 0em;
+        border: 0 none;
+    }
+
+    #tbBotonera {
+        float: right;
+        margin-top: 15px;
+    }
+</style>
+
+<script>
+    $("#setCierreDist").click(function () {
+        if (confirm("¿Seguro que desea cerrar la distribución?"))
+            $.ajax({
+                url: "/CierreDistribucion/SetCierreDistribucion",
+                type: "POST",
+                async: false,
+                success: function (result) {
+                    alert('Notificación:\n\nSe ha cerrado la distribución satisfactoriamente.');
+
+                    window.location.href = "/Home/Index";
+                },
+                error: function (e) {
+                    alert('Fallo en ejecución:\n\nNo fue posible cerrar la distribución. Error:' + e.responseText);
+                }
+            });
+        else
+            return false;
+    })
+</script>

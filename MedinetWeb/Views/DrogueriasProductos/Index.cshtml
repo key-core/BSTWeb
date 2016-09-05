@@ -1,0 +1,130 @@
+﻿@{
+    ViewBag.Title = "Droguerías productos";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.MirrorEntityModel.MMW_DrogueriasProductos>()
+        // Grid Name
+    .Name("Grid")
+
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                     // Cretae all the columns base on Model
+                     columns.Bound(r => r.ID_DrogueriaProducto).Title("ID")
+                         .Width(70);
+                     columns.ForeignKey(p => p.ID_DrogueriaAlmacen, (System.Collections.IEnumerable)ViewData["dvDrogueriasAlmacenes"], "ID", "TX")
+                        .Width(250)
+                        .Title("Droguería almacen");
+                     columns.ForeignKey(p => p.ID_Producto, (System.Collections.IEnumerable)ViewData["dvProductos"], "ID", "TX")
+                        .Title("Producto")
+                        .Width(300)
+                        .EditorTemplateName("IDProductos");
+                     columns.Bound(r => r.TX_IDProductoDrogueria).Title("IDProd. Drog.")
+                         .Width(150);
+                     columns.Bound(r => r.TX_ProductoDrogueria).Title("Prod. Drog.")
+                         .Width(250);
+                     columns.Bound(r => r.NU_PrecioProducto).Title("Precio")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Format("{0:n}")
+                         .Width(100);
+                     columns.Bound(r => r.NU_InvProducto).Title("Inventario")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Width(120);
+                     columns.Bound(r => r.TX_DrogueriaRef1).Title("Ref1")
+                         .Width(120);
+                     columns.Bound(r => r.TX_DrogueriaRef2).Title("Ref2")
+                         .Width(120);
+                     columns.Bound(r => r.BO_Activo).Title("Activo")
+                         .Width(100)
+                         .ClientTemplate("<input type='checkbox' #= BO_Activo ? checked='checked' : '' # disabled='disabled'}></input>");
+
+                     // Edit and Delete button column
+                     columns.Command(command =>
+                                         {
+                                             command.Edit().Text("Editar");
+                                         }).Width(180);
+                 })
+
+    // Declare ajax datasource.
+        // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+        // Set the model Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+                                    
+                                .Model(model =>
+                                    {
+                                        model.Id(record => record.ID_DrogueriaProducto);
+                                    }
+                                )
+                                .Read(read => read.Action("GetAll", "DrogueriasProductos"))
+                                .Update(update => update.Action("Update", "DrogueriasProductos"))
+                                .PageSize(5)
+    )
+
+    .Events(e => e.Edit("onEdit"))
+    .Events(e => e.Save("onSave"))
+   
+    
+
+    // Set grid editable.
+    .Editable(editable => editable.Mode(GridEditMode.InLine))
+
+    // Set grid sortable.
+    .Sortable()
+
+    // Set grid selectable.
+    .Selectable()
+
+    // Set grid groupable.
+    .Groupable()
+
+    // Set grid filterable.
+    .Filterable()
+
+    // Set grid Scrollable.
+    .Scrollable(scrolling => scrolling.Enabled(true).Height(220))
+
+    // Set grid pagable.
+    .Pageable(pageable =>
+                  {
+                      pageable.Refresh(true);
+                      pageable.PageSizes(true);
+                  })
+)
+
+<script>
+    function onEdit(e) {
+        var dropDown = $("#ID_Producto").data("kendoDropDownList");
+
+        if (dropDown) {
+            if (dropDown._optionID == "ID_Producto_option_selected") {
+                dropDown.bind("change", function (e) {
+                    var grid = e.sender.wrapper.closest(".k-grid").data("kendoGrid");
+                    var dataItem = grid.dataItem(e.sender.wrapper.closest("tr"));
+                    //If current value is null
+                    if (!dataItem.ID_Producto) {
+                        //change the model value
+                        dataItem.ID_Producto = 0;
+                        //get the currently selected value from the DDL
+                        var currentlySelectedValue = e.sender.value();
+                        //set the value to the model
+                        dataItem.set('ID_Producto', currentlySelectedValue);
+                       
+                    }
+                    
+                })
+            }
+        }
+        
+    }
+    function onSave(e) {
+        
+        var grid = e.sender.wrapper.closest(".k-grid").data("kendoGrid");
+        grid.dataSource.read();
+        grid.dataSource.fetch();
+    }
+</script>

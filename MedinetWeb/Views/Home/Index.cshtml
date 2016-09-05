@@ -1,0 +1,47 @@
+﻿@{
+    ViewBag.Title = "Inicio";
+}
+
+<hgroup class="title">
+    <h1>Ciclo @ViewBag.Ciclo desde: @ViewBag.FEIni hasta: @ViewBag.FEFin (Días Restantes: @ViewBag.Restantes)</h1>
+</hgroup>
+
+<ol class="round">
+
+    <table border="1" style="width: 1000px; height: 20%" align="center">
+        <tr style="height: 250px">
+            <td style="width: 50%;">@(Model.Charts[0])</td>
+            <td>@(Model.Charts[2])</td>
+        </tr>
+        <tr style="height: 200px">
+            <td>
+                <table style="width:100%;height:100%;background-color:white;font-size:10px;vertical-align:top;border-radius:5px">
+                    <tr>
+                        <td colspan="5" style="text-align:center;font-size:15px;font-weight:bold">Top Visitadores</td>
+                    </tr>
+                    <tr style="border-bottom:1px solid;border-bottom-color:#f2eeee;width:20px;font-weight:bold;font-size:12px">
+                            <td>#</td>
+                            <td>Nombre</td>
+                            <td>Región</td>
+                            <td>Línea</td>
+                            <td>Mix</td>
+                        </tr>
+                    @foreach (MedinetWeb.Controllers.TopVisitadores visitador in MedinetWeb.Controllers.TopVisitadores.getTopVisitadores())
+                    {
+                        <tr style="border-bottom:1px solid;border-bottom-color:#f2eeee;width:20px">
+                            
+                            <td>@(visitador.Orden)</td>
+                            <td>@(visitador.Visitador)</td>
+                            <td>@(visitador.Region)</td>
+                            <td>@(visitador.Linea)</td>
+                            <td>@(visitador.Mix) %</td>
+                        </tr>
+                    }
+                </table>
+            </td>
+            <td style="width: 50%;">@(Model.Charts[1])</td>
+        </tr>
+    </table>
+
+</ol>
+

@@ -1,0 +1,16 @@
+﻿@model Int16
+
+@(Html.Kendo().DropDownListFor(m => m)
+                  .AutoBind(false)
+                  .OptionLabel("Select brick")
+                  .DataTextField("Text")
+                  .DataValueField("Value")
+                  .DataSource(dataSource =>
+                  {
+                      dataSource.Read(read => read.Action("GetBricksPorEstado", "LocacionBricks").Data("filterBricks"))
+                                .ServerFiltering(true);
+                  })
+                  .CascadeFrom("ID_Estado")
+                  .BindTo((SelectList)ViewData[ViewData.TemplateInfo.GetFullHtmlFieldName("") + "_Data"])
+            )
+            @Html.ValidationMessageFor(m => m)

@@ -1,0 +1,182 @@
+﻿@{
+    ViewBag.Title = "Visitadores historial";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.MirrorEntityModel.MMW_VisitadoresHistorial>()
+    // Grid Name
+    .Name("Grid")
+    
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                     // Cretae all the columns base on Model
+                     columns.Bound(r => r.ID_VisitadoresHistorial).Title("ID")
+                         .Width(50);
+                     columns.ForeignKey(p => p.ID_Visitador, (System.Collections.IEnumerable)ViewData["dvVisitadores"], "ID", "TX")
+                         .Title("Visitador")
+                         .Width(200)
+                         .EditorTemplateName("IDVisitadores");
+                     columns.ForeignKey(p => p.ID_Region, (System.Collections.IEnumerable)ViewData["dvRegiones"], "ID", "TX")
+                         .Title("Región")
+                         .Width(150)
+                         .EditorTemplateName("IDRegiones");
+                     columns.ForeignKey(p => p.ID_Linea, (System.Collections.IEnumerable)ViewData["dvLineas"], "ID", "TX")
+                        .Title("Línea")
+                        .Width(150)
+                        .EditorTemplateName("IDLineas");
+                     columns.ForeignKey(p => p.ID_Zona, (System.Collections.IEnumerable)ViewData["dvZonas"], "ID", "TX")
+                         .Title("Zona")
+                         .Width(200)
+                         .EditorTemplateName("IDZonasPorRegionLinea");
+                     columns.ForeignKey(p => p.ID_CicloIni, (System.Collections.IEnumerable)ViewData["dvCiclos"], "ID", "TX")
+                         .Title("Ciclo inicio")
+                         .Width(150)
+                         .EditorTemplateName("IDCiclosIni");
+                     columns.ForeignKey(p => p.ID_CicloFin, (System.Collections.IEnumerable)ViewData["dvCiclosFin"], "ID", "TX")
+                        .Title("Ciclo fin")
+                        .Width(150)
+                        .EditorTemplateName("IDCiclosFin");
+                     columns.Bound(r => r.FE_Registro).Title("Fecha registro")
+                         .Width(150)
+                         .Format("{0:dd/MM/yyyy}");
+                     columns.Bound(r => r.BO_Activo).Title("Activo")
+                         .Width(100)
+                         .ClientTemplate("<input type='checkbox' #= BO_Activo ? checked='checked' : '' # disabled='disabled'}></input>");
+                                              
+                     // Edit and Delete button column
+                     columns.Command(command =>
+                                         {
+                                             command.Edit().Text("Editar");
+                                             command.Destroy().Text("Eliminar");
+                                         }).Width(180);
+                 })
+                 
+    // Declare ajax datasource.
+    // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+    // Set the model Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+                                
+                                .Model(model =>
+                                    {
+                                        model.Id(record => record.ID_VisitadoresHistorial);
+                                        model.Field(record => record.BO_Activo).DefaultValue(true);
+                                    }
+                                )
+                                .Read(read => read.Action("GetAll", "VisitadoresHistorial"))
+                                .Create(create => create.Action("Add", "VisitadoresHistorial"))
+                                .Update(update => update.Action("Update", "VisitadoresHistorial"))
+                                .Destroy(delete => delete.Action("Delete", "VisitadoresHistorial"))
+                                .PageSize(5)
+    )
+
+    .Events(e => e.Edit("onEdit").Save("onSave"))
+
+    // Add tool bar with Create button
+    .ToolBar(toolbar => toolbar.Create().Text("Agregar registro"))
+    
+    // Set grid editable.
+    .Editable(editable => editable.Mode(GridEditMode.InLine))
+    
+    // Set grid sortable.
+    .Sortable()
+    
+    // Set grid selectable.
+    .Selectable()
+    
+    // Set grid groupable.
+    .Groupable()
+    
+    // Set grid filterable.
+    .Filterable()
+
+    // Set grid Scrollable.
+    .Scrollable(scrolling => scrolling.Enabled(true).Height(220))
+
+    // Set grid pagable.
+    .Pageable(pageable =>
+                  {
+                      pageable.Refresh(true);
+                      pageable.PageSizes(true);
+                  })
+)
+
+<script>
+    function filterCicloFin() {
+        return {
+            ID_CicloIni: $("#ID_CicloIni").val()
+        };
+    }
+
+    function filterZonas() {
+        return {
+            ID_Region: $("#ID_Region").val(),
+            ID_Linea: $("#ID_Linea").val()
+        };
+    }
+
+    function filterCicloIni() {
+        var isNew = false;
+
+        var ciclo = $("#ID_CicloIni").val();
+
+        var dropDown = $("#ID_CicloIni").data("kendoDropDownList");
+        if (dropDown._selectedValue == 0)
+            isNew = true;
+
+        return {
+            ID_CicloIni: dropDown._selectedValue,
+            newRegistro: isNew
+        };
+    }
+
+    function onEdit(e) {
+        var dropDown = $("#ID_CicloFin").data("kendoDropDownList");
+
+        if (dropDown) {
+            if (dropDown._optionID == "ID_CicloFin_option_selected") {
+                dropDown.bind("change", function (e) {
+                    var grid = e.sender.wrapper.closest(".k-grid").data("kendoGrid");
+                    var dataItem = grid.dataItem(e.sender.wrapper.closest("tr"));
+                    //If current value is null
+                    if (!dataItem.ID_CicloFin) {
+                        //change the model value
+                        dataItem.ID_CicloFin = 0;
+                        //get the currently selected value from the DDL
+                        var currentlySelectedValue = e.sender.value();
+                        //set the value to the model
+                        dataItem.set('ID_CicloFin', currentlySelectedValue);
+                    }
+                })
+            }
+        }
+    }
+
+    function onSave(e) {
+        var currentRecordID = e.model.ID_VisitadoresHistorial;
+        var currentRecordIDVis = e.model.ID_Visitador;
+        var currentRecordBOAct = e.model.BO_Activo;
+        var currentRecordIDFin = e.model.ID_CicloFin;
+
+        var data = this.dataSource.data();
+        if (currentRecordBOAct == false && currentRecordIDFin == null) {
+            e.preventDefault();
+            alert("Debe indicar un ciclo fin.");
+        }
+        else {
+            for (item in data) {
+                if ($.isNumeric(item))
+                    if (data[item].ID_Visitador == currentRecordIDVis &&
+                        true == currentRecordBOAct &&
+                        data[item].ID_VisitadoresHistorial != currentRecordID) {
+                        e.preventDefault();
+                        alert("No se permite registrar un visitador historial si ya existe uno activo.");
+                    }
+            }
+        }
+    }
+</script>

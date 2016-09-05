@@ -1,0 +1,126 @@
+﻿@{
+    ViewBag.Title = "Esquemas promocionales";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.MirrorEntityModel.MMW_EsquemasPromocionales>()
+    // Grid Name
+    .Name("Grid")
+    
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                     // Cretae all the columns base on Model
+                     columns.Bound(r => r.ID_EsquemaPromocional).Title("ID")
+                         .Width(60);
+                     columns.ForeignKey(p => p.ID_Ciclo, (System.Collections.IEnumerable)ViewData["dvCiclos"], "ID", "TX")
+                        .Title("Ciclo")
+                        .Width(100)
+                        .EditorTemplateName("IDCiclos");
+                     columns.ForeignKey(p => p.ID_Linea, (System.Collections.IEnumerable)ViewData["dvLineas"], "ID", "TX")
+                        .Title("Línea")
+                        .Width(150)
+                        .EditorTemplateName("IDLineas");
+                     columns.ForeignKey(p => p.ID_Especialidad, (System.Collections.IEnumerable)ViewData["dvEspecialidades"], "ID", "TX")
+                        .Title("Especialidad")
+                        .Width(180)
+                        .EditorTemplateName("IDEspecialidades_EsqPro");
+                     columns.ForeignKey(p => p.ID_Posicion, (System.Collections.IEnumerable)ViewData["dvPosiciones"], "ID", "TX")
+                        .Title("Posición")
+                        .Width(150)
+                        .EditorTemplateName("IDPosiciones_EsqPro");
+                     columns.ForeignKey(p => p.ID_Marca, (System.Collections.IEnumerable)ViewData["dvMarcas"], "ID", "TX")
+                        .Title("Marca")
+                        .Width(150)
+                        .EditorTemplateName("IDMarcas_EsqPro");
+                     columns.Bound(r => r.FE_Registro).Title("Fecha registro")
+                        .Width(150)
+                        .Format("{0:dd/MM/yyyy}");
+                     columns.Bound(r => r.BO_Activo).Title("Activo")
+                         .Width(100)
+                         .ClientTemplate("<input type='checkbox' #= BO_Activo ? checked='checked' : '' # disabled='disabled'}></input>");
+                                              
+                     // Edit and Delete button column
+                     columns.Command(command =>
+                                         {
+                                             command.Edit().Text("Editar");
+                                             command.Destroy().Text("Eliminar");
+                                         }).Width(180);
+                 })
+                 
+    // Declare ajax datasource.
+    // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+    // Set the model Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+                                
+                                .Model(model =>
+                                    {
+                                        model.Id(record => record.ID_EsquemaPromocional);
+                                        model.Field(record => record.BO_Activo).DefaultValue(true);
+                                    }
+                                )
+                                .Read(read => read.Action("GetAll", "EsquemasPromocionales"))
+                                .Create(create => create.Action("Add", "EsquemasPromocionales"))
+                                .Update(update => update.Action("Update", "EsquemasPromocionales"))
+                                .Destroy(delete => delete.Action("Delete", "EsquemasPromocionales"))
+                                .PageSize(5)
+    )
+    
+    // Add tool bar with Create button
+    .ToolBar(toolbar => toolbar.Create().Text("Agregar registro"))
+    
+    // Set grid editable.
+    .Editable(editable => editable.Mode(GridEditMode.InLine))
+    
+    // Set grid sortable.
+    .Sortable()
+    
+    // Set grid selectable.
+    .Selectable()
+    
+    // Set grid groupable.
+    .Groupable()
+    
+    // Set grid filterable.
+    .Filterable()    
+
+    // Set grid Scrollable.
+    .Scrollable(scrolling => scrolling.Enabled(true).Height(220))
+
+    // Set grid pagable.
+    .Pageable(pageable =>
+                  {
+                      pageable.Refresh(true);
+                      pageable.PageSizes(true);
+                  })
+                  
+    //.ColumnMenu()
+)
+
+<script>
+    function filterEspecialidades() {
+        return {
+            ID_Linea: $("#ID_Linea").val()
+        };
+    }
+
+    function filterPosiciones() {
+        return {
+            ID_Ciclo: $("#ID_Ciclo").val(),
+            ID_Linea: $("#ID_Linea").val(),
+            ID_Especialidad: $("#ID_Especialidad").val()
+        };
+    }
+
+    function filterMarcas() {
+        return {
+            ID_Linea: $("#ID_Linea").val(),
+            ID_Especialidad: $("#ID_Especialidad").val(),
+            ID_Ciclo: $("#ID_Ciclo").val()
+        };
+    }
+</script>

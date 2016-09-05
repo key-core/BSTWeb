@@ -1,0 +1,72 @@
+﻿@{
+    ViewBag.Title = "Consulta de médicos";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.MirrorEntityModel.MMW_Medicos>()
+        // Grid Name
+    .Name("Grid")
+
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                     // Cretae all the columns base on Model
+                     columns.Bound(r => r.ID_Medico).Title("ID")
+                         .Width(50);
+                     columns.Bound(r => r.NU_RegistroSanitario).Title("Nro Sanitario")
+                         .Width(120);
+                     columns.Bound(r => r.TX_Nombre1).Title("1er. Nombre")
+                         .Width(120);
+                     columns.Bound(r => r.TX_Nombre2).Title("2do. Nombre")
+                         .Width(120);
+                     columns.Bound(r => r.TX_Apellido1).Title("1er. Apellido")
+                         .Width(120);
+                     columns.Bound(r => r.TX_Apellido2).Title("2do. Apellido")
+                         .Width(120);
+                     columns.Bound(c => c.TX_Sello).Title("Imagen sello")
+                         .Width(130)
+                         .HtmlAttributes(new { style = "text-align:center" })
+                         .ClientTemplate("<img src='" + Url.Content("~/Content/SelloMedicos/") +
+                                            "#=TX_Sello#' width='100' height='100'/>");
+                     columns.Bound(r => r.BO_Activo).Title("Activo")
+                         .ClientTemplate("<input type='checkbox' #= BO_Activo ? checked='checked' : '' # disabled='disabled'}></input>")
+                         .Width(80);
+                 })
+
+    // Declare ajax datasource.
+        // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+        // Set the model Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+
+                                .Model(model =>
+                                    {
+                                        model.Id(record => record.ID_Medico);
+                                    }
+                                )
+                                .Read(read => read.Action("GetAll", "ConsultaMedicos"))
+                                .PageSize(5)
+    )
+
+    // Set grid sortable.
+    .Sortable()
+
+    // Set grid selectable.
+    .Selectable()
+
+    // Set grid groupable.
+    .Groupable()
+
+    // Set grid filterable.
+    .Filterable()
+
+    // Set grid pagable.
+    .Pageable(pageable =>
+                  {
+                      pageable.Refresh(true);
+                      pageable.PageSizes(true);
+                  })
+)

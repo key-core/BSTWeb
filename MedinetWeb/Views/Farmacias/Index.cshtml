@@ -1,0 +1,133 @@
+﻿@{
+    ViewBag.Title = "Farmacias";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.MirrorEntityModel.MMW_Farmacias>()
+    // Grid Name
+    .Name("Grid")
+    
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                     // Cretae all the columns base on Model
+                     columns.Bound(r => r.ID_Farmacia).Title("ID")
+                         .Width(50);
+                     columns.Bound(r => r.TX_Farmacia).Title("Nombre")
+                         .Width(250);
+                     columns.Bound(r => r.TX_Rif).Title("Rif")
+                         .Width(120);
+                     columns.ForeignKey(r => r.ID_Estado, (System.Collections.IEnumerable)ViewData["dvEstados"], "ID", "TX")
+                         .Title("Estado")
+                         .Width(150)
+                         .EditorTemplateName("IDEstados");
+                     columns.ForeignKey(r => r.ID_Brick, (System.Collections.IEnumerable)ViewData["dvBricks"], "ID", "TX")
+                         .Title("Brick")
+                         .Width(150)
+                         .EditorTemplateName("IDBricksPorEstado");
+                     columns.Bound(r => r.TX_Ruta).Title("Ruta")
+                         .Width(250);
+                     columns.Bound(r => r.TX_Direccion).Title("Dirección")
+                         .Width(300);
+                     columns.Bound(r => r.TX_Telefono1).Title("Telefono1")
+                         .Width(150);
+                     columns.Bound(r => r.TX_Telefono2).Title("Telefono2")
+                         .Width(150);
+                     columns.ForeignKey(r => r.ID_Cadena, (System.Collections.IEnumerable)ViewData["dvCadenas"], "ID", "TX")
+                         .Title("Cadena")
+                         .Width(150)
+                         .EditorTemplateName("IDCadenaFarmacias");
+                     columns.ForeignKey(r => r.ID_Clasificacion, (System.Collections.IEnumerable)ViewData["dvClasificaciones"], "ID", "TX")
+                         .Title("Clasificación")
+                         .Width(150)
+                         .EditorTemplateName("IDClasificacionFarmacias");
+                     columns.Bound(r => r.FE_Registro).Title("Fecha registro")
+                         .Width(150)
+                         .Format("{0:dd/MM/yyyy}");
+                     columns.Bound(r => r.BO_Activo).Title("Activo")
+                        .Width(100)
+                        .ClientTemplate("<input type='checkbox' #= BO_Activo ? checked='checked' : '' # disabled='disabled'}></input>");
+                                              
+                     // Edit and Delete button column
+                     columns.Command(command =>
+                                         {
+                                             command.Edit().Text("Editar");
+                                             command.Destroy().Text("Eliminar");
+                                         }).Width(180);
+                 })
+    
+                 
+    // Declare ajax datasource.
+    // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+    // Set the model Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+
+                                .Model(model =>
+                                    {
+                                        model.Id(record => record.ID_Farmacia);
+                                        model.Field(record => record.BO_Activo).DefaultValue(true);
+                                    }
+                                )
+                                .Read(read => read.Action("GetAll", "Farmacias").Type(HttpVerbs.Post))
+                                .Create(create => create.Action("Add", "Farmacias").Type(HttpVerbs.Post))
+                                .Update(update => update.Action("Update", "Farmacias").Type(HttpVerbs.Post))
+                                .Destroy(delete => delete.Action("Delete", "Farmacias").Type(HttpVerbs.Post))
+                                .PageSize(5))
+
+    .Events(e => e.Save("onSave"))
+    
+    // Add tool bar with Create button
+    .ToolBar(toolbar => toolbar.Create().Text("Agregar registro"))
+    
+    // Set grid editable.
+    .Editable(editable => editable.Mode(GridEditMode.InLine))
+    
+    // Set grid sortable.
+    .Sortable()
+    
+    // Set grid selectable.
+    .Selectable()
+    
+    // Set grid groupable.
+    .Groupable()
+    
+    // Set grid filterable.
+    .Filterable()    
+
+    // Set grid Scrollable.
+    .Scrollable(scrolling => scrolling.Enabled(true).Height(220))
+    
+    // Set grid pagable.
+    .Pageable(pageable =>
+                  {
+                      pageable.Refresh(true);
+                      pageable.PageSizes(true);
+                  })
+)
+
+<script>
+    function filterBricks() {
+        return {
+            ID_Estado: $("#ID_Estado").val()
+        };
+    }
+
+    function onSave(e) {
+        var currentRecordTX = e.model.TX_Rif;
+        var currentRecordID = e.model.ID_Farmacia;
+        var data = this.dataSource.data();
+
+        for (item in data) {
+            if ($.isNumeric(item))
+                if (data[item].TX_Rif.toUpperCase() == currentRecordTX.toUpperCase() &&
+                    data[item].ID_Farmacia != currentRecordID) {
+                    e.preventDefault();
+                    alert("Rif de farmacia duplicado.");
+                }
+        }
+    }
+</script>

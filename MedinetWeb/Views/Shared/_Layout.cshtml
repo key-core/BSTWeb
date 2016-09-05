@@ -1,0 +1,665 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2014.1.318/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2014.1.318/kendo.dataviz.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2014.1.318/kendo.metro.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2014.1.318/kendo.dataviz.metro.min.css")" rel="stylesheet" type="text/css" />
+
+
+    <script src="@Url.Content("~/Scripts/kendo/2014.1.318/jquery.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2014.1.318/kendo.all.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2014.1.318/kendo.aspnetmvc.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo.modernizr.custom.js")"></script>
+    <script src="@Url.Content("~/Scripts/MedinetWeb.js")"></script>
+
+    <script src="~/Content/Highcharts/js/highcharts.js" type="text/javascript"></script>
+    <script src="~/Content/Highcharts/js/highcharts-all.js" type="text/javascript"></script>
+    <script src="~/Content/Highcharts/js/highcharts.js" type="text/javascript"></script>
+    <script src="~/Content/Highcharts/js/highcharts-more.js" type="text/javascript"></script>
+
+    @*<link rel="SHORTCUT ICON" href="@Url.Content("~/favicon.ico")" />*@
+
+    <meta http-equiv='refresh' content='910' />
+    
+</head>
+<body>
+    <header>
+        <div class="content-wrapper">
+            <table id="datosEmpresa" align="right" border="0">
+                <tr>
+                    <td>
+                        <div id="nombreEmpresa">
+                            @System.Configuration.ConfigurationManager.AppSettings["nombreEmpresa"]
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id="rifEmpresa">
+                            @System.Configuration.ConfigurationManager.AppSettings["rifEmpresa"]
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <div class="top-left">
+                <p class="site-title">
+                    @if (Request.IsAuthenticated)
+                    {
+                        <a href="@Url.Action("Index","Home")">
+                            <img width="250" height="100" src="@Url.Content("~/Content/Images/LogoWeb.png")" alt="Home" />
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Login","Acceso")">
+                            <img width="250" height="100" src="@Url.Content("~/Content/Images/LogoWeb.png")" alt="Home" />
+                        </a>
+                    }
+                </p>
+            </div>
+
+            @if (TempData["notice"] != null)
+            {
+                <div class="message-error">
+                    <p>@TempData["notice"]</p>
+                </div>
+            }
+            @if (TempData["success"] != null)
+            {
+                <div class="message-success">
+                    <p>@TempData["success"]</p>
+                </div>
+            }
+
+            <div class="float-right">
+                <section id="login">
+                    @Html.Partial("_LoginPartial")
+                </section>
+            </div>
+
+            <div class="float-center">
+                <nav>
+                    @if (Request.IsAuthenticated)
+                    {
+                        @(Html.Kendo().Menu()
+                            .Name("Menu")
+                            .SecurityTrimming(s => s.HideParent(true))
+                            .Items(items =>
+                            {
+                                items.Add().Text("Inicio")
+                                    .Action("Index", "Home")
+                                    .ImageUrl(Url.Content("~/Content/Images/Menu/eject-26.png"));
+
+                                items.Add().Text("Procesos")
+                                    .ImageUrl(Url.Content("~/Content/Images/Menu/serial_tasks-26.png"))
+                                    .Items(children =>
+                                    {
+                                        children.Add().Text("Gestión")
+                                            .ImageUrl(Url.Content("~/Content/Images/Menu/dossier-26.png"))
+                                            .Items(innerChildren =>
+                                            {
+                                                innerChildren.Add().Text("Aprobaciones")
+                                                    .Action("Index", "Aprobaciones")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/checked_user-26.png"));
+                                                innerChildren.Add().Text("Aprobación altas y bajas")
+                                                    .Action("Index", "AprobacionAltasBajas")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/checked_user-26.png"));
+                                                innerChildren.Add().Text("Descuentos usuarios")
+                                                    .Action("Index", "DescuentosUsuarios")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/Delete_Column-26.png"));
+                                                innerChildren.Add().Text("Mover fichero")
+                                                    .Action("Index", "MoverFicheroAsistido")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/change_user-26.png"));
+                                                innerChildren.Add().Text("Eliminar fichero")
+                                                    .Action("Index", "EliminarFicheroAsistido")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/delete-26.png"));
+                                                
+                                            });
+
+                                        children.Add().Text("Mercadeo")
+                                            .ImageUrl(Url.Content("~/Content/Images/Menu/extensions-26.png"))
+                                            .Items(innerChildren =>
+                                            {
+                                                innerChildren.Add().Text("Actividades especiales")
+                                                    .Action("Index", "ActivEspeciales")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/trekking-26.png"));
+                                                innerChildren.Add().Text("Esquemas promocionales")
+                                                    .Action("Index", "EsquemasPromocionales")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/3d_printer-26.png"));
+                                                innerChildren.Add().Text("Lineas especialidades")
+                                                    .Action("Index", "LineasEspecialidades")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/line_width-26.png"));
+                                                innerChildren.Add().Text("Marcas competencias")
+                                                    .Action("Index", "MarcasCompetencias")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/google_scholar-26.png"));
+                                                innerChildren.Add().Text("Marcas líneas")
+                                                    .Action("Index", "MarcasLineas")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/google_scholar-26.png"));
+                                            });
+                                        children.Add().Text("Reportar Visita")
+                                            .ImageUrl(Url.Content("~/Content/Images/Menu/briefcase-26.png"))
+                                            .Items(innerChildren =>
+                                            {
+                                                innerChildren.Add().Text("Médico")
+                                                    .Action("Index", "SelectMedico")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/doctor-26.png"));
+                                                innerChildren.Add().Text("Farmacia")
+                                                    .Action("Index", "SelectFarmacia")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/hospital-26.png"));
+                                                innerChildren.Add().Text("Hospital")
+                                                    .Action("Index", "SelectHospital")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/hospital2-26.png"));
+                                            });
+                                        children.Add().Text("Eliminar Visita")
+                                            .ImageUrl(Url.Content("~/Content/Images/Menu/delete-26.png"))
+                                            .Items(innerChildren =>
+                                            {
+                                                innerChildren.Add().Text("Médico")
+                                                    .Action("Index", "EliminarVisitaMedico")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/doctor-26.png"));
+                                                innerChildren.Add().Text("Farmacia")
+                                                    .Action("Index", "EliminarVisitaFarmacia")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/hospital-26.png"));
+                                                innerChildren.Add().Text("Hospital")
+                                                    .Action("Index", "EliminarVisitaHospital")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/hospital2-26.png"));
+                                            });
+                                        children.Add().Text("Alta")
+                                            .ImageUrl(Url.Content("~/Content/Images/Menu/add_property-26.png"))
+                                            .Items(innerChildren =>
+                                            {
+                                                innerChildren.Add().Text("Médico")
+                                                    .Action("Index", "SearchMedico")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/doctor-26.png"));
+                                                innerChildren.Add().Text("Farmacia")
+                                                    .Action("Index", "SearchFarmacia")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/hospital-26.png"));
+                                                innerChildren.Add().Text("Hospital")
+                                                    .Action("Index", "SearchHospital")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/hospital2-26.png"));
+                                            });
+                                        children.Add().Text("Baja")
+                                            .ImageUrl(Url.Content("~/Content/Images/Menu/delete_property-26.png"))
+                                            .Items(innerChildren =>
+                                            {
+                                                innerChildren.Add().Text("Médico")
+                                                    .Action("Index", "BajaMedico")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/doctor-26.png"));
+                                                innerChildren.Add().Text("Farmacia")
+                                                    .Action("Index", "BajaFarmacia")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/hospital-26.png"));
+                                                innerChildren.Add().Text("Hospital")
+                                                    .Action("Index", "BajaHospital")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/hospital2-26.png"));
+                                            });
+                                    });
+
+                                items.Add().Text("Consultas")
+                                    .ImageUrl(Url.Content("~/Content/Images/Menu/list_ingredients-26.png"))
+                                    .Items(children =>
+                                    {
+                                        children.Add().Text("Aprobaciones usuarios")
+                                            .Action("Index", "AprobacionesUsuarios")
+                                            .ImageUrl(Url.Content("~/Content/Images/Menu/checked_user-26.png"));
+                                        children.Add().Text("Coberturas")
+                                            .Action("Index", "Coberturas")
+                                            .ImageUrl(Url.Content("~/Content/Images/Menu/positive_26.png"));
+                                        children.Add().Text("Ciclos visitadores")
+                                            .Action("Index", "CiclosVisitadores")
+                                            .ImageUrl(Url.Content("~/Content/Images/Menu/change_user-26.png"));
+                                        children.Add().Text("Coberturas médicas")
+                                            .ImageUrl(Url.Content("~/Content/Images/Menu/positive_26.png"))
+                                            .Items(innerChildren =>
+                                            {
+                                                innerChildren.Add().Text("Cobertura por clasificación")
+                                                    .Action("Index", "CoberturaPorClasificacion")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/positive_26.png"));
+                                                innerChildren.Add().Text("Cobertura por especialidad")
+                                                    .Action("Index", "CoberturaPorEspecialidad")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/positive_26.png"));
+                                                innerChildren.Add().Text("Cobertura por región")
+                                                    .Action("Index", "CoberturaPorRegion")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/positive_26.png"));
+                                            });
+                                        children.Add().Text("Descuentos")
+                                            .ImageUrl(Url.Content("~/Content/Images/Menu/Delete_Column-26.png"))
+                                            .Items(innerChildren =>
+                                            {
+                                                innerChildren.Add().Text("Descuentos usuarios")
+                                                    .Action("Index", "ConsultaDescuentosUsuarios")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/Delete_Column-26.png"));
+                                                innerChildren.Add().Text("Descuentos visitadores")
+                                                    .Action("Index", "ConsultaDescuentosVisitadores")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/Delete_Column-26.png"));
+                                            });
+                                        children.Add().Text("Fichero visitador")
+                                            .Action("Index", "FicheroVisitador")
+                                            .ImageUrl(Url.Content("~/Content/Images/Menu/stack_of_photos-26.png"));
+                                        children.Add().Text("Hoja de rutas")
+                                            .Action("Index", "HojaRuta")
+                                            .ImageUrl(Url.Content("~/Content/Images/Menu/calendar-26.png"));
+                                        children.Add().Text("Médicos")
+                                            .Action("Index", "ConsultaMedicos")
+                                            .ImageUrl(Url.Content("~/Content/Images/Menu/doctor-26.png"));
+                                        children.Add().Text("Solicitudes")
+                                            .Action("Index", "Solicitudes")
+                                            .ImageUrl(Url.Content("~/Content/Images/Menu/google_blog_search-26.png"));
+                                        children.Add().Text("Transmisiones")
+                                            .Action("Index", "Transmisiones")
+                                            .ImageUrl(Url.Content("~/Content/Images/Menu/gps_receiving-26.png"));
+                                        children.Add().Text("Variación fichero")
+                                            .Action("Index", "VariacionFichero")
+                                            .ImageUrl(Url.Content("~/Content/Images/Menu/available_updates-26.png"));
+                                        children.Add().Text("Visitas")
+                                            .ImageUrl(Url.Content("~/Content/Images/Menu/briefcase-26.png"))
+                                            .Items(innerChildren =>
+                                            {
+                                                innerChildren.Add().Text("Visitas farmacias")
+                                                    .Action("Index", "VisitasFarmacias")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/hospital-26.png"));
+                                                innerChildren.Add().Text("Visitas hospitales")
+                                                    .Action("Index", "VisitasHospitales")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/hospital2-26.png"));
+                                                innerChildren.Add().Text("Visitas médicos")
+                                                    .Action("Index", "VisitasMedicos")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/doctor-26.png"));
+                                            });
+                                    });
+
+                                items.Add().Text("Configuración")
+                                    .ImageUrl(Url.Content("~/Content/Images/Menu/data_configuration-26.png"))
+                                    .Items(children =>
+                                    {
+                                        children.Add().Text("Farmacias")
+                                            .ImageUrl(Url.Content("~/Content/Images/Menu/hospital-26.png"))
+                                            .Items(innerChildren =>
+                                            {
+                                                innerChildren.Add().Text("Cadena farmacias")
+                                                    .Action("Index", "CadenaFarmacias")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/link-26.png"));
+                                                innerChildren.Add().Text("Clasificación farmacias")
+                                                    .Action("Index", "ClasificacionFarmacias")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/google_sketchup-26.png"));
+                                                innerChildren.Add().Text("Convenio farmacias")
+                                                    .Action("Index", "ConvenioFarmacias")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/handshake-26.png"));
+                                                innerChildren.Add().Text("Droguerías")
+                                                    .Action("Index", "Droguerias")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/organization-26.png"));
+                                                innerChildren.Add().Text("Droguerías almacenes")
+                                                    .Action("Index", "DrogueriasAlmacenes")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/organization-26.png"));
+                                                innerChildren.Add().Text("Droguerías productos")
+                                                    .Action("Index", "DrogueriasProductos")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/organization-26.png"));
+                                                innerChildren.Add().Text("Farmacias")
+                                                    .Action("Index", "Farmacias")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/hospital-26.png"));
+                                                innerChildren.Add().Text("Laboratorios droguerías")
+                                                    .Action("Index", "LaboratoriosDroguerias")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/apartment-26.png"));
+                                                innerChildren.Add().Text("Productos")
+                                                    .Action("Index", "Productos")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/pill-26.png"));
+                                                innerChildren.Add().Text("Tipo visita farmacias")
+                                                    .Action("Index", "TipoVisitaFarmacias")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/categorize-26.png"));
+                                            });
+
+                                        children.Add().Text("Generales")
+                                            .ImageUrl(Url.Content("~/Content/Images/Menu/books-26.png"))
+                                            .Items(innerChildren =>
+                                            {
+                                                innerChildren.Add().Text("Ciclos")
+                                                    .Action("Index", "Ciclos")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/recurring_appointment-26.png"));
+                                                innerChildren.Add().Text("Concepto descuentos")
+                                                    .Action("Index", "ConceptoDescuentos")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/add_list-26.png"));
+                                                innerChildren.Add().Text("Especialidades")
+                                                    .Action("Index", "Especialidades")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/detective-26.png"));
+                                                innerChildren.Add().Text("Galénicas")
+                                                    .Action("Index", "Galenicas")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/scatter_plot-26.png"));
+                                                innerChildren.Add().Text("Laboratorios")
+                                                    .Action("Index", "Laboratorios")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/apartment-26.png"));
+                                                innerChildren.Add().Text("Líneas")
+                                                    .Action("Index", "Lineas")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/line_width-26.png"));
+                                                innerChildren.Add().Text("Marcas")
+                                                    .Action("Index", "Marcas")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/google_scholar-26.png"));
+                                                innerChildren.Add().Text("Patologías")
+                                                    .Action("Index", "Patologias")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/triangular_bandage-26.png"));
+                                                innerChildren.Add().Text("Posiciones")
+                                                    .Action("Index", "Posiciones")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/positive_dynamic-26.png"));
+                                                innerChildren.Add().Text("Publicaciones")
+                                                    .Action("Index", "Publicaciones")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/publisher-26.png"));
+                                                innerChildren.Add().Text("Umbrales")
+                                                    .Action("Index", "Umbrales")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/thermometer-26.png"));
+                                            });
+
+                                        children.Add().Text("Hospitales")
+                                            .ImageUrl(Url.Content("~/Content/Images/Menu/hospital2-26.png"))
+                                            .Items(innerChildren =>
+                                            {
+                                                innerChildren.Add().Text("Hospitales")
+                                                    .Action("Index", "Hospitales")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/hospital2-26.png"));
+                                                innerChildren.Add().Text("Instituciones")
+                                                    .Action("Index", "Instituciones")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/cottage-26.png"));
+                                                innerChildren.Add().Text("Servicio hospitales")
+                                                    .Action("Index", "ServicioHospitales")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/ambulance-26.png"));
+                                                innerChildren.Add().Text("Tipo visita hospitales")
+                                                    .Action("Index", "TipoVisitaHospitales")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/categorize-26.png"));
+                                            });
+
+                                        children.Add().Text("Locaciones")
+                                            .ImageUrl(Url.Content("~/Content/Images/Menu/world_map-26.png"))
+                                            .Items(innerChildren =>
+                                            {
+                                                innerChildren.Add().Text("Locación bricks")
+                                                    .Action("Index", "LocacionBricks")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/brick-26.png"));
+                                                innerChildren.Add().Text("Locación estados")
+                                                    .Action("Index", "LocacionEstados")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/worldwide_location-26.png"));
+                                                innerChildren.Add().Text("Locación paises")
+                                                    .Action("Index", "LocacionPaises")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/worldwide_location-26.png"));
+                                                innerChildren.Add().Text("Regiones")
+                                                    .Action("Index", "Regiones")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/safari-26.png"));
+                                                innerChildren.Add().Text("Regiones estados")
+                                                    .Action("Index", "RegionesEstados")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/safari-26.png"));
+                                            });
+
+                                        children.Add().Text("Médicos")
+                                            .ImageUrl(Url.Content("~/Content/Images/Menu/doctor-26.png"))
+                                            .Items(innerChildren =>
+                                            {
+                                                innerChildren.Add().Text("Clasificación médicos")
+                                                    .Action("Index", "ClasificacionMedicos")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/google_sketchup-26.png"));
+                                                innerChildren.Add().Text("Consideración médicos")
+                                                    .Action("Index", "ConsideracionMedicos")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/compare-26.png"));
+                                                innerChildren.Add().Text("Deporte médicos")
+                                                    .Action("Index", "DeporteMedicos")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/sport-26.png"));
+                                                innerChildren.Add().Text("Idioma médicos")
+                                                    .Action("Index", "IdiomaMedicos")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/talk-26.png"));
+                                                innerChildren.Add().Text("Médicos")
+                                                    .Action("Index", "Medicos")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/doctor-26.png"));
+                                                innerChildren.Add().Text("Ocupación médicos")
+                                                    .Action("Index", "OcupacionMedicos")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/administrator-26.png"));
+                                                innerChildren.Add().Text("Tipo médicos")
+                                                    .Action("Index", "TipoMedicos")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/categorize-26.png"));
+                                            });
+
+                                        children.Add().Text("Seguridad")
+                                            .ImageUrl(Url.Content("~/Content/Images/Menu/restriction_shield-26.png"))
+                                            .Items(innerChildren =>
+                                            {
+                                                innerChildren.Add().Text("Cargos")
+                                                    .Action("Index", "Cargos")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/active_directory-26.png"));
+                                                innerChildren.Add().Text("Fichas acceso")
+                                                    .Action("Index", "FichasAcceso")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/key-26.png"));
+                                                innerChildren.Add().Text("Roles")
+                                                    .Action("Index", "Roles")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/conference-26.png"));
+                                                innerChildren.Add().Text("Usuarios")
+                                                    .Action("Index", "Usuarios")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/user-26.png"));
+                                                innerChildren.Add().Text("Usuarios responsabilidades")
+                                                    .Action("Index", "UsuariosResponsabilidades")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/user-26.png"));
+                                                innerChildren.Add().Text("Usuarios roles")
+                                                    .Action("Index", "UsuariosRoles")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/user-26.png"));
+                                                innerChildren.Add().Text("Visitadores historial")
+                                                    .Action("Index", "VisitadoresHistorial")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/manager-26.png"));
+                                                innerChildren.Add().Text("Zonas")
+                                                    .Action("Index", "Zonas")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/drop_zone-26.png"));
+                                            });
+
+                                        children.Add().Text("Visitas")
+                                            .ImageUrl(Url.Content("~/Content/Images/Menu/briefcase-26.png"))
+                                            .Items(innerChildren =>
+                                            {
+                                                innerChildren.Add().Text("Beneficio visitas")
+                                                    .Action("Index", "BeneficioVisitas")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/cash_receiving-26.png"));
+                                                innerChildren.Add().Text("Caracteristica visitas")
+                                                    .Action("Index", "CaracteristicaVisitas")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/purchase_order-26.png"));
+                                                innerChildren.Add().Text("Motivo visitas")
+                                                    .Action("Index", "MotivoVisitas")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/plaster-26.png"));
+                                                innerChildren.Add().Text("Solicitud visitas")
+                                                    .Action("Index", "SolicitudVisitas")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/google_blog_search-26.png"));
+                                            });
+                                    });
+
+                                items.Add().Text("SIDEX")
+                                    .ImageUrl(Url.Content("~/Content/Images/Menu/share_point-26.png"))
+                                    .Items(children =>
+                                    {
+                                        children.Add().Text("Procesos")
+                                            .ImageUrl(Url.Content("~/Content/Images/Menu/serial_tasks-26.png"))
+                                            .Items(innerChildren =>
+                                            {
+                                                innerChildren.Add().Text("Aprobación distribución")
+                                                    .Action("ResumenDist", "AprDistribucion")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/product-26.png"));
+                                                innerChildren.Add().Text("Cierre distribución")
+                                                    .Action("Index", "CierreDistribucion")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/filled_box-26.png"));
+                                                innerChildren.Add().Text("Configuración distribución")
+                                                    .Action("Index", "ConfigDistribucion")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/stackoverflow_com-26.png"));
+                                                innerChildren.Add().Text("Distribuciones cerradas")
+                                                    .Action("Index", "DistribucionesCerradas")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/filled_box-26.png"));
+                                                innerChildren.Add().Text("Entrada SIDEX")
+                                                    .Action("Index", "EntradaSIDEX")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/open_in_browser-26.png"));
+                                                innerChildren.Add().Text("Salida SIDEX")
+                                                    .Action("Index", "SalidaSIDEX")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/checkout-26.png"));
+                                                innerChildren.Add().Text("Validación de visitadores")
+                                                    .Action("Index", "ValidaVisitadores")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/manager-26.png"));
+                                            });
+
+                                        children.Add().Text("Consultas")
+                                            .ImageUrl(Url.Content("~/Content/Images/Menu/list_ingredients-26.png"))
+                                            .Items(innerChildren =>
+                                            {
+                                                innerChildren.Add().Text("Notas de entrega")
+                                                    .Action("Index", "NotasEntrega")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/check_book-26.png"));
+                                                innerChildren.Add().Text("Notas de entrega consolidado")
+                                                    .Action("Index", "NotasEntregaConsolidado")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/check_book-26.png"));
+                                            });
+
+                                        children.Add().Text("Configuraciones")
+                                            .ImageUrl(Url.Content("~/Content/Images/Menu/data_configuration-26.png"))
+                                            .Items(innerChildren =>
+                                            {
+                                                innerChildren.Add().Text("Configuraciones SIDEX")
+                                                    .Action("Index", "ConfiguracionesSIDEX")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/share_point-26.png"));
+                                                innerChildren.Add().Text("Marcas SIDEX")
+                                                    .Action("Index", "MarcasSIDEX")
+                                                    .ImageUrl(Url.Content("~/Content/Images/Menu/google_scholar-26.png"));
+                                            });
+                                    });
+
+                                items.Add().Text("Ayuda")
+                                    .ImageUrl(Url.Content("~/Content/Images/Menu/help-26.png"))
+                                    .Items(children =>
+                                    {
+                                        children.Add().Text("Acerca de Medinet")
+                                            .Action("About", "Home")
+                                            .ImageUrl(Url.Content("~/Content/Images/Menu/about-26.png"));
+                                        children.Add().Text("Contactenos")
+                                            .Action("Contact", "Home")
+                                            .ImageUrl(Url.Content("~/Content/Images/Menu/business_contact-26.png"));
+                                    });
+
+                            })
+                        )
+                    }
+                </nav>
+            </div>
+        </div>
+
+        <style scoped="scoped">
+            #Menu h2 {
+                font-size: 1em;
+                text-transform: uppercase;
+                padding: 5px 10px;
+            }
+
+            #template img {
+                margin: 5px 20px 0 0;
+                float: left;
+            }
+
+            #template {
+                width: 380px;
+            }
+
+                #template ol {
+                    float: left;
+                    margin: 0;
+                    padding: 10px 10px 0 10px;
+                }
+
+                #template:after {
+                    content: ".";
+                    display: block;
+                    height: 0;
+                    clear: both;
+                    visibility: hidden;
+                }
+
+                #template .k-button {
+                    float: left;
+                    clear: left;
+                    margin: 5px 0 5px 12px;
+                }
+
+            #datosEmpresa td {
+                padding: 0em 1em 0em 0em;
+            }
+
+            #nombreEmpresa {
+                color: #000;
+                font-weight: bold;
+                font-family: Tahoma, Geneva, sans-serif;
+                font-size: 24px;
+                float: right;
+                margin-top: 15px;
+            }
+
+            #rifEmpresa {
+                color: #000;
+                font-weight: bold;
+                font-family: Tahoma, Geneva, sans-serif;
+                font-size: 9px;
+                float: right;
+            }
+        </style>
+
+    </header>
+    <div id="body">
+        @RenderSection("scripts", required: false)
+        @RenderSection("featured", required: false)
+        <section class="content-wrapper main-content clear-fix">
+            @RenderBody()
+        </section>
+    </div>
+
+    <footer>
+        <div class="content-wrapper" style="color:white;">
+            <div class="float-left">
+                <p class="left"><a href="http://www.key-core.com/" target="_blank" style="color: #fff"><strong>Business Smart Tools</strong></a> - Nuestro Slogan.</p>
+            </div>
+
+            <div class="float-right">
+                <p class="right">&copy; @DateTime.Now.Year Por KeyCore Venezuela, C.A. - Todos los Derechos Reservados. (v1.0)</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
+
+
+<script>
+    function GridError(e) {
+
+        if (e.errors) {
+            var message = "Errors:\n";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () {
+                        message += this + "\n";
+                    });
+                }
+            });
+
+            var grid = $("#Grid").data("kendoGrid");
+            grid.one("dataBinding", function (e) {
+                e.preventDefault();   // cancel grid rebind if error occurs
+            });
+
+            alert(message);
+        }
+
+        //if (e.errors) {
+        //    var message = "Esta intentando ingresar un registro no valido. Verifique si el registro ya existe.";
+
+        //    //$.each(e.errors, function (key, value) {
+        //    //    if ('errors' in value) {
+        //    //        $.each(value.errors, function () {
+        //    //            message += this + "\n";
+        //    //        });
+        //    //    }
+        //    //});
+
+        //    // Display the message
+        //    alert(message);
+        //    // Cancel the changes
+        //    var grid = $("#grid").data("kendoGrid");
+        //    grid.cancelChanges();
+        //}
+    }
+</script>

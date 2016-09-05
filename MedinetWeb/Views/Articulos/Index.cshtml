@@ -1,0 +1,99 @@
+﻿@model IEnumerable<MedinetWeb.Models.MWS_Articulos>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ID_Articulo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TX_IDArticuloCliente)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TX_ArticuloCliente)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TX_ArticuloClienteAbr)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MW_Marcas.TX_Marca)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MWS_TipoArticulos.TX_TipoArticulo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MWS_UnidadManejo.TX_UnidadManejo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NU_UnidadManejo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MWS_UnidadManejo1.TX_UnidadManejo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NU_Peso_KG)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NU_Pie_CUB)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BO_Lote)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ID_Articulo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TX_IDArticuloCliente)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TX_ArticuloCliente)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TX_ArticuloClienteAbr)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MW_Marcas.TX_Marca)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MWS_TipoArticulos.TX_TipoArticulo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MWS_UnidadManejo.TX_UnidadManejo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NU_UnidadManejo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MWS_UnidadManejo1.TX_UnidadManejo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NU_Peso_KG)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NU_Pie_CUB)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BO_Lote)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
+</table>

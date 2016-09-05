@@ -1,0 +1,131 @@
+﻿@{
+    ViewBag.Title = "Consulta descuentos visitadores";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.SP_MW_DescuentosVisitadores_DesVis_Result>()
+    // Grid Name
+    .Name("Grid")
+    
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                     columns.ForeignKey(p => p.ID_Region, (System.Collections.IEnumerable)ViewData["dvRegiones"], "ID", "TX")
+                        .Title("Región")
+                        .Width(130);
+                     columns.ForeignKey(p => p.ID_Linea, (System.Collections.IEnumerable)ViewData["dvLineas"], "ID", "TX")
+                        .Title("Línea")
+                        .Width(130);
+                     columns.ForeignKey(p => p.ID_Usuario, (System.Collections.IEnumerable)ViewData["dvVisitadores"], "ID", "TX")
+                        .Title("Visitador")
+                        .Width(180);
+                     columns.Bound(r => r.Concepto).Title("Concepto descuento")
+                         .Width(220);
+                     columns.Bound(r => r.Descontable).Title("Aplica Desc.")
+                         .Width(125);
+                     columns.Bound(r => r.Fecha_Desde).Title("Fecha inicio")
+                        .Width(130)
+                        .Format("{0:dd/MM/yyyy}");
+                     columns.Bound(r => r.Fecha_Hasta).Title("Fecha fin")
+                         .Width(130)
+                         .Format("{0:dd/MM/yyyy}");
+                     columns.Bound(r => r.NU_Dias).Title("Dias desc.")
+                         .Width(110);
+                     columns.Bound(r => r.Tipo_Desc).Title("Tipo desc.")
+                         .Width(110);
+                     columns.Bound(r => r.Comentario).Title("Comentario")
+                         .Width(250);
+                 })
+                 
+    // Declare ajax datasource.
+    // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+    // Set the model Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+
+                                .Read(read => read.Action("GetAll", "ConsultaDescuentosVisitadores").Data("paramConsulta"))
+                                .PageSize(5)
+    )
+    
+    .ToolBar(toolbar =>
+    {
+        toolbar.Template(@<text>
+        <div class="toolbar">
+            <label class="ciclo-label" for="ciclo">Ciclo:</label>
+            @(Html.Kendo().DropDownList()
+                                    .Name("ddCiclos")
+                                    .OptionLabel("Select")
+                                    .DataTextField("TX")
+                                    .DataValueField("ID")
+                                    .AutoBind(false)
+                                    .Events(e => e.Change("ciclosChange"))
+                                    .DataSource(ds =>
+                                    {
+                                        ds.Read("GetCiclosConData", "Ciclos");
+                                    })
+                                )
+        </div>
+        </text>);
+    })
+
+    // Set grid sortable.
+    .Sortable()
+    
+    // Set grid selectable.
+    .Selectable()
+    
+    // Set grid groupable.
+    .Groupable()
+    
+    // Set grid filterable.
+    .Filterable()    
+
+    // Set grid Scrollable.
+    .Scrollable(scrolling => scrolling.Enabled(true).Height(220))
+
+    // Set grid pagable.
+    .Pageable(pageable =>
+                  {
+                      pageable.Refresh(true);
+                      pageable.PageSizes(true);
+                  })
+)
+
+<script>
+    function ciclosChange() {
+        $("#Grid").data("kendoGrid").dataSource.read();
+    }
+
+    function paramConsulta() {
+        return {
+            cicloID: $("#ddCiclos").val() != "" ? $("#ddCiclos").val() : 0
+        }
+    }
+</script>
+
+<style scoped="scoped">
+    .ciclo-label {
+        vertical-align: middle;
+        padding-right: .5em;
+    }
+
+    #ciclo {
+        vertical-align: middle;
+    }
+
+    .toolbar {
+        float: right;
+    }
+
+    label {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .k-grid .k-hierarchy-col {
+      width: 5px;
+    }
+</style>

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a5e02dfa963a489dbee60f869d317542" Name="Diagram1" ZoomLevel="63">
+        <EntityTypeShape EntityType="MedinetWebModel.MW_LocacionPaises" Width="1.5" PointX="7.25" PointY="20.125" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_CadenaFarmacias" Width="1.5" PointX="5" PointY="8.5" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_CaracteristicaVisitas" Width="1.5" PointX="11" PointY="2.875" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_ConsideracionMedicos" Width="1.5" PointX="5.75" PointY="2.875" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_DeporteMedicos" Width="1.5" PointX="11" PointY="0.5" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_Especialidades" Width="1.5" PointX="14" PointY="26.875" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_Galenicas" Width="1.5" PointX="14.5" PointY="2.875" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_IdiomaMedicos" Width="1.5" PointX="5.75" PointY="0.5" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_Laboratorios" Width="1.5" PointX="11.75" PointY="13.5" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_OcupacionMedicos" Width="1.5" PointX="12.75" PointY="0.5" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_Patologias" Width="1.5" PointX="0.5" PointY="2.875" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_Posiciones" Width="1.5" PointX="20.75" PointY="20.875" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_Regiones" Width="1.5" PointX="14" PointY="29.625" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_ServicioHospitales" Width="1.5" PointX="7.5" PointY="0.5" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_SolicitudVisitas" Width="1.5" PointX="12.75" PointY="2.875" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_TipoMedicos" Width="1.5" PointX="0.5" PointY="0.5" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_TipoVisitaFarmacias" Width="1.5" PointX="2.25" PointY="0.5" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_TipoVisitaHospitales" Width="1.5" PointX="7.5" PointY="2.875" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_MotivoVisitas" Width="1.5" PointX="9.25" PointY="2.875" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_ClasificacionFarmacias" Width="1.5" PointX="7.25" PointY="8.5" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_Droguerias" Width="1.5" PointX="0.5" PointY="4.875" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_ConvenioFarmacias" Width="1.5" PointX="16.25" PointY="30.5" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_ConvenioFarmacias_MW_Regiones" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_ActivEspeciales" Width="1.5" PointX="16.25" PointY="11.125" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_Lineas" Width="1.5" PointX="11.75" PointY="16.875" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_Marcas" Width="1.5" PointX="14" PointY="11.125" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_ActivEspeciales_MW_Lineas" ManuallyRouted="false" >
+        </AssociationConnector>
+        <AssociationConnector Association="MedinetWebModel.FK_MW_ActivEspeciales_MW_Marcas" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_Marcas_MW_Laboratorios" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_LineasEspecialidades" Width="1.5" PointX="16.25" PointY="26.875" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_EspecialidadesLineas_MW_Especialidades" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_EspecialidadesLineas_MW_Lineas" ManuallyRouted="false" >
+        </AssociationConnector>
+        <EntityTypeShape EntityType="MedinetWebModel.MW_Instituciones" Width="1.5" PointX="5" PointY="26.875" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_MarcasCompetencias" Width="1.5" PointX="11.75" PointY="11.125" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_MarcasCompetencias_MW_Marcas" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_MarcasCompetencias_MW_Marcas1" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_MarcasLineas" Width="1.5" PointX="14" PointY="16.875" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_MarcasLineas_MW_Lineas" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_MarcasLineas_MW_Marcas" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_BeneficioVisitas" Width="1.5" PointX="14.5" PointY="0.5" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_ClasificacionMedicos" Width="1.5" PointX="0.5" PointY="23.125" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_EsquemasPromocionales" Width="1.5" PointX="18.5" PointY="16.875" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_EsquemasPromocionales_MW_Especialidades" ManuallyRouted="false" >
+        </AssociationConnector>
+        <AssociationConnector Association="MedinetWebModel.FK_MW_EsquemaPromocional_MW_Lineas" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_EsquemaPromocional_MW_Posiciones" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_EsquemasPromocionales_MW_Marcas" ManuallyRouted="false" >
+        </AssociationConnector>
+        <EntityTypeShape EntityType="MedinetWebModel.MW_Zonas" Width="1.5" PointX="9.5" PointY="26.875" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_Zonas_MW_Lineas" ManuallyRouted="false" >
+        </AssociationConnector>
+        <AssociationConnector Association="MedinetWebModel.FK_MW_Zonas_MW_Regiones" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_ConceptoDescuentos" Width="1.5" PointX="0.5" PointY="7.75" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_RegionesEstados" Width="1.5" PointX="9.5" PointY="11.125" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_EstadosRegiones_MW_Regiones" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_Aprobaciones" Width="1.5" PointX="7.25" PointY="26.875" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_Ciclos" Width="1.5" PointX="16.25" PointY="16.875" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_ActivEspeciales_MW_Ciclos" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_ActivEspeciales_MW_Ciclos1" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_Aprobaciones_MW_Ciclos" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_EsquemasPromocionales_MW_Ciclos" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_LineasEspecialidades_MW_Ciclos" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_LineasEspecialidades_MW_Ciclos1" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_MarcasLineas_MW_Ciclos" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_MarcasLineas_MW_Ciclos1" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_Roles" Width="1.5" PointX="0.5" PointY="19.625" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_Cargos" Width="1.5" PointX="0.5" PointY="26.875" />
+        <EntityTypeShape EntityType="MedinetWebModel.MWS_CargaInv" Width="1.5" PointX="14" PointY="21.5" />
+        <AssociationConnector Association="MedinetWebModel.FK_MWS_CargaInv_MW_Ciclos" />
+        <EntityTypeShape EntityType="MedinetWebModel.MWS_TipoArticulos" Width="1.5" PointX="11.75" PointY="7.625" />
+        <EntityTypeShape EntityType="MedinetWebModel.MWS_UnidadManejo" Width="1.5" PointX="11.75" PointY="4.875" />
+        <EntityTypeShape EntityType="MedinetWebModel.MWS_ConfigDistribucion" Width="1.5" PointX="11.75" PointY="21.5" />
+        <AssociationConnector Association="MedinetWebModel.FK_MWS_ConfigDistribucion_MW_Ciclos" />
+        <AssociationConnector Association="MedinetWebModel.FK_MWS_ConfigDistribucion_MW_ClasificacionMedicos" />
+        <AssociationConnector Association="MedinetWebModel.FK_MWS_ConfigDistribucion_MW_Especialidades" />
+        <AssociationConnector Association="MedinetWebModel.FK_MWS_ConfigDistribucion_MW_Lineas" />
+        <EntityTypeShape EntityType="MedinetWebModel.MWS_FicheroEspejo" Width="1.5" PointX="20.75" PointY="16.875" />
+        <AssociationConnector Association="MedinetWebModel.FK_MWS_FicheroEspejo_MW_Ciclos" />
+        <AssociationConnector Association="MedinetWebModel.FK_MWS_FicheroEspejo_MW_Ciclos1" />
+        <AssociationConnector Association="MedinetWebModel.FK_MWS_FicheroEspejo_MW_ClasificacionMedicos" />
+        <AssociationConnector Association="MedinetWebModel.FK_MWS_FicheroEspejo_MW_Especialidades" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_Publicaciones" Width="1.5" PointX="9.5" PointY="7.625" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_Publicaciones_MW_Marcas" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_Umbrales" Width="1.5" PointX="18.5" PointY="21.125" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_Umbrales_MW_Ciclos" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_Umbrales_MW_Ciclos1" />
+        <EntityTypeShape EntityType="MedinetWebModel.MWS_NoContFichero" Width="1.5" PointX="16.25" PointY="8.375" />
+        <AssociationConnector Association="MedinetWebModel.FK_MWS_NoContFichero_MW_Ciclos" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_Farmacias" Width="1.5" PointX="5" PointY="11.125" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_Hospitales" Width="1.5" PointX="7.25" PointY="11.125" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_LocacionBricks" Width="1.5" PointX="7.25" PointY="16.875" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_LocacionEstados" Width="1.5" PointX="5" PointY="16.875" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_Farmacias_MW_CadenaFarmacias" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_Farmacias_MW_ClasificacionFarmacias" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_Farmacias_MW_LocacionBricks" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_Farmacias_MW_LocacionEstados" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_Hospitales_MW_Instituciones" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_Hospitales_MW_LocacionBricks" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_Hospitales_MW_LocacionEstados" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_LocacionBricks_MW_LocacionEstados" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_EstadosRegiones_MW_LocacionEstados" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_LocacionEstados_MW_LocacionPaises" />
+        <EntityTypeShape EntityType="MedinetWebModel.MWS_NotaEntregaDetalle" Width="1.5" PointX="18.5" PointY="11.125" />
+        <EntityTypeShape EntityType="MedinetWebModel.MWS_NotaEntregaCabecera" Width="1.5" PointX="20.75" PointY="11.125" />
+        <AssociationConnector Association="MedinetWebModel.FK__MWS_NotaE__ID_Ci__58671BC9" />
+        <AssociationConnector Association="MedinetWebModel.FK__MWS_NotaE__ID_No__5B438874" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_Medicos" Width="1.5" PointX="4" PointY="0.5" />
+        <EntityTypeShape EntityType="MedinetWebModel.MWS_Configuraciones" Width="1.5" PointX="18.5" PointY="8.375" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_Usuarios" Width="1.5" PointX="2.75" PointY="16.875" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_VisitadoresHistorial" Width="1.5" PointX="9.5" PointY="16.875" />
+        <AssociationConnector Association="MedinetWebModel.FK__MW_Aproba__ID_Vi__0E04126B" />
+        <AssociationConnector Association="MedinetWebModel.FK__MW_Usuari__ID_Ca__3429BB53" />
+        <AssociationConnector Association="MedinetWebModel.FK__MW_Visita__ID_Ci__3EA749C6" />
+        <AssociationConnector Association="MedinetWebModel.FK__MW_Visita__ID_Ci__3F9B6DFF" />
+        <AssociationConnector Association="MedinetWebModel.FK__MW_Visita__ID_Li__408F9238" />
+        <AssociationConnector Association="MedinetWebModel.FK__MW_Usuari__ID_Es__351DDF8C" />
+        <AssociationConnector Association="MedinetWebModel.FK__MW_Visita__ID_Re__4183B671" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_VisitadoresHistorial_MW_Usuarios" />
+        <AssociationConnector Association="MedinetWebModel.FK__MW_Visita__ID_Zo__436BFEE3" />
+        <AssociationConnector Association="MedinetWebModel.FK__MWS_Fiche__ID_Vi__558AAF1E" />
+        <AssociationConnector Association="MedinetWebModel.FK__MWS_NotaE__ID_Vi__595B4002" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_AprobacionesUsuarios" Width="1.5" PointX="2.75" PointY="26.875" />
+        <AssociationConnector Association="MedinetWebModel.FK__MW_Aproba__ID_Ci__0EF836A4" />
+        <AssociationConnector Association="MedinetWebModel.FK__MW_Aproba__ID_Us__0FEC5ADD" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_DescuentosUsuarios" Width="1.5" PointX="0.5" PointY="11.125" />
+        <AssociationConnector Association="MedinetWebModel.FK__MW_Descue__ID_Ci__11D4A34F" />
+        <AssociationConnector Association="MedinetWebModel.FK__MW_Descue__ID_Co__12C8C788" />
+        <AssociationConnector Association="MedinetWebModel.FK__MW_Descue__ID_Us__13BCEBC1" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_FichasAcceso" Width="1.5" PointX="2.75" PointY="11.125" />
+        <AssociationConnector Association="MedinetWebModel.FK__MW_Fichas__ID_Us__1F2E9E6D" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_UsuariosResponsabilidades" Width="1.5" PointX="11.75" PointY="26.875" />
+        <AssociationConnector Association="MedinetWebModel.FK__MW_Usuari__ID_Ci__361203C5" />
+        <AssociationConnector Association="MedinetWebModel.FK__MW_Usuari__ID_Ci__370627FE" ManuallyRouted="false" >
+        </AssociationConnector>
+        <AssociationConnector Association="MedinetWebModel.FK__MW_Usuari__ID_Li__37FA4C37" />
+        <AssociationConnector Association="MedinetWebModel.FK__MW_Usuari__ID_Ma__38EE7070" />
+        <AssociationConnector Association="MedinetWebModel.FK__MW_Usuari__ID_Re__39E294A9" />
+        <AssociationConnector Association="MedinetWebModel.FK__MW_Usuari__ID_Us__3AD6B8E2" />
+        <EntityTypeShape EntityType="MedinetWebModel.MWS_UsuarioAprobacion" Width="1.5" PointX="5" PointY="20.5" />
+        <AssociationConnector Association="MedinetWebModel.FK__MWS_Usuar__ID_Ci__5C37ACAD" />
+        <AssociationConnector Association="MedinetWebModel.FK__MWS_Usuar__ID_Us__5D2BD0E6" />
+        <EntityTypeShape EntityType="MedinetWebModel.MWS_UsuarioDispensado" Width="1.5" PointX="20.75" PointY="23.5" />
+        <AssociationConnector Association="MedinetWebModel.FK__MWS_Usuar__ID_Ci__5E1FF51F" />
+        <AssociationConnector Association="MedinetWebModel.FK__MWS_Usuar__ID_Us__5F141958" />
+        <EntityTypeShape EntityType="MedinetWebModel.MWS_ValidaVisitadores" Width="1.5" PointX="18.5" PointY="26.875" />
+        <AssociationConnector Association="MedinetWebModel.FK_MWS_ValidaVisitadores_MW_Ciclos" />
+        <AssociationConnector Association="MedinetWebModel.FK_MWS_ValidaVisitadores_MW_VisitadoresHistorial" />
+        <EntityTypeShape EntityType="MedinetWebModel.MWS_CierreDistribucion" Width="1.5" PointX="7.25" PointY="22.625" />
+        <AssociationConnector Association="MedinetWebModel.FK_MWS_CierreDistribuciones_MW_Ciclos" />
+        <AssociationConnector Association="MedinetWebModel.FK_MWS_CierreDistribuciones_MW_Usuarios" />
+        <EntityTypeShape EntityType="MedinetWebModel.MWS_AprDistribucion" Width="1.5" PointX="5" PointY="23.375" />
+        <AssociationConnector Association="MedinetWebModel.FK_MWS_AprDistribucion_MW_Ciclos" />
+        <AssociationConnector Association="MedinetWebModel.FK_MWS_AprDistribucion_MW_Usuarios" />
+        <EntityTypeShape EntityType="MedinetWebModel.MWS_Articulos" Width="1.5" PointX="14" PointY="4.875" />
+        <EntityTypeShape EntityType="MedinetWebModel.MWS_Existencias" Width="1.5" PointX="16.25" PointY="4.875" />
+        <AssociationConnector Association="MedinetWebModel.FK__MWS_Exist__ID_Ci__5D2BD0E6" />
+        <AssociationConnector Association="MedinetWebModel.FK__MWS_Artic__ID_Ma__52AE4273" />
+        <AssociationConnector Association="MedinetWebModel.FK__MWS_Artic__ID_Ti__53A266AC" />
+        <AssociationConnector Association="MedinetWebModel.FK__MWS_Artic__ID_Un__54968AE5" />
+        <AssociationConnector Association="MedinetWebModel.FK__MWS_Artic__ID_Un__558AAF1E" />
+        <AssociationConnector Association="MedinetWebModel.FK__MWS_Confi__ID_Ar__5772F790" />
+        <AssociationConnector Association="MedinetWebModel.FK__MWS_Exist__ID_Ar__5C37ACAD" />
+        <AssociationConnector Association="MedinetWebModel.FK__MWS_NoCon__ID_Ar__62E4AA3C" />
+        <AssociationConnector Association="MedinetWebModel.FK__MWS_NotaE__ID_Ar__66B53B20" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_UsuariosRoles" Width="1.5" PointX="0.5" PointY="16.875" />
+        <AssociationConnector Association="MedinetWebModel.FK__MW_Usuari__ID_Ro__4924D839" />
+        <AssociationConnector Association="MedinetWebModel.FK__MW_Usuari__ID_Us__4A18FC72" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_Aprobaciones_MW_Lineas" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_Aprobaciones_MW_Regiones" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_DrogueriasAlmacenes" Width="1.5" PointX="2.75" PointY="4.875" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_DrogueriasAlmacenes_MW_Droguerias" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_LaboratoriosDroguerias" Width="1.5" PointX="2.75" PointY="7.75" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_LaboratoriosDroguerias_MW_Droguerias" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_LaboratoriosDroguerias_MW_Laboratorios" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_DrogueriasProductos" Width="1.5" PointX="5" PointY="4.875" />
+        <EntityTypeShape EntityType="MedinetWebModel.MW_Productos" Width="1.5" PointX="7.25" PointY="4.875" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_DrogueriasProductos_MW_DrogueriasAlmacenes" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_DrogueriasProductos_MW_Productos" />
+        <AssociationConnector Association="MedinetWebModel.FK_MW_Productos_MW_Marcas" />
+        <EntityTypeShape EntityType="MedinetWebModel.MWS_MarcasSIDEX" Width="1.5" PointX="20.75" PointY="8.375" />
+        <AssociationConnector Association="MedinetWebModel.FK_MWS_MarcasSIDEX_MW_Marcas" />
+        <EntityTypeShape EntityType="MedinetWebModel.MWS_ArticulosRechazados" Width="1.5" PointX="18.5" PointY="4.875" />
+        <EntityTypeShape EntityType="MedinetWebModel.MWS_ExistenciasRechazadas" Width="1.5" PointX="20.5" PointY="4.875" />
+        <AssociationConnector Association="MedinetWebModel.FK_MWS_Articulos_MWS_MarcasSIDEX" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

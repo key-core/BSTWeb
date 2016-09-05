@@ -1,0 +1,349 @@
+﻿@{
+    ViewBag.Title = "Visitas médicos";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+<table border="0" id="tableParametros">
+    <tr>
+        <td>
+            @(Html.Kendo().DropDownList()
+                  .Name("ddCiclos")
+                  .HtmlAttributes(new { style = "width:120px" })
+                  .OptionLabel("Select ciclo")
+                  .DataTextField("TX")
+                  .DataValueField("ID")
+                  .DataSource(source =>
+                  {
+                      source.Read(read =>
+                      {
+                          read.Action("GetCiclosConData", "Ciclos");
+                      });
+                  })
+                  .AutoBind(false)
+                  .Events(evt =>
+                  {
+                      evt.Close("visMedicos.variablesChange");
+                  })
+            )
+        </td>
+        <td>
+            @(Html.Kendo().DropDownList()
+                  .Name("ddLineas")
+                  .HtmlAttributes(new { style = "width:150px" })
+                  .OptionLabel("Select línea")
+                  .DataTextField("Text")
+                  .DataValueField("Value")
+                  .DataSource(source =>
+                  {
+                      source.Read(read =>
+                      {
+                          read.Action("GetLineas", "Lineas");
+                      });
+                  })
+                  .AutoBind(false)
+                  .Events(evt =>
+                  {
+                      evt.Close("visMedicos.variablesChange");
+                  })
+            )
+        </td>
+        <td>
+            @(Html.Kendo().DropDownList()
+                  .Name("ddRegiones")
+                  .HtmlAttributes(new { style = "width:150px" })
+                  .OptionLabel("Select región")
+                  .DataTextField("Text")
+                  .DataValueField("Value")
+                  .DataSource(source =>
+                  {
+                      source.Read(read =>
+                      {
+                          read.Action("GetRegiones", "Regiones");
+                      });
+                  })
+                  .AutoBind(false)
+                  .Events(evt =>
+                  {
+                      evt.Close("visMedicos.variablesChange");
+                  })
+            )
+        </td>
+        <td>
+            @(Html.Kendo().DropDownList()
+                  .Name("ddVisitadores")
+                  .HtmlAttributes(new { style = "width:200px" })
+                  .OptionLabel("Select visitador")
+                  .DataTextField("Text")
+                  .DataValueField("Value")
+                  .DataSource(source =>
+                  {
+                      source.Read(read =>
+                      {
+                          read.Action("GetVisitadores_VisMed", "VisitadoresHistorial")
+                              .Data("filterVisitadores");
+                      })
+                      .ServerFiltering(true);
+                  })
+                  .Enable(false)
+                  .AutoBind(false)
+                  .CascadeFrom("ddRegiones")
+                  .Events(evt =>
+                  {
+                      evt.Change("visMedicos.visitadorChange");
+                  })
+            )
+        </td>
+        <td>
+            <button class="k-button" id="getVisitasMedicos">Buscar</button>
+        </td>
+    </tr>
+</table>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.SP_MW_VisMedicos_Result>()
+        // Grid Name
+    .Name("Grid")
+
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                     columns.Bound(r => r.Medico).Title("Médico");
+                     columns.Bound(r => r.FechaVisita).Title("Fecha Visita")
+                         .Format("{0:dd/MM/yyyy}");
+                     columns.Bound(r => r.Tipo).Title("Visita");
+                     columns.Bound(r => r.Clinica).Title("Clínica");
+                     columns.Bound(r => r.Especialidad).Title("Especialidad");
+                     columns.Bound(r => r.Motivo).Title("Acompañante/Motivo");
+                 })
+
+    // Declare ajax datasource.
+        // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+        // Set the model Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+
+                                .Model(model =>
+                                    {
+                                        model.Id(record => record.Registro);
+                                    }
+                                )
+                                .Read(read => read.Action("GetAll", "VisitasMedicos").Data("paramVistasMedicos"))
+    )
+
+    // Llama al detalle
+    .ClientDetailTemplateId("templateVisitaMedico")
+
+    // Set grid selectable.
+    .Selectable()
+
+    // Set grid sortable.
+    .Sortable()
+
+    // Set grid groupable.
+    .Groupable()
+
+    // Set grid filterable.
+    .Filterable()
+
+    // Set grid pagable.
+    .Pageable(pageable =>
+                    {
+                        pageable.Refresh(true);
+                        pageable.PageSizes(true);
+                    })
+)
+
+<script id="templateVisitaMedico" type="text/kendo-tmpl">
+    @(Html.Kendo().TabStrip()
+            .Name("tabStrip_#=ID_Ciclo#_#=ID_Visitador#_#=Registro#")
+            .SelectedIndex(0)
+            .Animation(animation => animation.Open(open => open.Fade(FadeDirection.In)))
+            .Items(items =>
+            {
+                items.Add().Text("General").Content(
+                    "<div class='general-details'>" +
+                        "<ul>" +
+                            "<li><label>Médico:</label>#= Medico #</li>" +
+                            "<li><label>Especialidad:</label>#= Especialidad #</li>" +
+                            "<li><label>Ruta:</label>#= Ruta #</li>" +
+                            "<li><label>Clínica:</label>#= Clinica #</li>" +
+                            "<li><label>Clasificación:</label>#= Clasificacion #</li>" +
+                            "<li><label>Teléfono:</label>#= Telefono #</li>" +
+                            "<li><label>Dirección:</label>#= Direccion #</li>" +
+                            "<li><label>Comentarios:</label>#= ComentPublicos #</li>" +
+                        "</ul>" +
+                    "</div>"
+                );
+                items.Add().Text("Detalle").Content(
+                    @<text>
+                    @(Html.Kendo().Grid<MedinetWeb.Models.SP_MW_VisMedicosDetalle_Result>()
+                        .Name("GridDetalle_#=ID_Ciclo#_#=ID_Visitador#_#=Registro#")
+                        .Columns(columns =>
+                        {
+                            columns.Bound(r => r.Producto).Title("Producto");
+                            columns.Bound(r => r.Muestras).Title("Muestras");
+                            columns.Bound(r => r.MaterialPro).Title("Material Prom.");
+                            columns.Bound(r => r.MaterialPOP).Title("Material POP");
+                        })
+                        .DataSource(dataSource => dataSource.Ajax()
+                            .Model(model =>
+                                    {
+                                        model.Id(record => record.NroProducto);
+                                    })
+                            .Read(read => read.Action("GetAllDetalle", "VisitasMedicos",
+                                        new { cicloID = "#=ID_Ciclo#", visitadorID = "#=ID_Visitador#", registro = "#=Registro#" }))
+                        )
+                        // Set grid selectable.
+                        .Selectable()
+
+                        // Llama al detalle
+                        .ClientDetailTemplateId("templateVisitaMedicoDetalle")
+
+                        // Set grid sortable.
+                        .Sortable(sortable => sortable
+                        .AllowUnsort(true)
+                        .SortMode(GridSortMode.MultipleColumn))
+                        .ToClientTemplate())
+                </text>
+                );
+            })
+            .ToClientTemplate()
+    )
+</script>
+
+<script id="templateVisitaMedicoDetalle" type="text/kendo-tmpl">
+    @(Html.Kendo().TabStrip()
+            .Name("tabStripDetalle_#=ID_Ciclo#_#=ID_Visitador#_#=Registro#_#=NroProducto#")
+            .SelectedIndex(0)
+            .Animation(animation => animation.Open(open => open.Fade(FadeDirection.In)))
+            .Items(items =>
+            {
+                items.Add().Text("Comentarios positivos").Content(
+                    "<div class='general-details'>" +
+                        "<ul>" +
+                            "<li><label>Caracteristicas:</label>#= Caracteristica #</li>" +
+                            "<li><label>Beneficios:</label>#= Beneficios #</li>" +
+                            "<li><label>Presentación:</label>#= Presentacion #</li>" +
+                            "<li><label>Solicita:</label>#= Solicita #</li>" +
+                            "<li><label>Solicita detalle:</label>#= SolicitaDet #</li>" +
+                        "</ul>" +
+                    "</div>"
+                );
+                items.Add().Text("Comentarios negativos").Content(
+                    "<div class='general-details'>" +
+                        "<ul>" +
+                            "<li><label>Prescribe:</label>#= Prescribe #</li>" +
+                            "<li><label>No útiliza:</label>#= NOUtiliza #</li>" +
+                        "</ul>" +
+                    "</div>"
+                );
+            })
+        .ToClientTemplate()
+    )
+</script>
+
+
+<style scoped>
+    #tableParametros {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
+    #Grid {
+        margin-top: 10px;
+    }
+
+    td {
+        padding: 0em 0.5em 0.25em 0em;
+        border: 0 none;
+    }
+
+    #getVisitasMedicos {
+        visibility: hidden;
+    }
+
+    .k-detail-cell .k-tabstrip .k-content {
+        padding: 0.2em;
+    }
+
+    .general-details ul {
+        list-style: none;
+        font-style: italic;
+        margin: 15px;
+        padding: 0;
+    }
+
+    .general-details ul li {
+        margin: 0;
+        line-height: 1.7em;
+    }
+
+    .general-details label {
+        display: inline-block;
+        width: 180px;
+        padding-right: 10px;
+        text-align: right;
+        font-style: normal;
+        font-weight: bold;
+    }
+</style>
+
+<script>
+    function filterVisitadores() {
+        return {
+            IDCiclo: $("#ddCiclos").val(),
+            IDLinea: $("#ddLineas").val(),
+            IDRegion: $("#ddRegiones").val()
+        };
+    }
+
+    function paramVistasMedicos() {
+        return {
+            cicloID: $("#ddCiclos").val() != "" ? $("#ddCiclos").val() : 0,
+            lineaID: $("#ddLineas").val() != "" ? $("#ddLineas").val() : 0,
+            regionID: $("#ddRegiones").val() != "" ? $("#ddRegiones").val() : 0,
+            visitadorID: $("#ddVisitadores").val() != "" ? $("#ddVisitadores").val() : 0
+        }
+    }
+
+    $("#getVisitasMedicos").click(function () {
+        var ddCiclos = $("#ddCiclos").data("kendoDropDownList");
+        var ddLineas = $("#ddLineas").data("kendoDropDownList");
+        var ddRegiones = $("#ddRegiones").data("kendoDropDownList");
+        var ddVisitadores = $("#ddVisitadores").data("kendoDropDownList");
+
+        ddCiclos.enable(false);
+        ddLineas.enable(false);
+        ddRegiones.enable(false);
+        ddVisitadores.enable(false);
+
+        document.getElementById("getVisitasMedicos").style.visibility = 'hidden';
+
+        $("#Grid").data("kendoGrid").dataSource.read();
+    });
+
+    var visMedicos = (function () {
+        var _visitadorChange = function () {
+            if ($("#ddVisitadores").val() == "") {
+                document.getElementById("getVisitasMedicos").style.visibility = 'hidden';
+            }
+            else {
+                document.getElementById("getVisitasMedicos").style.visibility = 'visible';
+            }
+        };
+
+        var _variablesChange = function () {
+            var ddVisitadores = $('#ddVisitadores').data('kendoDropDownList');
+            ddVisitadores.value('');
+
+            document.getElementById("getVisitasMedicos").style.visibility = 'hidden';
+        };
+
+        return {
+            visitadorChange: _visitadorChange,
+            variablesChange: _variablesChange
+        };
+    }());
+</script>

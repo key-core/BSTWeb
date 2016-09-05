@@ -1,0 +1,97 @@
+﻿@{
+    ViewBag.Title = "Concepto descuentos";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.MirrorEntityModel.MMW_ConceptoDescuentos>()
+    // Grid Name
+    .Name("Grid")
+    
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                     // Cretae all the columns base on Model
+                     columns.Bound(r => r.ID_ConceptoDescuento).Title("ID");
+                     columns.Bound(r => r.TX_ConceptoDescuento).Title("Nombre");
+                     columns.Bound(r => r.BO_AplicaCobertura).Title("Aplica cobertura")
+                        .ClientTemplate("<input type='checkbox' #= BO_AplicaCobertura ? checked='checked' : '' # disabled='disabled'}></input>");
+                     columns.Bound(r => r.BO_AplicaVehiculo).Title("Aplica vehículo")
+                        .ClientTemplate("<input type='checkbox' #= BO_AplicaVehiculo ? checked='checked' : '' # disabled='disabled'}></input>");
+                     columns.Bound(r => r.BO_Activo).Title("Activo")
+                        .ClientTemplate("<input type='checkbox' #= BO_Activo ? checked='checked' : '' # disabled='disabled'}></input>");
+                                              
+                     // Edit and Delete button column
+                     columns.Command(command =>
+                                         {
+                                             command.Edit().Text("Editar");
+                                             command.Destroy().Text("Eliminar");
+                                         }).Width(180);
+                 })
+                 
+    // Declare ajax datasource.
+    // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+    // Set the model Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+                                
+                                .Model(model =>
+                                    {
+                                        model.Id(record => record.ID_ConceptoDescuento);
+                                        model.Field(record => record.BO_Activo).DefaultValue(true);
+                                    }
+                                )
+                                .Read(read => read.Action("GetAll", "ConceptoDescuentos"))
+                                .Create(create => create.Action("Add", "ConceptoDescuentos"))
+                                .Update(update => update.Action("Update", "ConceptoDescuentos"))
+                                .Destroy(delete => delete.Action("Delete", "ConceptoDescuentos"))
+                                .PageSize(5)
+                                
+    )
+
+    .Events(e => e.Save("onSave"))
+
+    // Add tool bar with Create button
+    .ToolBar(toolbar => toolbar.Create().Text("Agregar registro"))
+    
+    // Set grid editable.
+    .Editable(editable => editable.Mode(GridEditMode.InLine))
+    
+    // Set grid sortable.
+    .Sortable()
+    
+    // Set grid selectable.
+    .Selectable()
+    
+    // Set grid groupable.
+    .Groupable()
+    
+    // Set grid filterable.
+    .Filterable()    
+
+    // Set grid pagable.
+    .Pageable(pageable =>
+                  {
+                      pageable.Refresh(true);
+                      pageable.PageSizes(true);
+                  })
+)
+
+<script>
+    function onSave(e) {
+        var currentRecordTX = e.model.TX_ConceptoDescuento;
+        var currentRecordID = e.model.ID_ConceptoDescuento;
+        var data = this.dataSource.data();
+
+        for (item in data) {
+            if ($.isNumeric(item))
+                if (data[item].TX_ConceptoDescuento.toUpperCase() == currentRecordTX.toUpperCase() &&
+                    data[item].ID_ConceptoDescuento != currentRecordID) {
+                    e.preventDefault();
+                    alert("Concepto de descuento duplicado.");
+                }
+        }
+    }
+</script>

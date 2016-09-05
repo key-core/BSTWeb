@@ -1,0 +1,79 @@
+﻿<div align="center">
+    <hgroup class="title">
+        <h1>Ciclo @ViewBag.Ciclo desde: @ViewBag.FEIni hasta: @ViewBag.FEFin (Días Restantes: @ViewBag.Restantes)</h1>
+    </hgroup>
+</div>
+<table id="tablaCoberturas" style="width:60%" align="center" border="0" cellspacing="0" cellpadding="0">
+    <tr class="trMaster">
+        <th></th>
+        <th>FICHERO MÉDICO</th>
+        <th></th>
+    </tr>
+    <tr class="trTitulo">
+        <th>FICHADOS</th>
+        <th>REVISITAS</th>
+        <th>CONTACTOS</th>
+    </tr>
+    <tr class="trDatos">
+        <td>@ViewBag.FICHADOS</td>
+        <td>@ViewBag.REVISITAS</td>
+        <td>@ViewBag.CONTACTOS</td>
+    </tr>
+    <tr class="trMaster">
+        <th ></th>
+        <th >COBERTURAS</th>
+        <th ></th>
+    </tr>
+    <tr class="trTitulo">
+        <th>% VISITAS</th>
+        <th>% REVISITAS</th>
+        <th>MIX</th>
+    </tr>
+    <tr class="trDatos">
+        <td>@ViewBag.PVISITADOS %</td>
+        <td>@ViewBag.PREVISITAS %</td>
+        <td>@ViewBag.MIX %</td>
+    </tr>
+    <tr class="trTitulo">
+        <th>PDR</th>
+        <th>HOSPITALES</th>
+        <th>FARMACIAS</th>
+    </tr>
+    <tr class="trDatos">
+        <td>@ViewBag.PDR</td>
+        <td>@ViewBag.HOSPITALES</td>
+        <td>@ViewBag.FARMACIAS</td>
+    </tr>
+    <tr class="trTitulo">
+        <th>MIN = @ViewBag.MINPDR</th>
+        <th>MIN = @ViewBag.MINHOSPITALES</th>
+        <th>MIN = @ViewBag.MINFARMACIAS</th>
+    </tr>
+</table>
+<style>
+    .trMaster {
+        background-color: #2B399B;
+        color: #FFFFFF;
+    }
+
+    #tablaCoberturas th, #tablaCoberturas td {
+        text-align: center;
+        font-weight: bold;
+        padding: 0px;
+        border: solid;
+        border-color: #EFEEEF;
+        font-size: x-large;
+    }
+
+    .trDatos {
+        background-color: #EFEEEF;
+        color: #000000;
+        height: 50px;
+    }
+
+
+    .trTitulo {
+        background-color: #808080;
+        color: #FFFFFF;
+    }
+</style>

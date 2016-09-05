@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = "Configuraciones SIDEX";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.MirrorEntityModel.MMWS_Configuraciones>()
+        // Grid Name
+    .Name("Grid")
+
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                     // Cretae all the columns base on Model
+                     columns.Bound(r => r.NU_UnidadRedondeo).Title("Únidad redondeo")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .EditorTemplateName("DoubleMin0Max1");
+                     columns.Bound(r => r.BO_PorUnidadManejo).Title("Por UM")
+                         .ClientTemplate("<input type='checkbox' #= BO_PorUnidadManejo ? checked='checked' : '' # disabled='disabled'}></input>");
+                     columns.Bound(r => r.BO_ForzarUnidad).Title("Forzar únidad")
+                         .ClientTemplate("<input type='checkbox' #= BO_ForzarUnidad ? checked='checked' : '' # disabled='disabled'}></input>");
+                     columns.Bound(r => r.NU_DiasVigencia).Title("Días vigencia")
+                         .HtmlAttributes(new { style = "text-align:right" });
+
+                     // Edit and Delete button column
+                     columns.Command(command =>
+                                         {
+                                             command.Edit().Text("Editar");
+                                         }).Width(180);
+                 })
+
+    // Declare ajax datasource.
+        // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+        // Set the model Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+
+                                .Model(model =>
+                                    {
+                                        model.Id(record => record.ID_Configuracion);
+                                    }
+                                )
+                                .Read(read => read.Action("GetAll", "ConfiguracionesSIDEX"))
+                                .Update(update => update.Action("Update", "ConfiguracionesSIDEX"))
+    )
+
+    // Set grid editable.
+    .Editable(editable => editable.Mode(GridEditMode.InLine))
+
+    // Set grid selectable.
+    .Selectable()
+)

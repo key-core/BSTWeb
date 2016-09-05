@@ -1,0 +1,153 @@
+﻿@{
+    ViewBag.Title = "Solicitudes";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.SP_MW_Solicitudes_Result>()
+        // Grid Name
+    .Name("Grid")
+
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                     columns.ForeignKey(p => p.ID_Region, (System.Collections.IEnumerable)ViewData["dvRegiones"], "ID", "TX")
+                         .Title("Región");
+                     columns.ForeignKey(p => p.ID_Linea, (System.Collections.IEnumerable)ViewData["dvLineas"], "ID", "TX")
+                         .Title("Línea");
+                     columns.ForeignKey(p => p.ID_Visitador, (System.Collections.IEnumerable)ViewData["dvVisitadores"], "ID", "TX")
+                         .Title("Visitadores");
+                     columns.Bound(r => r.Medico).Title("Médico");
+                     columns.ForeignKey(p => p.ID_Especialidad, (System.Collections.IEnumerable)ViewData["dvEspecialidades"], "ID", "TX")
+                         .Title("Especialidad");
+                     columns.ForeignKey(p => p.ID_Marca, (System.Collections.IEnumerable)ViewData["dvMarcas"], "ID", "TX")
+                         .Title("Marca");
+                     columns.Bound(r => r.Solicita).Title("Solicitud");
+                 })
+
+    .ToolBar(toolbar =>
+    {
+        toolbar.Template(@<text>
+            <div class="toolbar">
+                <label class="ciclo-label" for="ciclo">Ciclo:</label>
+                @(Html.Kendo().DropDownList()
+                                    .Name("ddCiclos")
+                                    .OptionLabel("Select")
+                                    .DataTextField("TX")
+                                    .DataValueField("ID")
+                                    .AutoBind(false)
+                                    .Events(e => e.Change("ciclosChange"))
+                                    .DataSource(ds =>
+                                    {
+                                        ds.Read("GetCiclosConData", "Ciclos");
+                                    })
+                )
+            </div>
+        </text>);
+    })
+
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+                                
+                                .Model(model =>
+                                    {
+                                        model.Id(record => record.Registro);
+                                    }
+                                )
+                                .Read(read => read.Action("GetAll", "Solicitudes").Data("paramSolitud"))
+    )
+    
+    // Llama al detalle
+    .ClientDetailTemplateId("templateDetalleSolicitud")
+    
+    // Set grid sortable.
+    .Sortable()
+
+    // Set grid selectable.
+    .Selectable()
+
+    // Set grid groupable.
+    .Groupable()
+
+    // Set grid filterable.
+    .Filterable()
+)
+
+<script id="templateDetalleSolicitud" type="text/kendo-tmpl">
+    @(Html.Kendo().TabStrip()
+            .Name("tabStrip_#=ID_Ciclo#_#=ID_Visitador#_#=Registro#")
+            .SelectedIndex(0)
+            .Animation(animation => animation.Open(open => open.Fade(FadeDirection.In)))
+            .Items(items =>
+            {
+                items.Add().Text("Detalle").Content(
+                    "<div class='general-details'>" +
+                        "<ul>" +
+                            "<li><label>Médico:</label>#= Medico #</li>" +
+                            "<li><label>Clínica:</label>#= Clinica #</li>" +
+                            "<li><label>FechaVisita:</label>#= FechaVisita #</li>" +
+                            "<li><label>Solicita:</label>#= Solicita #</li>" +
+                            "<li><label>Solicita Detalle:</label>#= SolicitaDetalle #</li>" +
+                        "</ul>" +
+                    "</div>"
+                );
+            })
+            .ToClientTemplate()
+    )
+</script>
+
+<script>
+    function ciclosChange() {
+        $("#Grid").data("kendoGrid").dataSource.read();
+    }
+
+    function paramSolitud() {
+        return {
+            cicloID: $("#ddCiclos").val() != "" ? $("#ddCiclos").val() : 0
+        }
+    }
+</script>
+
+
+<style scoped="scoped">
+    .ciclo-label {
+        vertical-align: middle;
+        padding-right: .5em;
+        display: inline-block;
+    }
+
+    #ciclo {
+        vertical-align: middle;
+    }
+
+    .toolbar {
+        float: right;
+    }
+
+    .k-grid .k-hierarchy-col {
+        width: 5px;
+    }
+
+    .general-details ul {
+        list-style: none;
+        font-style: italic;
+        margin: 15px;
+        padding: 0;
+    }
+
+    .general-details ul li {
+        margin: 0;
+        line-height: 1.7em;
+    }
+
+    .general-details label {
+        display: inline-block;
+        width: 180px;
+        padding-right: 10px;
+        text-align: right;
+        font-style: normal;
+        font-weight: bold;
+    }
+</style>

@@ -1,0 +1,233 @@
+﻿@{
+    ViewBag.Title = "Visitas a Médicos de Consulta Privada";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+@(Html.Kendo().Grid<MedinetWeb.SP_MWL_GetFicheroByZonaAndText_Result>()
+        // Grid Name
+    .Name("Grid")
+
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                     columns.Bound(r => r.REGISTRO).Title("REGISTRO");
+                     columns.Bound(r => r.DOCTOR).Title("DOCTOR");
+                     columns.Bound(r => r.FECHA_VISITA).Title("FECHA VISITA").Width(30);
+                     columns.Bound(r => r.TIPO).Title("TIPO");
+                     columns.Bound(r => r.BO_Visitar).Title("ACCIÓN").Column.Visible = false;
+                     columns.Bound(r => r.REVISITA).Title("REVISITA");//.Column.Visible = false;
+                     columns.Command(c =>
+                     {
+                         c.Custom("VisitMedico").Text("Visitar").Click("goToVisit");
+                     });
+                 })
+
+    // Declare ajax datasource.
+        // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+        // Set the model Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+                                .Model(model =>
+                                    {
+                                        model.Id(record => record.REGISTRO);
+                                    }
+                                )
+                                .Read(read => read.Action("GetAll", "SelectMedico"))
+
+    )
+
+    .Events(e => e.DataBound("onDataBound"))
+
+    // Set grid selectable.
+    .Selectable()
+
+    // Set grid sortable.
+    .Sortable()
+
+    // Set grid groupable.
+    //.Groupable()
+
+    // Set grid filterable.
+    .Filterable()
+    // Set grid pagable.
+    .Pageable(pageable =>
+                    {
+                        pageable.Refresh(true);
+                        pageable.PageSizes(true);
+                    })
+)
+
+
+
+<style scoped>
+    
+
+    #tableParametros {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
+    #Grid {
+        margin-top: 10px;
+    }
+
+    td {
+        padding: 0em 0.5em 0.25em 0em;
+        border: 0 none;
+    }
+
+    #getFicheroVis {
+        visibility: hidden;
+    }
+
+    .k-detail-cell .k-tabstrip .k-content {
+        padding: 0.2em;
+    }
+
+    .general-details ul {
+        list-style: none;
+        font-style: italic;
+        margin: 15px;
+        padding: 0;
+    }
+
+        .general-details ul li {
+            margin: 0;
+            line-height: 1.7em;
+        }
+
+    .general-details label {
+        display: inline-block;
+        width: 180px;
+        padding-right: 10px;
+        text-align: right;
+        font-style: normal;
+        font-weight: bold;
+    }
+
+    .profesional-details ul {
+        list-style: none;
+        font-style: italic;
+        margin: 15px;
+        padding: 0;
+    }
+
+        .profesional-details ul li {
+            margin: 0;
+            line-height: 1.7em;
+        }
+
+    .profesional-details label {
+        display: inline-block;
+        width: 180px;
+        padding-right: 10px;
+        text-align: right;
+        font-style: normal;
+        font-weight: bold;
+    }
+
+    .personal-details ul {
+        list-style: none;
+        font-style: italic;
+        margin: 15px;
+        padding: 0;
+    }
+
+        .personal-details ul li {
+            margin: 0;
+            line-height: 1.7em;
+        }
+
+    .personal-details label {
+        display: inline-block;
+        width: 180px;
+        padding-right: 10px;
+        text-align: right;
+        font-style: normal;
+        font-weight: bold;
+    }
+
+    .agendaVisita-details ul {
+        list-style: none;
+        font-style: italic;
+        margin: 15px;
+        padding: 0;
+    }
+
+        .agendaVisita-details ul li {
+            margin: 0;
+            line-height: 1.7em;
+        }
+
+    .agendaVisita-details label {
+        display: inline-block;
+        width: 180px;
+        padding-right: 10px;
+        text-align: right;
+        font-style: normal;
+        font-weight: bold;
+    }
+
+    .agendaRevisita-details ul {
+        list-style: none;
+        font-style: italic;
+        margin: 15px;
+        padding: 0;
+    }
+
+        .agendaRevisita-details ul li {
+            margin: 0;
+            line-height: 1.7em;
+        }
+
+    .agendaRevisita-details label {
+        display: inline-block;
+        width: 180px;
+        padding-right: 10px;
+        text-align: right;
+        font-style: normal;
+        font-weight: bold;
+    }
+    .trRevisita {
+        background-color:#e6e9f5;
+        font-weight:bold;
+    }
+</style>
+
+<script>
+    function onDataBound(e) {
+
+        var grid = $("#Grid").data("kendoGrid");
+        var gridData = grid.dataSource.view();
+        for (var i = 0; i < gridData.length; i++) {
+            var currentUid = gridData[i].uid;
+            //alert('primero: ' + gridData[i].BO_Visitar);
+            if (gridData[i].BO_Visitar == '0') {
+                var currenRow = grid.table.find("tr[data-uid='" + currentUid + "']");
+                var editButton = $(currenRow).find(".k-grid-VisitMedico");
+                //$(currenRow).addClass("trRevisita");
+                //alert('segundo: ' + gridData[i].BO_Visitar);
+                editButton.hide();
+            }
+            if (gridData[i].REVISITA == 'SI') {
+                var currenRow = grid.table.find("tr[data-uid='" + currentUid + "']");
+                var editButton = $(currenRow).find(".k-grid-VisitMedico");
+                $(currenRow).addClass("trRevisita");
+                //alert('segundo: ' + gridData[i].BO_Visitar);
+             
+            }
+        }
+    }
+    function goToVisit(e) {
+        var tr = $(e.currentTarget).closest("tr");
+        var item = $("#Grid").data("kendoGrid").dataItem(tr);
+
+        var REGISTRO = item.REGISTRO;
+        //alert(REGISTRO);
+        window.location.href = "@Url.Action("Index","VisitarMedico")?REG=" + REGISTRO + "&F=" + "" + "&T=" + "" + "&A=" + "&AC=I";
+    }
+    
+</script>

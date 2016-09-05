@@ -1,0 +1,438 @@
+﻿@{
+    ViewBag.Title = "Fichero visitador";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+    
+</hgroup>
+
+<table border="0" id="tableParametros">
+    <tr>
+        <td>
+            @(Html.Kendo().DropDownList()
+                  .Name("ddCiclos")
+                  .HtmlAttributes(new { style = "width:120px" })
+                  .OptionLabel("Select ciclo")
+                  .DataTextField("TX")
+                  .DataValueField("ID")
+                  .DataSource(source =>
+                  {
+                      source.Read(read =>
+                      {
+                          read.Action("GetCiclosConData", "Ciclos");
+                      });
+                  })
+                  .AutoBind(false)
+                  .Events(evt =>
+                  {
+                      evt.Close("ficheroVis.variablesChange");
+                  })
+            )
+        </td>
+        <td>
+            @(Html.Kendo().DropDownList()
+                  .Name("ddLineas")
+                  .HtmlAttributes(new { style = "width:150px" })
+                  .OptionLabel("Select línea")
+                  .DataTextField("Text")
+                  .DataValueField("Value")
+                  .DataSource(source =>
+                  {
+                      source.Read(read =>
+                      {
+                          read.Action("GetLineas", "Lineas");
+                      });
+                  })
+                  .AutoBind(false)
+                  .Events(evt =>
+                  {
+                      evt.Close("ficheroVis.variablesChange");
+                  })
+            )
+        </td>
+        <td>
+            @(Html.Kendo().DropDownList()
+                  .Name("ddRegiones")
+                  .HtmlAttributes(new { style = "width:150px" })
+                  .OptionLabel("Select región")
+                  .DataTextField("Text")
+                  .DataValueField("Value")
+                  .DataSource(source =>
+                  {
+                      source.Read(read =>
+                      {
+                          read.Action("GetRegiones", "Regiones");
+                      });
+                  })
+                  .AutoBind(false)
+                  .Events(evt =>
+                  {
+                      evt.Close("ficheroVis.variablesChange");
+                  })
+            )
+        </td>
+        <td>
+            @(Html.Kendo().DropDownList()
+                  .Name("ddVisitadores")
+                  .HtmlAttributes(new { style = "width:200px" })
+                  .OptionLabel("Select visitador")
+                  .DataTextField("Text")
+                  .DataValueField("Value")
+                  .DataSource(source =>
+                  {
+                      source.Read(read =>
+                      {
+                          read.Action("GetVisitadores_FicVis", "VisitadoresHistorial")
+                              .Data("filterVisitadores");
+                      })
+                      .ServerFiltering(true);
+                  })
+                  .Enable(false)
+                  .AutoBind(false)
+                  .CascadeFrom("ddRegiones")
+                  .Events(evt =>
+                  {
+                      evt.Change("ficheroVis.visitadorChange");
+                  })
+            )
+        </td>
+        <td>
+            <button class="k-button" id="getFicheroVis">Buscar</button>
+        </td>
+    </tr>
+</table>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.SP_MW_FicheroVisitador_Result>()
+        // Grid Name
+    .Name("Grid")
+
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                     columns.Bound(r => r.Medico).Title("Médico");
+                     columns.Bound(r => r.Ruta).Title("Ruta");
+                     columns.Bound(r => r.Clinica).Title("Clínica");
+                     columns.Bound(r => r.Especialidad).Title("Especialidad");
+                     columns.Bound(r => r.Clasificacion).Title("Clasificación");
+                     columns.Bound(r => r.Revisita).Title("Revisita");
+                 })
+
+    // Declare ajax datasource.
+        // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+        // Set the model Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+
+                                .Model(model =>
+                                    {
+                                        model.Id(record => record.Registro);
+                                    }
+                                )
+                                .Read(read => read.Action("GetAll", "FicheroVisitador").Data("paramFicheroVis"))
+    )
+
+    // Llama al detalle
+    .ClientDetailTemplateId("templateFicheroDetalle")
+
+    // Set grid selectable.
+    .Selectable()
+
+    // Set grid sortable.
+    .Sortable()
+
+    // Set grid groupable.
+    .Groupable()
+
+    // Set grid filterable.
+    .Filterable()
+
+    // Set grid pagable.
+    .Pageable(pageable =>
+                    {
+                        pageable.Refresh(true);
+                        pageable.PageSizes(true);
+                    })
+)
+
+<script id="templateFicheroDetalle" type="text/kendo-tmpl">
+    @(Html.Kendo().TabStrip()
+            .Name("tabStrip_#=ID_Ciclo#_#=ID_Visitador#_#=Registro#")
+            .SelectedIndex(0)
+            .Animation(animation => animation.Open(open => open.Fade(FadeDirection.In)))
+            .Items(items =>
+            {
+                items.Add().Text("General").Content(
+                    "<div class='general-details'>" +
+                        "<ul>" +
+                            "<li><label>Modo:</label>#= Modo #</li>" +
+                            "<li><label>Nro. Visitadores:</label>#= NroVisitadores #</li>" +
+                            "<li><label>Colocación maleta:</label>#= ColocacionMaleta #</li>" +
+                            "<li><label>Hace esperar:</label>#= HaceEsperar #</li>" +
+                            "<li><label>Estado:</label>#= Estado #</li>" +
+                            "<li><label>Brick:</label>#= Brick #</li>" +
+                            "<li><label>Brick Zona:</label>#= BrickZona #</li>" +
+                            "<li><label>Teléfono:</label>#= Telefono #</li>" +
+                            "<li><label>Observación:</label>#= Observacion #</li>" +
+                            "<li><label>Email:</label>#= Email #</li>" +
+                            "<li><label>Hora sugerida:</label>#= HoraSugerida #</li>" +
+                        "</ul>" +
+                    "</div>"
+                );
+                items.Add().Text("Profesional").Content(
+                    "<div class='profesional-details'>" +
+                        "<ul>" +
+                            "<li><label>Otro sitio:</label>#= OtroSitio #</li>" +
+                            "<li><label>Ocupación:</label>#= Ocupacion #</li>" +
+                            "<li><label>Costo consulta:</label>#= CostoConsulta #</li>" +
+                            "<li><label>Influencia clínica:</label>#= InfluenciaClinica #</li>" +
+                            "<li><label>Investigador:</label>#= Investigador #</li>" +
+                            "<li><label>Formador:</label>#= Formador #</li>" +
+                            "<li><label>Speaker:</label>#= Speaker #</li>" +
+                            "<li><label>Congreso:</label>#= Congreso #</li>" +
+                            "<li><label>Considera primero:</label>#= ConsideraPrimero #</li>" +
+                            "<li><label>Considera segundo:</label>#= ConsideraSegundo #</li>" +
+                            "<li><label>Considera tercero:</label>#= ConsideraTercero #</li>" +
+                            "<li><label>Trato especial:</label>#= TratoEspecial #</li>" +
+                            "<li><label>Patologia frecuente 1:</label>#= PatologiaFrecuente1 #</li>" +
+                            "<li><label>Patologia frecuente 2:</label>#= PatologiaFrecuente2 #</li>" +
+                            "<li><label>Patologia frecuente 3:</label>#= PatologiaFrecuente3 #</li>" +
+                            "<li><label>Producto acoplado 1:</label>#= ProductoAcoplados1 #</li>" +
+                            "<li><label>Producto acoplado 2:</label>#= ProductoAcoplados2 #</li>" +
+                            "<li><label>Producto acoplado 3:</label>#= ProductoAcoplados3 #</li>" +
+                            "<li><label>Perfil prescriptivo 1:</label>#= PerfilPrescriptivo1 #</li>" +
+                            "<li><label>Perfil prescriptivo 2:</label>#= PerfilPrescriptivo2 #</li>" +
+                            "<li><label>Perfil prescriptivo 3:</label>#= PerfilPrescriptivo3 #</li>" +
+                            "<li><label>Secretaria:</label>#= Secretaria #</li>" +
+                            "<li><label>Nro. Sanitario:</label>#= NroSanitario #</li>" +
+                        "</ul>" +
+                    "</div>"
+                );
+                items.Add().Text("Personal").Content(
+                    "<div class='personal-details'>" +
+                        "<ul>" +
+                            "<li><label>Tipo médico 1:</label>#= TipoMedico1 #</li>" +
+                            "<li><label>Tipo médico 2:</label>#= TipoMedico2 #</li>" +
+                            "<li><label>Estado civíl:</label>#= EstadoCivil #</li>" +
+                            "<li><label>Hijo masculino:</label>#= HijoMasculino #</li>" +
+                            "<li><label>Hijo femenino:</label>#= HijoFemenino #</li>" +
+                            "<li><label>Deportes:</label>#= Deportes #</li>" +
+                            "<li><label>Cumpleaño día:</label>#= CumpleanoDia #</li>" +
+                            "<li><label>Cumpleaño mes:</label>#= CumpleanoMes #</li>" +
+                            "<li><label>Idioma 1:</label>#= Idiomas1 #</li>" +
+                            "<li><label>Idioma 2:</label>#= Idiomas2 #</li>" +
+                            "<li><label>Edad en tiempo:</label>#= EdadEnTiempo #</li>" +
+                        "</ul>" +
+                    "</div>"
+                );
+                items.Add().Text("Agenda visita").Content(
+                    "<div class='agendaVisita-details'>" +
+                        "<ul>" +
+                            "<li><label>Fecha agenda:</label>#= FechaAgenda #</li>" +
+                            "<li><label>Semana agenda:</label>#= SemanaAgenda #</li>" +
+                            "<li><label>Hora agenda:</label>#= AmPmAgenda #</li>" +
+                        "</ul>" +
+                    "</div>"
+                );
+                items.Add().Text("Agenda revisita").Content(
+                    "<div class='agendaRevisita-details'>" +
+                        "<ul>" +
+                            "<li><label>Fecha agenda:</label>#= RFechaAgenda #</li>" +
+                            "<li><label>Semana agenda:</label>#= RSemanaAgenda #</li>" +
+                            "<li><label>Hora agenda:</label>#= RAmPmAgenda #</li>" +
+                        "</ul>" +
+                    "</div>"
+                );
+            })
+            .ToClientTemplate()
+    )
+</script>
+
+
+
+<style scoped>
+    #tableParametros {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
+    #Grid {
+        margin-top: 10px;
+    }
+
+    td {
+        padding: 0em 0.5em 0.25em 0em;
+        border: 0 none;
+    }
+
+    #getFicheroVis {
+        visibility: hidden;
+    }
+
+    .k-detail-cell .k-tabstrip .k-content {
+        padding: 0.2em;
+    }
+
+    .general-details ul {
+        list-style: none;
+        font-style: italic;
+        margin: 15px;
+        padding: 0;
+    }
+
+    .general-details ul li {
+            margin: 0;
+            line-height: 1.7em;
+        }
+
+    .general-details label {
+        display: inline-block;
+        width: 180px;
+        padding-right: 10px;
+        text-align: right;
+        font-style: normal;
+        font-weight: bold;
+    }
+
+    .profesional-details ul {
+        list-style: none;
+        font-style: italic;
+        margin: 15px;
+        padding: 0;
+    }
+
+    .profesional-details ul li {
+            margin: 0;
+            line-height: 1.7em;
+        }
+
+    .profesional-details label {
+        display: inline-block;
+        width: 180px;
+        padding-right: 10px;
+        text-align: right;
+        font-style: normal;
+        font-weight: bold;
+    }
+
+    .personal-details ul {
+        list-style: none;
+        font-style: italic;
+        margin: 15px;
+        padding: 0;
+    }
+
+    .personal-details ul li {
+            margin: 0;
+            line-height: 1.7em;
+        }
+
+    .personal-details label {
+        display: inline-block;
+        width: 180px;
+        padding-right: 10px;
+        text-align: right;
+        font-style: normal;
+        font-weight: bold;
+    }
+
+    .agendaVisita-details ul {
+        list-style: none;
+        font-style: italic;
+        margin: 15px;
+        padding: 0;
+    }
+
+    .agendaVisita-details ul li {
+            margin: 0;
+            line-height: 1.7em;
+        }
+
+    .agendaVisita-details label {
+        display: inline-block;
+        width: 180px;
+        padding-right: 10px;
+        text-align: right;
+        font-style: normal;
+        font-weight: bold;
+    }
+
+    .agendaRevisita-details ul {
+        list-style: none;
+        font-style: italic;
+        margin: 15px;
+        padding: 0;
+    }
+
+    .agendaRevisita-details ul li {
+            margin: 0;
+            line-height: 1.7em;
+        }
+
+    .agendaRevisita-details label {
+        display: inline-block;
+        width: 180px;
+        padding-right: 10px;
+        text-align: right;
+        font-style: normal;
+        font-weight: bold;
+    }
+</style>
+
+<script>
+    function filterVisitadores() {
+        return {
+            IDCiclo: $("#ddCiclos").val(),
+            IDLinea: $("#ddLineas").val(),
+            IDRegion: $("#ddRegiones").val()
+        };
+    }
+
+    function paramFicheroVis() {
+        return {
+            cicloID: $("#ddCiclos").val() != "" ? $("#ddCiclos").val() : 0,
+            lineaID: $("#ddLineas").val() != "" ? $("#ddLineas").val() : 0,
+            regionID: $("#ddRegiones").val() != "" ? $("#ddRegiones").val() : 0,
+            visitadorID: $("#ddVisitadores").val() != "" ? $("#ddVisitadores").val() : 0
+        }
+    }
+
+    $("#getFicheroVis").click(function () {
+        var ddCiclos = $("#ddCiclos").data("kendoDropDownList");
+        var ddLineas = $("#ddLineas").data("kendoDropDownList");
+        var ddRegiones = $("#ddRegiones").data("kendoDropDownList");
+        var ddVisitadores = $("#ddVisitadores").data("kendoDropDownList");
+
+        ddCiclos.enable(false);
+        ddLineas.enable(false);
+        ddRegiones.enable(false);
+        ddVisitadores.enable(false);
+
+        document.getElementById("getFicheroVis").style.visibility = 'hidden';
+
+        $("#Grid").data("kendoGrid").dataSource.read();
+    });
+
+    var ficheroVis = (function () {
+        var _visitadorChange = function () {
+            if ($("#ddVisitadores").val() == "") {
+                document.getElementById("getFicheroVis").style.visibility = 'hidden';
+            }
+            else {
+                document.getElementById("getFicheroVis").style.visibility = 'visible';
+            }
+        };
+
+        var _variablesChange = function () {
+            var ddVisitadores = $('#ddVisitadores').data('kendoDropDownList');
+            ddVisitadores.value('');
+
+            document.getElementById("getFicheroVis").style.visibility = 'hidden';
+        };
+
+        return {
+            visitadorChange: _visitadorChange,
+            variablesChange: _variablesChange
+        };
+    }());
+</script>

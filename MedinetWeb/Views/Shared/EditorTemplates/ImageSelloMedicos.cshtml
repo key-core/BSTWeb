@@ -1,0 +1,24 @@
+﻿@model string
+
+@Html.HiddenFor(m => m)
+@Html.ValidationMessageFor(m => m)
+
+<script>
+    function onSuccess(e) {
+        var imagePath = e.response.TX_Sello;
+
+        $("#TX_Sello").val(imagePath).trigger("change");
+    }
+</script>
+
+@(Html.Kendo().Upload()
+    .Name("file")
+    .Multiple(false)
+    .HtmlAttributes(new { accept = ".png,.jpg,.gif" })
+    .Async(a => a
+        .Save("SaveImage", "Medicos")
+        .Remove("RemoveImage", "Medicos")
+        .AutoUpload(true)
+    )
+    .Events( e => e.Success("onSuccess"))
+ )

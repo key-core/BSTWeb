@@ -1,0 +1,99 @@
+﻿@{
+    ViewBag.Title = "Alta de Farmacia";
+}
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+<br />@(Html.Kendo().Grid<MedinetWeb.SP_MWL_GetFarmacias_Result>()
+        // Grid Name
+    .Name("Grid")
+    .AutoBind(true)
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                     columns.Bound(r => r.ID_Farmacia).Title("NÚMERO");
+                     columns.Bound(r => r.TX_Farmacia).Title("FARMACIA");
+                     columns.Bound(r => r.TX_Estado).Title("ESTADO");
+                     columns.Bound(r => r.TX_Ruta).Title("RUTA");
+                     columns.Bound(r => r.TX_Cadena).Title("CADENA");
+                     
+                     columns.Command(c =>
+                     {
+                         c.Custom("FichrFarmacia").Text("Fichar").Click("goToFichar");
+                     });
+                 })
+
+    // Declare ajax datasource.
+        // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+        // Set the model Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+                                .Model(model =>
+                                    {
+                                        model.Id(record => record.ID_Farmacia);
+                                    }
+                                )
+                                .Read(read => read.Action("GetAll", "SearchFarmacia"))
+
+    )
+
+    //.Events(e => e.DataBound("onDataBound"))
+
+    // Set grid selectable.
+    .Selectable()
+
+    // Set grid sortable.
+    .Sortable()
+
+    // Set grid groupable.
+        //.Groupable()
+
+    // Set grid filterable.
+    .Filterable()
+        // Set grid pagable.
+    .Pageable(pageable =>
+                    {
+                        pageable.Refresh(true);
+                        pageable.PageSizes(true);
+                    })
+)
+<script>
+
+    function goToFichar(e) {
+        var tr = $(e.currentTarget).closest("tr");
+        var item = $("#Grid").data("kendoGrid").dataItem(tr);
+
+        var id = item.ID_Farmacia;
+        
+
+        var retVal = confirm("¿Desea fichar la farmacia seleccionada?");
+        if (retVal == true) {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Fichar")',
+                dataType: 'json',
+                data: {
+                    id: id
+                },
+                success: function (resp) {
+
+                    if (resp) {
+                        alert("¡Farmacia fichada exitosamente!");
+                        //window.location.href = "@Url.Action("Index","SearchFarmacia")";
+                        $("#Grid").data("kendoGrid").dataSource.read();
+                    } else {
+                        alert("¡La farmacia no pudo ser fichada correctamente! Contacte con el administrador");
+                    }
+                    //alert(resp.mensaje);
+                },
+                error: function (ex) {
+                    alert('Falló fichando farmacia...');
+                }
+            });
+            return true;
+        }
+
+
+    }
+
+</script>

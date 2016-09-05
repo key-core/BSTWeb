@@ -1,0 +1,77 @@
+﻿@{
+    ViewBag.Title = "Droguerías almacenes";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.MirrorEntityModel.MMW_DrogueriasAlmacenes>()
+        // Grid Name
+    .Name("Grid")
+
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                     // Cretae all the columns base on Model
+                     columns.Bound(r => r.ID_DrogueriaAlmacen).Title("ID");
+                     columns.ForeignKey(p => p.ID_Drogueria, (System.Collections.IEnumerable)ViewData["dvDroguerias"], "ID", "TX")
+                        .Title("Droguería")
+                        .EditorTemplateName("IDDroguerias");
+                     columns.Bound(r => r.TX_Almacen).Title("Nombre");
+                     columns.Bound(r => r.TX_IDAlmacen).Title("Código");
+                     columns.Bound(r => r.BO_Activo).Title("Activo")
+                         .ClientTemplate("<input type='checkbox' #= BO_Activo ? checked='checked' : '' # disabled='disabled'}></input>");
+
+                     // Edit and Delete button column
+                     columns.Command(command =>
+                                         {
+                                             command.Edit().Text("Editar");
+                                             command.Destroy().Text("Eliminar");
+                                         }).Width(180);
+                 })
+
+    // Declare ajax datasource.
+        // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+        // Set the model Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+
+                                .Model(model =>
+                                    {
+                                        model.Id(record => record.ID_DrogueriaAlmacen);
+                                        model.Field(record => record.BO_Activo).DefaultValue(true);
+                                    }
+                                )
+                                .Read(read => read.Action("GetAll", "DrogueriasAlmacenes"))
+                                .Create(create => create.Action("Add", "DrogueriasAlmacenes"))
+                                .Update(update => update.Action("Update", "DrogueriasAlmacenes"))
+                                .Destroy(delete => delete.Action("Delete", "DrogueriasAlmacenes"))
+                                .PageSize(5)
+    )
+
+    // Add tool bar with Create button
+    .ToolBar(toolbar => toolbar.Create().Text("Agregar registro"))
+
+    // Set grid editable.
+    .Editable(editable => editable.Mode(GridEditMode.InLine))
+
+    // Set grid sortable.
+    .Sortable()
+
+    // Set grid selectable.
+    .Selectable()
+
+    // Set grid groupable.
+    .Groupable()
+
+    // Set grid filterable.
+    .Filterable()
+
+    // Set grid pagable.
+    .Pageable(pageable =>
+                  {
+                      pageable.Refresh(true);
+                      pageable.PageSizes(true);
+                  })
+)

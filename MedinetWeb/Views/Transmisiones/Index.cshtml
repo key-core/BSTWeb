@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "Transmisiones";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.SP_MW_Transmisiones_Result>()
+        // Grid Name
+    .Name("Grid")
+
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                     // Cretae all the columns base on Model
+                     columns.ForeignKey(r => r.ID_Region, (System.Collections.IEnumerable)ViewData["dvRegiones"], "ID", "TX")
+                         .Title("Región");
+                     columns.ForeignKey(r => r.ID_Linea, (System.Collections.IEnumerable)ViewData["dvLineas"], "ID", "TX")
+                         .Title("Línea");
+                     columns.ForeignKey(r => r.ID_Usuario, (System.Collections.IEnumerable)ViewData["dvVisitadores"], "ID", "TX")
+                         .Title("Visitador");
+                     columns.Bound(r => r.Fecha).Title("Fecha")
+                         .Format("{0:dd/MM/yyyy}");
+                     columns.Bound(r => r.PVM).Title("PVM");
+                     columns.Bound(r => r.SO).Title("SO");
+                     columns.Bound(r => r.ModeloTelefono).Title("Modelo Tlf.");
+                 })
+
+    // Declare ajax datasource.
+        // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+        // Set the model Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+
+                                .Read(read => read.Action("GetAll", "Transmisiones"))
+    )
+
+    // Set grid sortable.
+    .Sortable()
+
+    // Set grid selectable.
+    .Selectable()
+
+    // Set grid groupable.
+    .Groupable()
+
+    // Set grid filterable.
+    .Filterable()
+)

@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<title>@ViewBag.Title</title>
+        <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/kendo/2014.1.318/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/kendo/2014.1.318/kendo.dataviz.min.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/kendo/2014.1.318/kendo.Bootstrap.min.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/kendo/2014.1.318/kendo.dataviz.Bootstrap.min.css")" rel="stylesheet" type="text/css" />
+
+
+        <script src="@Url.Content("~/Scripts/kendo/2014.1.318/jquery.min.js")"></script>
+        <script src="@Url.Content("~/Scripts/kendo/2014.1.318/kendo.all.min.js")"></script>
+        <script src="@Url.Content("~/Scripts/kendo/2014.1.318/kendo.aspnetmvc.min.js")"></script>
+        <script src="@Url.Content("~/Scripts/kendo.modernizr.custom.js")"></script>
+        <script src="@Url.Content("~/Scripts/MedinetWeb.js")"></script>
+
+        <link rel="SHORTCUT ICON" href="@Url.Content("~/favicon.ico")" />
+
+        <meta http-equiv='refresh' content='905' />
+</head>
+	<body>
+		<header>
+            <div class="content-wrapper">
+                <table id="datosEmpresa" align="right" border="0">
+                    <tr>
+                        <td>
+                            <div id="nombreEmpresa">
+                                @System.Configuration.ConfigurationManager.AppSettings["nombreEmpresa"]
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div id="rifEmpresa">
+                                @System.Configuration.ConfigurationManager.AppSettings["rifEmpresa"]
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+				<div class="top-left">
+                    <p class="site-title">
+                        <img src="@Url.Content("~/Content/Images/LogoWeb.png")" alt="Home"/>
+                    </p>
+				</div>
+            </div>
+
+            <style scoped="scoped">
+                #datosEmpresa td {
+                    padding: 0em 1em 0em 0em;
+                }
+
+                #nombreEmpresa {
+                    color: #FFFFFF;
+                    font-weight: bold;
+                    font-family: Tahoma, Geneva, sans-serif;
+                    font-size: 24px;
+                    float: right;
+                    margin-top: 15px;
+                }
+
+                #rifEmpresa {
+                    color: #FFFFFF;
+                    font-weight: bold;
+                    font-family: Tahoma, Geneva, sans-serif;
+                    font-size: 9px;
+                    float: right;
+                }
+            </style>
+
+		</header>
+		<div id="body">
+            @RenderSection("scripts", required: false)
+			@RenderSection("featured", required: false)
+			<section class="content-wrapper main-content clear-fix">
+				@RenderBody()
+			</section>
+		</div>
+
+		<footer>
+			<div class="content-wrapper" style="color:white;">
+				<div class="float-left">
+                    <p class="left"><a href="http://www.medinetla.com/" target="_blank" style="color: #FFFFFF"><strong>Medinet</strong></a> - Productividad y versatilidad en la palma de la mano.</p>
+				</div>
+
+                <div class="float-right">
+    		        <p class="right">&copy; @DateTime.Now.Year Por MDN Consultores, C.A. - Todos los Derechos Reservados. </p>
+				</div>
+			</div>
+		</footer>
+	</body>
+</html>
+
+
+<script>
+    function GridError(e) {
+
+        if (e.errors) {
+            var message = "Errors:\n";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () {
+                        message += this + "\n";
+                    });
+                }
+            });
+
+            var grid = $("#Grid").data("kendoGrid");
+            grid.one("dataBinding", function (e) {
+                e.preventDefault();   // cancel grid rebind if error occurs  
+            });
+
+            alert(message);
+        }
+    }
+</script>

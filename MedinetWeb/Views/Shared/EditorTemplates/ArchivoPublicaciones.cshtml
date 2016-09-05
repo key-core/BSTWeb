@@ -1,0 +1,24 @@
+﻿@model string
+
+@Html.HiddenFor(m => m)
+@Html.ValidationMessageFor(m => m)
+
+<script>
+    function onSuccess(e) {
+        var archivoPath = e.response.TX_Archivo;
+
+        $("#TX_Archivo").val(archivoPath).trigger("change");
+    }
+</script>
+
+@(Html.Kendo().Upload()
+    .Name("file")
+    .Multiple(false)
+    .HtmlAttributes(new { accept = ".png,.img,.jpg,.gif,.pdf,.avi,.mp4,.mkv,.mpeg,.doc,.docx,.xls,.xlsx" })
+    .Async(a => a
+        .Save("SaveArchivo", "Publicaciones")
+        .Remove("RemoveArchivo", "Publicaciones")
+        .AutoUpload(true)
+    )
+    .Events( e => e.Success("onSuccess"))
+ )

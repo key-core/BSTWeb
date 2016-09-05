@@ -1,0 +1,119 @@
+﻿@{
+    ViewBag.Title = "Médicos";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.MirrorEntityModel.MMW_Medicos>()
+    // Grid Name
+    .Name("Grid")
+    
+    // Declare grid column
+    .Columns(columns =>
+                 {
+    // Cretae all the columns base on Model
+                     columns.Bound(r => r.ID_Medico).Title("ID")
+                         .Width(50);
+                     columns.Bound(r => r.NU_RegistroSanitario).Title("Nro Sanitario")
+                         .Width(150);
+                     columns.Bound(r => r.TX_Nombre1).Title("1er. Nombre")
+                         .Width(150);
+                     columns.Bound(r => r.TX_Nombre2).Title("2do. Nombre")
+                         .Width(150);
+                     columns.Bound(r => r.TX_Apellido1).Title("1er. Apellido")
+                         .Width(150);
+                     columns.Bound(r => r.TX_Apellido2).Title("2do. Apellido")
+                         .Width(150);
+                     columns.Bound(c => c.TX_Sello).Title("Imagen sello")
+                         .Width(150)
+                         .HtmlAttributes(new { style = "text-align:center" })
+                         .ClientTemplate("<img src='" + Url.Content("~/Content/SelloMedicos/") +
+                                            "#=TX_Sello#' width='100' height='100'/>");
+                     columns.Bound(r => r.BO_Activo).Title("Activo")
+                         .ClientTemplate("<input type='checkbox' #= BO_Activo ? checked='checked' : '' # disabled='disabled'}></input>")
+                         .Width(100);
+                                              
+                     // Edit and Delete button column
+                     columns.Command(command =>
+                                         {
+                                             command.Edit().Text("Editar");
+                                             command.Destroy().Text("Eliminar");
+                                         }).Width(180);
+                 })
+                 
+    // Declare ajax datasource.
+    // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+    // Set the model Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+                                
+                                .Model(model =>
+                                    {
+                                        model.Id(record => record.ID_Medico);
+                                        model.Field(record => record.BO_Activo).DefaultValue(true);
+                                    }
+                                )
+                                .Read(read => read.Action("GetAll", "Medicos"))
+                                .Create(create => create.Action("Add", "Medicos"))
+                                .Update(update => update.Action("Update", "Medicos"))
+                                .Destroy(delete => delete.Action("Delete", "Medicos"))
+                                .PageSize(5)
+    )
+    
+    .Events(e => e.Save("onSave"))
+    
+    // Add tool bar with Create button
+    .ToolBar(toolbar => toolbar.Create().Text("Agregar registro"))
+    
+    // Set grid editable.
+    .Editable(editable => editable.Mode(GridEditMode.InLine))
+    
+    // Set grid sortable.
+    .Sortable()
+    
+    // Set grid selectable.
+    .Selectable()
+    
+    // Set grid groupable.
+    .Groupable()
+    
+    // Set grid filterable.
+    .Filterable()    
+
+    // Set grid Scrollable.
+    .Scrollable(scrolling => scrolling.Enabled(true).Height(220))
+
+    // Set grid pagable.
+    .Pageable(pageable =>
+                  {
+                      pageable.Refresh(true);
+                      pageable.PageSizes(true);
+                  })
+)
+
+<script>
+    function onSave(e) {
+        var currentRecordReg = e.model.NU_RegistroSanitario;
+        var currentRecordSello = e.model.TX_Sello;
+        var currentRecordID = e.model.ID_Medico;
+        var data = this.dataSource.data();
+        for (item in data) {
+            if (data[item].NU_RegistroSanitario == currentRecordReg &&
+               data[item].ID_Medico != currentRecordID) {
+                e.preventDefault();
+                alert("Número de registro sanitario duplicado.");
+            }
+        }
+        
+        for (item in data) {
+            if ($.isNumeric(item))
+                if ((data[item].TX_Sello == currentRecordSello &&
+                    data[item].ID_Medico != currentRecordID) || currentRecordSello == null) {
+                    e.preventDefault();
+                    alert("El nombre de la imagen sello coincide con una ya registrada.");
+                }
+        }
+    }
+</script>

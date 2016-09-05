@@ -1,0 +1,109 @@
+﻿@{
+    ViewBag.Title = "Notas de entrega consolidado";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.SP_MWS_NotaEntregaConsolidado_NotEntCon_Result>()
+        // Grid Name
+    .Name("Grid")
+
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                     columns.Bound(r => r.ID_NotaEntrega).Title("ID");
+                     columns.ForeignKey(p => p.ID_VisitadoresHistorial, (System.Collections.IEnumerable)ViewData["dvVisitadoresHistorial"], "ID", "TX")
+                         .Title("Visitador");
+                     columns.ForeignKey(p => p.ID_Marca, (System.Collections.IEnumerable)ViewData["dvMarcas"], "ID", "TX")
+                         .Title("Marca");
+                     columns.Bound(r => r.TX_Articulo).Title("Artículo");
+                     columns.Bound(r => r.TX_Lote).Title("Lote");
+                     columns.Bound(r => r.TX_Ubicacion).Title("Ubicación");
+                     columns.Bound(r => r.NU_UnidadEntregar).Title("Uni. Entregar")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Format("{0:n0}");
+                     columns.Bound(r => r.NU_UMEntregar).Title("UM. Entregar")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Format("{0:n}");
+                 })
+
+    .ToolBar(toolbar =>
+    {
+        toolbar.Template(@<text>
+            <div class="toolbar">
+                <label class="ciclo-label" for="ciclo">Ciclo:</label>
+                @(Html.Kendo().DropDownList()
+                                    .Name("ddCiclos")
+                                    .OptionLabel("Select")
+                                    .DataTextField("TX")
+                                    .DataValueField("ID")
+                                    .AutoBind(false)
+                                    .Events(e => e.Change("ciclosChange"))
+                                    .DataSource(ds =>
+                                    {
+                                        ds.Read("GetCiclosDistribucion", "Ciclos");
+                                    })
+                )
+            </div>
+        </text>);
+    })
+
+    // Declare ajax datasource.
+        // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+        // Set the model Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+
+                                .Read(read => read.Action("GetAll", "NotasEntregaConsolidado").Data("paramNotasEntrega"))
+    )
+
+    // Set grid sortable.
+    .Sortable()
+
+    // Set grid selectable.
+    .Selectable()
+
+    // Set grid groupable.
+    .Groupable()
+
+    // Set grid filterable.
+    .Filterable()    
+)
+
+<script>
+    function ciclosChange() {
+        $("#Grid").data("kendoGrid").dataSource.read();
+    }
+
+    function paramNotasEntrega() {
+        return {
+            cicloID: $("#ddCiclos").val() != "" ? $("#ddCiclos").val() : 0
+        }
+    }
+</script>
+
+<style scoped="scoped">
+    .ciclo-label {
+        vertical-align: middle;
+        padding-right: .5em;
+    }
+
+    #ciclo {
+        vertical-align: middle;
+    }
+
+    .toolbar {
+        float: right;
+    }
+
+    label {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .k-grid .k-hierarchy-col {
+        width: 5px;
+    }
+</style>

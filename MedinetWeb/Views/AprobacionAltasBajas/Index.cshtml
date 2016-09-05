@@ -1,0 +1,213 @@
+﻿@{
+    ViewBag.Title = "Aprobación altas y bajas";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.SP_MW_VisitadoresAltasBajas_Result>()
+            .Name("Grid")
+            .Columns(columns =>
+            {
+                columns.ForeignKey(p => p.ID_Region, (System.Collections.IEnumerable)ViewData["dvRegiones"], "ID", "TX")
+                    .Title("Región");
+                columns.ForeignKey(p => p.ID_Linea, (System.Collections.IEnumerable)ViewData["dvLineas"], "ID", "TX")
+                    .Title("Línea");
+                columns.ForeignKey(p => p.ID_VisitadoresHistorial, (System.Collections.IEnumerable)ViewData["dvVisitadores"], "ID", "TX")
+                    .Title("Visitador");
+            })
+
+            // Llama al detalle
+            .ClientDetailTemplateId("templateAltasBajas")
+
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                .Read(read => read.Action("GetAll", "AprobacionAltasBajas"))
+            )
+
+            // Set grid selectable.
+            .Selectable()
+
+            // Set grid sortable.
+            .Sortable(sortable => sortable
+            .AllowUnsort(true)
+            .SortMode(GridSortMode.MultipleColumn)))
+
+<script id="templateAltasBajas" type="text/kendo-tmpl">
+    @(Html.Kendo().TabStrip()
+            .Name("tabStrip_#=ID_VisitadoresHistorial#")
+            .SelectedIndex(0)
+            .Animation(animation => animation.Open(open => open.Fade(FadeDirection.In)))
+            .Items(items =>
+            {
+                items.Add().Text("Altas").Content(
+                    @<text>
+                        @(Html.Kendo().Grid<MedinetWeb.Models.MirrorEntityModel.MMW_AprobacionAltas>()
+                        .Name("GridAltas_#=ID_VisitadoresHistorial#")
+                        .Columns(columns =>
+                        {
+                            columns.Bound(r => r.NroSanitario).Title("Nro. Sanit.")
+                                .Width(50);
+                            columns.Bound(r => r.Medico).Title("Médico")
+                                .Width(150);
+                            columns.Bound(r => r.Clinica).Title("Clínica")
+                                .Width(200);
+                            columns.ForeignKey(p => p.ID_Clasificacion, (System.Collections.IEnumerable)ViewData["dvClasificaciones"], "ID", "TX")
+                               .Title("Clasif.")
+                               .Width(80);
+                            columns.ForeignKey(p => p.ID_Especialidad, (System.Collections.IEnumerable)ViewData["dvEspecialidades"], "ID", "TX")
+                               .Title("Especialidad")
+                               .Width(80);
+                            columns.ForeignKey(p => p.Estatus, (System.Collections.IEnumerable)ViewData["dvEstatus"], "ID", "TX")
+                               .Title("Estatus")
+                               .Width(80);
+
+                            // Edit and Delete button column
+                            columns.Command(command =>
+                                                {
+                                                    command.Edit().Text("Editar");
+                                                }).Width(180);
+                        })
+
+
+                        .DataSource(dataSource => dataSource.Ajax()
+                            .Events(events => events.Error("GridError"))
+                            .Model(model =>
+                                        {
+                                            model.Id(record => record.NroSanitario);
+                                        }
+                                    )
+
+                            .Read(read => read.Action("GetAllAltas", "AprobacionAltasBajas",
+                                new { visitadorID = "#=ID_VisitadoresHistorial#" }))
+
+                            .Update(update => update.Action("UpdateAltas", "AprobacionAltasBajas",
+                                new { visitadorID = "#=ID_VisitadoresHistorial#" }))
+
+                        )
+
+                        .Events(e => e.DataBound("onDataBound"))
+                               
+                        // Set grid editable.
+                        .Editable(editable => editable.Mode(GridEditMode.InLine))
+
+                        // Set grid selectable.
+                        .Selectable()
+
+                        // Set grid sortable.
+                        .Sortable(sortable => sortable
+                        .AllowUnsort(true)
+                        .SortMode(GridSortMode.MultipleColumn))
+                        .ToClientTemplate())
+                    </text>
+                );
+
+                items.Add().Text("Bajas").Content(
+                    @<text>
+                        @(Html.Kendo().Grid<MedinetWeb.Models.MirrorEntityModel.MMW_AprobacionBajas>()
+                        .Name("GridBajas_#=ID_VisitadoresHistorial#")
+                        .Columns(columns =>
+                        {
+                            columns.Bound(r => r.NroSanitario).Title("Nro. Sanit.")
+                                .Width(50);
+                            columns.Bound(r => r.Medico).Title("Médico")
+                                .Width(150);
+                            columns.Bound(r => r.Clinica).Title("Clínica")
+                                .Width(200);
+                            columns.ForeignKey(p => p.ID_Clasificacion, (System.Collections.IEnumerable)ViewData["dvClasificaciones"], "ID", "TX")
+                               .Title("Clasif.")
+                               .Width(80);
+                            columns.ForeignKey(p => p.ID_Especialidad, (System.Collections.IEnumerable)ViewData["dvEspecialidades"], "ID", "TX")
+                               .Title("Especialidad")
+                               .Width(80);
+                            columns.ForeignKey(p => p.Estatus, (System.Collections.IEnumerable)ViewData["dvEstatus"], "ID", "TX")
+                               .Title("Estatus")
+                               .Width(80);
+
+                            // Edit and Delete button column
+                            columns.Command(command =>
+                                                {
+                                                    command.Edit().Text("Editar");
+                                                }).Width(180);
+                        })
+
+                        .DataSource(dataSource => dataSource.Ajax()
+                            .Events(events => events.Error("GridError"))
+
+                            .Model(model =>
+                                        {
+                                            model.Id(record => record.NroSanitario);
+                                        }
+                                    )
+
+                            .Read(read => read.Action("GetAllBajas", "AprobacionAltasBajas",
+                                new { visitadorID = "#=ID_VisitadoresHistorial#" }))
+
+                            .Update(update => update.Action("UpdateBajas", "AprobacionAltasBajas",
+                                new { visitadorID = "#=ID_VisitadoresHistorial#" }))
+                        )
+
+                        .Events(e => e.DataBound("onDataBound"))
+                                
+                        // Set grid editable.
+                        .Editable(editable => editable.Mode(GridEditMode.InLine))
+
+                        // Set grid selectable.
+                        .Selectable()
+
+                        // Set grid sortable.
+                        .Sortable(sortable => sortable
+                        .AllowUnsort(true)
+                        .SortMode(GridSortMode.MultipleColumn))
+                        .ToClientTemplate())
+
+                    </text>
+                );
+            })
+                                                                                                    .ToClientTemplate())
+</script>
+
+
+<style scoped="scoped">
+    .k-grid .k-hierarchy-col {
+        width: 5px;
+    }
+</style>
+
+<script>
+    function mensaje(visitadorID, tipeGrid) {
+        alert("ADVERTENCIA: No hay conexión. Por favor intente más tarde...");
+
+        //$(".k-grid").data("kendoGrid").dataSource.read();
+        //$(".k-grid").data("kendoGrid").fetch();
+
+       
+        $("#" + tipeGrid + "_" + visitadorID).data("kendoGrid").dataSource.read();
+        $("#" + tipeGrid + "_" + visitadorID).data("kendoGrid").fetch();
+
+
+
+    }
+   
+    function onDataBound(e) {
+        var elementID = e.sender._cellId;
+        var visitadorID = elementID.substring(10, elementID.lastIndexOf('_active_cell'));
+
+        var tipeGrid = elementID.substring(0, 9);
+        if (tipeGrid == "GridAltas")
+            var grid = $("#GridAltas_" + visitadorID).data("kendoGrid");
+        else
+            var grid = $("#GridBajas_" + visitadorID).data("kendoGrid");
+
+        var gridData = grid.dataSource.view();
+        for (var i = 0; i < gridData.length; i++) {
+            var currentUid = gridData[i].uid;
+            if (!gridData[i].BO_GoogleID) {
+                var currenRow = grid.table.find("tr[data-uid='" + currentUid + "']");
+                var editButton = $(currenRow).find(".k-grid-edit");
+                editButton.hide();
+            }
+        }
+    }
+</script>

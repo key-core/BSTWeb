@@ -1,0 +1,914 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Medinet_GV2Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <Function Name="SP_MW_EliminarFicheroAsistido" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idCiclo" Type="int" Mode="In" />
+          <Parameter Name="visitadorID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_MW_MoverFicheroAsistido" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idCicloOrigen" Type="int" Mode="In" />
+          <Parameter Name="idCicloDestino" Type="int" Mode="In" />
+          <Parameter Name="IDOrigen" Type="int" Mode="In" />
+          <Parameter Name="IDDestino" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_MW_Visitadores_FicVis2" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ciclo" Type="int" Mode="In" />
+          <Parameter Name="linea" Type="int" Mode="In" />
+          <Parameter Name="region" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_MWL_AltaFarmacia" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="visitadorID" Type="int" Mode="In" />
+          <Parameter Name="idFarmacia" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_MWL_AltaHospital" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="visitadorID" Type="int" Mode="In" />
+          <Parameter Name="idHospital" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_MWL_AltaMedico" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="visitadorID" Type="int" Mode="In" />
+          <Parameter Name="nroSanitario" Type="varchar" Mode="In" />
+          <Parameter Name="doctor" Type="varchar" Mode="In" />
+          <Parameter Name="ruta" Type="varchar" Mode="In" />
+          <Parameter Name="clinica" Type="varchar" Mode="In" />
+          <Parameter Name="especialidad" Type="varchar" Mode="In" />
+          <Parameter Name="clasificacion" Type="varchar" Mode="In" />
+          <Parameter Name="direccion" Type="varchar" Mode="In" />
+          <Parameter Name="revisita" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_MWL_AltaMedicoValidar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="visitadorID" Type="int" Mode="In" />
+          <Parameter Name="nroSanitario" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_MWL_BajaFarmacia" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="visitadorID" Type="int" Mode="In" />
+          <Parameter Name="numero" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_MWL_BajaHospital" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="visitadorID" Type="int" Mode="In" />
+          <Parameter Name="numero" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_MWL_BajaMedico" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="visitadorID" Type="int" Mode="In" />
+          <Parameter Name="registro" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_MWL_Ciclos_Act" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="SP_MWL_EliminarVisitaFarmacia" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="visitadorID" Type="int" Mode="In" />
+          <Parameter Name="numero" Type="varchar(max)" Mode="In" />
+          <Parameter Name="tipo" Type="varchar(max)" Mode="In" />
+          <Parameter Name="fecha" Type="varchar(max)" Mode="In" />
+        </Function>
+        <Function Name="SP_MWL_EliminarVisitaHospital" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="visitadorID" Type="int" Mode="In" />
+          <Parameter Name="numero" Type="varchar(max)" Mode="In" />
+          <Parameter Name="tipo" Type="varchar(max)" Mode="In" />
+          <Parameter Name="fecha" Type="varchar(max)" Mode="In" />
+          <Parameter Name="servicio" Type="varchar(max)" Mode="In" />
+        </Function>
+        <Function Name="SP_MWL_EliminarVisitaMedico" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="visitadorID" Type="int" Mode="In" />
+          <Parameter Name="registro" Type="varchar(max)" Mode="In" />
+          <Parameter Name="tipo" Type="varchar(max)" Mode="In" />
+        </Function>
+        <Function Name="SP_MWL_GetClinicas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="visitadorID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_MWL_GetCoberturas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="visitadorID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_MWL_GetFarmacias" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="visitadorID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_MWL_GetFarmaciasByZonaAndText" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="zona" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_MWL_GetFichero" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="zona" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_MWL_GetFicheroByZonaAndText" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="zona" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_MWL_GetFicheroFarmacias" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="visitadorID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_MWL_GetFicheroHospitales" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="visitadorID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_MWL_GetHospitalByZonaAndText" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="zona" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_MWL_GetHospitales" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="visitadorID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_MWL_GetInfoFarmacia" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="visitadorID" Type="int" Mode="In" />
+          <Parameter Name="registro" Type="varchar(max)" Mode="In" />
+        </Function>
+        <Function Name="SP_MWL_GetInfoFichero" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="visitadorID" Type="int" Mode="In" />
+          <Parameter Name="registro" Type="varchar(max)" Mode="In" />
+        </Function>
+        <Function Name="SP_MWL_GetInfoHospital" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="visitadorID" Type="int" Mode="In" />
+          <Parameter Name="registro" Type="varchar(max)" Mode="In" />
+        </Function>
+        <Function Name="SP_MWL_GetRutas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="visitadorID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_MWL_GetTipoVisitaAllowed" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="visitadorID" Type="int" Mode="In" />
+          <Parameter Name="registro" Type="varchar(max)" Mode="In" />
+        </Function>
+        <Function Name="SP_MWL_GetVisitasFarmacias" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="visitadorID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_MWL_GetVisitasHospitales" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="visitadorID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_MWL_GetVisitasMedicos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="visitadorID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_MWL_InsertVisitaFarmacia" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="visitadorID" Type="int" Mode="In" />
+          <Parameter Name="numero" Type="varchar(max)" Mode="In" />
+          <Parameter Name="fecha" Type="varchar(max)" Mode="In" />
+          <Parameter Name="tipo" Type="varchar(max)" Mode="In" />
+          <Parameter Name="farmacia" Type="varchar(max)" Mode="In" />
+        </Function>
+        <Function Name="SP_MWL_InsertVisitaHospital" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="visitadorID" Type="int" Mode="In" />
+          <Parameter Name="numero" Type="varchar(max)" Mode="In" />
+          <Parameter Name="fecha" Type="varchar(max)" Mode="In" />
+          <Parameter Name="tipo" Type="varchar(max)" Mode="In" />
+          <Parameter Name="hospital" Type="varchar(max)" Mode="In" />
+          <Parameter Name="medicos" Type="int" Mode="In" />
+          <Parameter Name="servicio" Type="varchar(max)" Mode="In" />
+        </Function>
+        <Function Name="SP_MWL_InsertVisitaMedico" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="visitadorID" Type="int" Mode="In" />
+          <Parameter Name="registro" Type="varchar(max)" Mode="In" />
+          <Parameter Name="fecha" Type="varchar(max)" Mode="In" />
+          <Parameter Name="tipo" Type="varchar(max)" Mode="In" />
+          <Parameter Name="acompanante" Type="varchar(max)" Mode="In" />
+        </Function>
+        <EntityContainer Name="Medinet_GV2ModelStoreContainer" />
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Medinet_GV2Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="MedinetWebLimitedEntities" annotation:LazyLoadingEnabled="true" >
+          <FunctionImport Name="SP_MWL_GetFicheroByZonaAndText" ReturnType="Collection(Medinet_GV2Model.SP_MWL_GetFicheroByZonaAndText_Result)">
+          <Parameter Name="zona" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_MWL_InsertVisitaMedico" ReturnType="Collection(Medinet_GV2Model.SP_MWL_InsertVisitaMedico_Result)">
+            <Parameter Name="visitadorID" Mode="In" Type="Int32" />
+            <Parameter Name="registro" Mode="In" Type="String" />
+            <Parameter Name="fecha" Mode="In" Type="String" />
+            <Parameter Name="tipo" Mode="In" Type="String" />
+            <Parameter Name="acompanante" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_MWL_GetInfoFichero" ReturnType="Collection(Medinet_GV2Model.SP_MWL_GetInfoFichero_Result)">
+            <Parameter Name="visitadorID" Mode="In" Type="Int32" />
+            <Parameter Name="registro" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_MWL_GetVisitasMedicos" ReturnType="Collection(Medinet_GV2Model.SP_MWL_GetVisitasMedicos_Result)">
+          <Parameter Name="visitadorID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_MWL_EliminarVisitaMedico" ReturnType="Collection(Medinet_GV2Model.SP_MWL_EliminarVisitaMedico_Result)">
+            <Parameter Name="visitadorID" Mode="In" Type="Int32" />
+            <Parameter Name="registro" Mode="In" Type="String" />
+            <Parameter Name="tipo" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_MWL_GetTipoVisitaAllowed" ReturnType="Collection(Medinet_GV2Model.SP_GetTipoVisitaAllowed_Result)">
+            <Parameter Name="visitadorID" Mode="In" Type="Int32" />
+            <Parameter Name="registro" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_MWL_GetFarmaciasByZonaAndText" ReturnType="Collection(Medinet_GV2Model.SP_MWL_GetFarmaciasByZonaAndText_Result)">
+          <Parameter Name="zona" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_MWL_InsertVisitaFarmacia" ReturnType="Collection(Medinet_GV2Model.SP_MWL_InsertVisitaFarmacia_Result)">
+            <Parameter Name="visitadorID" Mode="In" Type="Int32" />
+            <Parameter Name="numero" Mode="In" Type="String" />
+            <Parameter Name="fecha" Mode="In" Type="String" />
+            <Parameter Name="tipo" Mode="In" Type="String" />
+            <Parameter Name="farmacia" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_MWL_GetInfoFarmacia" ReturnType="Collection(Medinet_GV2Model.SP_MWL_GetInfoFarmacia_Result)">
+            <Parameter Name="visitadorID" Mode="In" Type="Int32" />
+            <Parameter Name="registro" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_MWL_GetVisitasFarmacias" ReturnType="Collection(Medinet_GV2Model.SP_MWL_GetVisitasFarmacias_Result)">
+          <Parameter Name="visitadorID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_MWL_EliminarVisitaFarmacia" ReturnType="Collection(Medinet_GV2Model.SP_MWL_EliminarVisitaFarmacia_Result)">
+            <Parameter Name="visitadorID" Mode="In" Type="Int32" />
+            <Parameter Name="numero" Mode="In" Type="String" />
+            <Parameter Name="tipo" Mode="In" Type="String" />
+            <Parameter Name="fecha" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_MWL_GetHospitalByZonaAndText" ReturnType="Collection(Medinet_GV2Model.SP_MWL_GetHospitalByZonaAndText_Result)">
+          <Parameter Name="zona" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_MWL_InsertVisitaHospital" ReturnType="Collection(Medinet_GV2Model.SP_MWL_InsertVisitaHospital_Result)">
+            <Parameter Name="visitadorID" Mode="In" Type="Int32" />
+            <Parameter Name="numero" Mode="In" Type="String" />
+            <Parameter Name="fecha" Mode="In" Type="String" />
+            <Parameter Name="tipo" Mode="In" Type="String" />
+            <Parameter Name="hospital" Mode="In" Type="String" />
+            <Parameter Name="medicos" Mode="In" Type="Int32" />
+            <Parameter Name="servicio" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_MWL_GetInfoHospital" ReturnType="Collection(Medinet_GV2Model.SP_MWL_GetInfoHospital_Result)">
+            <Parameter Name="visitadorID" Mode="In" Type="Int32" />
+            <Parameter Name="registro" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_MWL_EliminarVisitaHospital" ReturnType="Collection(Medinet_GV2Model.SP_MWL_EliminarVisitaHospital_Result)">
+            <Parameter Name="visitadorID" Mode="In" Type="Int32" />
+            <Parameter Name="numero" Mode="In" Type="String" />
+            <Parameter Name="tipo" Mode="In" Type="String" />
+            <Parameter Name="fecha" Mode="In" Type="String" />
+            <Parameter Name="servicio" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_MWL_GetVisitasHospitales" ReturnType="Collection(Medinet_GV2Model.SP_MWL_GetVisitasHospitales_Result)">
+          <Parameter Name="visitadorID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_MWL_GetCoberturas" ReturnType="Collection(Medinet_GV2Model.SP_MWL_GetCoberturas_Result)">
+          <Parameter Name="visitadorID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_MWL_GetClinicas" ReturnType="Collection(String)">
+          <Parameter Name="visitadorID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_MWL_GetRutas" ReturnType="Collection(String)">
+          <Parameter Name="visitadorID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_MWL_AltaMedico">
+            <Parameter Name="visitadorID" Mode="In" Type="Int32" />
+            <Parameter Name="nroSanitario" Mode="In" Type="String" />
+            <Parameter Name="doctor" Mode="In" Type="String" />
+            <Parameter Name="ruta" Mode="In" Type="String" />
+            <Parameter Name="clinica" Mode="In" Type="String" />
+            <Parameter Name="especialidad" Mode="In" Type="String" />
+            <Parameter Name="clasificacion" Mode="In" Type="String" />
+            <Parameter Name="direccion" Mode="In" Type="String" />
+            <Parameter Name="revisita" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_MWL_GetFichero" ReturnType="Collection(Medinet_GV2Model.SP_MWL_GetFichero_Result)">
+          <Parameter Name="zona" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_MWL_BajaMedico">
+            <Parameter Name="visitadorID" Mode="In" Type="Int32" />
+            <Parameter Name="registro" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_MW_MoverFicheroAsistido">
+            <Parameter Name="idCicloOrigen" Mode="In" Type="Int32" />
+            <Parameter Name="idCicloDestino" Mode="In" Type="Int32" />
+            <Parameter Name="IDOrigen" Mode="In" Type="Int32" />
+            <Parameter Name="IDDestino" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_MW_Visitadores_FicVis2" ReturnType="Collection(Medinet_GV2Model.SP_MW_Visitadores_FicVis2_Result)">
+            <Parameter Name="ciclo" Mode="In" Type="Int32" />
+            <Parameter Name="linea" Mode="In" Type="Int32" />
+            <Parameter Name="region" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_MWL_Ciclos_Act" ReturnType="Collection(Medinet_GV2Model.SP_MWL_Ciclos_Act_Result)" />
+          <FunctionImport Name="SP_MWL_AltaMedicoValidar" ReturnType="Collection(Int32)">
+            <Parameter Name="visitadorID" Mode="In" Type="Int32" />
+            <Parameter Name="nroSanitario" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_MWL_GetFarmacias" ReturnType="Collection(Medinet_GV2Model.SP_MWL_GetFarmacias_Result)">
+          <Parameter Name="visitadorID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_MWL_AltaFarmacia">
+            <Parameter Name="visitadorID" Mode="In" Type="Int32" />
+            <Parameter Name="idFarmacia" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_MWL_GetFicheroFarmacias" ReturnType="Collection(Medinet_GV2Model.SP_MWL_GetFicheroFarmacias_Result)">
+          <Parameter Name="visitadorID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_MWL_BajaFarmacia">
+            <Parameter Name="visitadorID" Mode="In" Type="Int32" />
+            <Parameter Name="numero" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_MWL_GetHospitales" ReturnType="Collection(Medinet_GV2Model.SP_MWL_GetHospitales_Result)">
+          <Parameter Name="visitadorID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_MWL_AltaHospital">
+            <Parameter Name="visitadorID" Mode="In" Type="Int32" />
+            <Parameter Name="idHospital" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_MWL_BajaHospital">
+            <Parameter Name="visitadorID" Mode="In" Type="Int32" />
+            <Parameter Name="numero" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_MWL_GetFicheroHospitales" ReturnType="Collection(Medinet_GV2Model.SP_MWL_GetFicheroHospitales_Result)">
+          <Parameter Name="visitadorID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_MW_EliminarFicheroAsistido">
+            <Parameter Name="idCiclo" Mode="In" Type="Int32" />
+            <Parameter Name="visitadorID" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="SP_MWL_GetFicheroByZonaAndText_Result">
+          <Property Type="String" Name="REGISTRO" Nullable="false" MaxLength="5" />
+          <Property Type="String" Name="DOCTOR" Nullable="false" MaxLength="40" />
+          <Property Type="String" Name="TIPO" Nullable="true" MaxLength="16" />
+          <Property Type="Int32" Name="BO_Visitar" Nullable="true" />
+          <Property Type="String" Name="FECHA_VISITA" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="REVISITA" Nullable="true" MaxLength="2" />
+        </ComplexType>
+        <ComplexType Name="SP_MWL_InsertVisitaMedico_Result">
+          <Property Type="Int16" Name="NU_ANO" Nullable="false" />
+          <Property Type="String" Name="REGISTRO" Nullable="false" MaxLength="5" />
+          <Property Type="String" Name="ZONA" Nullable="false" MaxLength="7" />
+          <Property Type="String" Name="FECHA_VISITA" Nullable="false" MaxLength="10" />
+          <Property Type="Int16" Name="CICLO" Nullable="false" />
+          <Property Type="String" Name="TIPO" Nullable="true" MaxLength="16" />
+          <Property Type="String" Name="MOTIVO" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="PASADO_DESKTOP" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="PASADO_INTERNET" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="FECHA_SISTEMA" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="HORA_SISTEMA" Nullable="true" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="SP_MWL_GetInfoFichero_Result">
+          <Property Type="String" Name="REGISTRO" Nullable="false" MaxLength="5" />
+          <Property Type="String" Name="DOCTOR" Nullable="false" MaxLength="40" />
+          <Property Type="String" Name="RUTA" Nullable="true" MaxLength="40" />
+          <Property Type="String" Name="CLINICA" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ESPECIALIDAD" Nullable="true" MaxLength="25" />
+          <Property Type="String" Name="CLASIFICACION" Nullable="true" MaxLength="2" />
+          <Property Type="Int16" Name="NU_ANO" Nullable="false" />
+          <Property Type="Int16" Name="CICLO" Nullable="false" />
+          <Property Type="String" Name="FECHA_VISITA" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="TIPO" Nullable="true" MaxLength="16" />
+          <Property Type="String" Name="REVISITA" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="SP_MWL_GetVisitasMedicos_Result">
+          <Property Type="String" Name="REGISTRO" Nullable="false" MaxLength="5" />
+          <Property Type="String" Name="DOCTOR" Nullable="false" MaxLength="40" />
+          <Property Type="String" Name="FECHA_VISITA" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="TIPO" Nullable="true" MaxLength="16" />
+        </ComplexType>
+        <ComplexType Name="SP_MWL_EliminarVisitaMedico_Result">
+          <Property Type="Int16" Name="NU_ANO" Nullable="false" />
+          <Property Type="String" Name="REGISTRO" Nullable="false" MaxLength="5" />
+          <Property Type="String" Name="ZONA" Nullable="false" MaxLength="7" />
+          <Property Type="String" Name="FECHA_VISITA" Nullable="false" MaxLength="10" />
+          <Property Type="Int16" Name="CICLO" Nullable="false" />
+          <Property Type="String" Name="TIPO" Nullable="true" MaxLength="16" />
+          <Property Type="String" Name="MOTIVO" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="PASADO_DESKTOP" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="PASADO_INTERNET" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="FECHA_SISTEMA" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="HORA_SISTEMA" Nullable="true" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="SP_GetTipoVisitaAllowed_Result" >
+          <Property Type="String" Name="TIPO" Nullable="false" />
+          <Property Type="String" Name="CODIGO" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="SP_MWL_GetFarmaciasByZonaAndText_Result">
+          <Property Type="Int32" Name="NUMERO" Nullable="false" />
+          <Property Type="String" Name="FARMACIA" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="FECHA_VISITA" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="TIPO" Nullable="true" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="SP_MWL_InsertVisitaFarmacia_Result">
+          <Property Type="Int16" Name="NU_ANO" Nullable="false" />
+          <Property Type="Int16" Name="CICLO" Nullable="false" />
+          <Property Type="Int32" Name="NUMERO" Nullable="false" />
+          <Property Type="Int16" Name="CICLO_VISITA" Nullable="true" />
+          <Property Type="String" Name="ZONA" Nullable="true" MaxLength="7" />
+          <Property Type="String" Name="FARMACIA" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="FECHA_VISITA" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="MOTIVO" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="ATENDIO" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="ATENDIO_NOMBRE" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="PRODUCTO_EVALUADO1" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="COMENTARIOS" Nullable="true" MaxLength="500" />
+        </ComplexType>
+        <ComplexType Name="SP_MWL_GetInfoFarmacia_Result">
+          <Property Type="Int32" Name="NUMERO" Nullable="false" />
+          <Property Type="String" Name="FARMACIA" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="RUTA" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="CADENA" Nullable="true" MaxLength="100" />
+          <Property Type="Int16" Name="NU_ANO" Nullable="true" />
+          <Property Type="Int16" Name="CICLO" Nullable="true" />
+          <Property Type="String" Name="FECHA_VISITA" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="MOTIVO" Nullable="true" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="SP_MWL_GetVisitasFarmacias_Result">
+          <Property Type="Int32" Name="NUMERO" Nullable="false" />
+          <Property Type="String" Name="FARMACIA" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="FECHA_VISITA" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="MOTIVO" Nullable="true" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="SP_MWL_EliminarVisitaFarmacia_Result">
+          <Property Type="Int16" Name="NU_ANO" Nullable="false" />
+          <Property Type="Int16" Name="CICLO" Nullable="false" />
+          <Property Type="Int32" Name="NUMERO" Nullable="false" />
+          <Property Type="Int16" Name="CICLO_VISITA" Nullable="true" />
+          <Property Type="String" Name="ZONA" Nullable="true" MaxLength="7" />
+          <Property Type="String" Name="FARMACIA" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="FECHA_VISITA" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="MOTIVO" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="ATENDIO" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="ATENDIO_NOMBRE" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="PRODUCTO_EVALUADO1" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="COMENTARIOS" Nullable="true" MaxLength="500" />
+        </ComplexType>
+        <ComplexType Name="SP_MWL_GetHospitalByZonaAndText_Result">
+          <Property Type="Int32" Name="NUMERO" Nullable="false" />
+          <Property Type="String" Name="HOSPITAL" Nullable="false" MaxLength="300" />
+          <Property Type="String" Name="FECHA_VISITA" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="TIPO" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="SERVICIO" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="SP_MWL_InsertVisitaHospital_Result">
+          <Property Type="Int16" Name="NU_ANO" Nullable="false" />
+          <Property Type="Int16" Name="CICLO" Nullable="false" />
+          <Property Type="Int32" Name="NUMERO" Nullable="false" />
+          <Property Type="Int32" Name="CICLO_VISITA" Nullable="true" />
+          <Property Type="String" Name="ZONA" Nullable="true" MaxLength="7" />
+          <Property Type="String" Name="HOSPITAL" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="FECHA_VISITA" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="SERVICIO" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="MOTIVO" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="ACOMPANADO" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="NUM_MEDICO" Nullable="true" />
+          <Property Type="String" Name="ATENDIDO" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="COMENTARIOS" Nullable="true" MaxLength="300" />
+        </ComplexType>
+        <ComplexType Name="SP_MWL_GetInfoHospital_Result">
+          <Property Type="Int32" Name="NUMERO" Nullable="false" />
+          <Property Type="String" Name="HOSPITAL" Nullable="false" MaxLength="300" />
+          <Property Type="String" Name="RUTA" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="INSTITUCION" Nullable="true" MaxLength="100" />
+          <Property Type="Int16" Name="NU_ANO" Nullable="true" />
+          <Property Type="Int16" Name="CICLO" Nullable="true" />
+          <Property Type="String" Name="FECHA_VISITA" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="MOTIVO" Nullable="true" MaxLength="300" />
+        </ComplexType>
+        <ComplexType Name="SP_MWL_EliminarVisitaHospital_Result">
+          <Property Type="Int16" Name="NU_ANO" Nullable="false" />
+          <Property Type="Int16" Name="CICLO" Nullable="false" />
+          <Property Type="Int32" Name="NUMERO" Nullable="false" />
+          <Property Type="Int32" Name="CICLO_VISITA" Nullable="true" />
+          <Property Type="String" Name="ZONA" Nullable="true" MaxLength="7" />
+          <Property Type="String" Name="HOSPITAL" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="FECHA_VISITA" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="SERVICIO" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="MOTIVO" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="ACOMPANADO" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="NUM_MEDICO" Nullable="true" />
+          <Property Type="String" Name="ATENDIDO" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="COMENTARIOS" Nullable="true" MaxLength="300" />
+        </ComplexType>
+        <ComplexType Name="SP_MWL_GetVisitasHospitales_Result">
+          <Property Type="Int32" Name="NUMERO" Nullable="false" />
+          <Property Type="String" Name="HOSPITAL" Nullable="false" MaxLength="300" />
+          <Property Type="String" Name="FECHA_VISITA" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="MOTIVO" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="SERVICIO" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="SP_MWL_GetCoberturas_Result">
+          <Property Type="Int16" Name="Fichados" Nullable="true" />
+          <Property Type="Int16" Name="Visitados" Nullable="true" />
+          <Property Type="Double" Name="PorcentajeFichadoVisitados" Nullable="true" />
+          <Property Type="Int16" Name="Revisitas" Nullable="true" />
+          <Property Type="Int16" Name="Revisitados" Nullable="true" />
+          <Property Type="Double" Name="PorcentajeRevisitasRevisitados" Nullable="true" />
+          <Property Type="Double" Name="PDR" Nullable="true" />
+          <Property Type="Double" Name="Mix" Nullable="true" />
+          <Property Type="Int16" Name="MINPDR" Nullable="false" />
+          <Property Type="Int16" Name="MINFARMACIAS" Nullable="false" />
+          <Property Type="Int16" Name="MINHOSPITALES" Nullable="false" />
+          <Property Type="Int32" Name="FARMACIAS" Nullable="true" />
+          <Property Type="Int32" Name="HOSPITALES" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="SP_MWL_GetFichero_Result">
+          <Property Type="String" Name="REGISTRO" Nullable="false" MaxLength="5" />
+          <Property Type="String" Name="DOCTOR" Nullable="false" MaxLength="40" />
+          <Property Type="String" Name="ESPECIALIDAD" Nullable="true" MaxLength="25" />
+          <Property Type="String" Name="CLASIFICACION" Nullable="true" MaxLength="2" />
+          <Property Type="String" Name="RUTA" Nullable="true" MaxLength="40" />
+          <Property Type="String" Name="REVISITA" Nullable="true" MaxLength="2" />
+          <Property Type="String" Name="CLINICA" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="SP_MW_Visitadores_FicVis2_Result">
+          <Property Type="Int32" Name="ID_Visitador" Nullable="false" />
+          <Property Type="String" Name="TX_Nombre" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="TX_Apellido" Nullable="false" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="SP_MWL_Ciclos_Act_Result">
+          <Property Type="Int16" Name="ID_Ciclo" Nullable="false" />
+          <Property Type="String" Name="TX_Ciclo" Nullable="true" MaxLength="8" />
+          <Property Type="Int16" Name="NU_Ano" Nullable="false" />
+          <Property Type="Int16" Name="NU_Ciclo" Nullable="false" />
+          <Property Type="DateTime" Name="FE_CicloIni" Nullable="false" Precision="23" />
+          <Property Type="DateTime" Name="FE_CicloFin" Nullable="false" Precision="23" />
+          <Property Type="DateTime" Name="FE_CicloProrroga" Nullable="false" Precision="23" />
+          <Property Type="Int16" Name="NU_DiasCancelarVehiculo" Nullable="false" />
+          <Property Type="Int16" Name="NU_DiasHabiles" Nullable="false" />
+          <Property Type="DateTime" Name="FE_CargaInv" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="FE_IniDistribucion" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="FE_FinDistribucion" Nullable="true" Precision="23" />
+          <Property Type="Int16" Name="NU_Estatus" Nullable="false" />
+          <Property Type="Boolean" Name="BO_Activo" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="SP_MWL_GetFarmacias_Result">
+          <Property Type="Int16" Name="ID_Farmacia" Nullable="false" />
+          <Property Type="String" Name="TX_Farmacia" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="TX_Estado" Nullable="false" MaxLength="25" />
+          <Property Type="String" Name="TX_Ruta" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="TX_Cadena" Nullable="false" MaxLength="25" />
+        </ComplexType>
+        <ComplexType Name="SP_MWL_GetFicheroFarmacias_Result">
+          <Property Type="Int32" Name="NUMERO" Nullable="false" />
+          <Property Type="String" Name="FARMACIA" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="RUTA" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="CADENA" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="SP_MWL_GetHospitales_Result">
+          <Property Type="Int16" Name="ID_Hospital" Nullable="false" />
+          <Property Type="String" Name="TX_Hospital" Nullable="false" MaxLength="80" />
+          <Property Type="String" Name="TX_Estado" Nullable="false" MaxLength="25" />
+          <Property Type="String" Name="TX_Ruta" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="TX_Institucion" Nullable="false" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="SP_MWL_GetFicheroHospitales_Result">
+          <Property Type="Int32" Name="NUMERO" Nullable="false" />
+          <Property Type="String" Name="HOSPITAL" Nullable="false" MaxLength="300" />
+          <Property Type="String" Name="RUTA" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="INSTITUCION" Nullable="true" MaxLength="100" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Medinet_GV2ModelStoreContainer" CdmEntityContainer="MedinetWebLimitedEntities" >
+          <FunctionImportMapping FunctionImportName="SP_MWL_GetFicheroByZonaAndText" FunctionName="Medinet_GV2Model.Store.SP_MWL_GetFicheroByZonaAndText">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Medinet_GV2Model.SP_MWL_GetFicheroByZonaAndText_Result">
+                <ScalarProperty Name="REGISTRO" ColumnName="REGISTRO" />
+                <ScalarProperty Name="DOCTOR" ColumnName="DOCTOR" />
+                <ScalarProperty Name="TIPO" ColumnName="TIPO" />
+                <ScalarProperty Name="BO_Visitar" ColumnName="BO_Visitar" />
+                <ScalarProperty Name="FECHA_VISITA" ColumnName="FECHA_VISITA" />
+                <ScalarProperty Name="REVISITA" ColumnName="REVISITA" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_MWL_InsertVisitaMedico" FunctionName="Medinet_GV2Model.Store.SP_MWL_InsertVisitaMedico">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Medinet_GV2Model.SP_MWL_InsertVisitaMedico_Result">
+                <ScalarProperty Name="NU_ANO" ColumnName="NU_ANO" />
+                <ScalarProperty Name="REGISTRO" ColumnName="REGISTRO" />
+                <ScalarProperty Name="ZONA" ColumnName="ZONA" />
+                <ScalarProperty Name="FECHA_VISITA" ColumnName="FECHA_VISITA" />
+                <ScalarProperty Name="CICLO" ColumnName="CICLO" />
+                <ScalarProperty Name="TIPO" ColumnName="TIPO" />
+                <ScalarProperty Name="MOTIVO" ColumnName="MOTIVO" />
+                <ScalarProperty Name="PASADO_DESKTOP" ColumnName="PASADO_DESKTOP" />
+                <ScalarProperty Name="PASADO_INTERNET" ColumnName="PASADO_INTERNET" />
+                <ScalarProperty Name="FECHA_SISTEMA" ColumnName="FECHA_SISTEMA" />
+                <ScalarProperty Name="HORA_SISTEMA" ColumnName="HORA_SISTEMA" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_MWL_GetInfoFichero" FunctionName="Medinet_GV2Model.Store.SP_MWL_GetInfoFichero">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Medinet_GV2Model.SP_MWL_GetInfoFichero_Result">
+                <ScalarProperty Name="REGISTRO" ColumnName="REGISTRO" />
+                <ScalarProperty Name="DOCTOR" ColumnName="DOCTOR" />
+                <ScalarProperty Name="RUTA" ColumnName="RUTA" />
+                <ScalarProperty Name="CLINICA" ColumnName="CLINICA" />
+                <ScalarProperty Name="ESPECIALIDAD" ColumnName="ESPECIALIDAD" />
+                <ScalarProperty Name="CLASIFICACION" ColumnName="CLASIFICACION" />
+                <ScalarProperty Name="NU_ANO" ColumnName="NU_ANO" />
+                <ScalarProperty Name="CICLO" ColumnName="CICLO" />
+                <ScalarProperty Name="FECHA_VISITA" ColumnName="FECHA_VISITA" />
+                <ScalarProperty Name="TIPO" ColumnName="TIPO" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_MWL_GetVisitasMedicos" FunctionName="Medinet_GV2Model.Store.SP_MWL_GetVisitasMedicos">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Medinet_GV2Model.SP_MWL_GetVisitasMedicos_Result">
+                <ScalarProperty Name="REGISTRO" ColumnName="REGISTRO" />
+                <ScalarProperty Name="DOCTOR" ColumnName="DOCTOR" />
+                <ScalarProperty Name="FECHA_VISITA" ColumnName="FECHA_VISITA" />
+                <ScalarProperty Name="TIPO" ColumnName="TIPO" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_MWL_EliminarVisitaMedico" FunctionName="Medinet_GV2Model.Store.SP_MWL_EliminarVisitaMedico">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Medinet_GV2Model.SP_MWL_EliminarVisitaMedico_Result">
+                <ScalarProperty Name="NU_ANO" ColumnName="NU_ANO" />
+                <ScalarProperty Name="REGISTRO" ColumnName="REGISTRO" />
+                <ScalarProperty Name="ZONA" ColumnName="ZONA" />
+                <ScalarProperty Name="FECHA_VISITA" ColumnName="FECHA_VISITA" />
+                <ScalarProperty Name="CICLO" ColumnName="CICLO" />
+                <ScalarProperty Name="TIPO" ColumnName="TIPO" />
+                <ScalarProperty Name="MOTIVO" ColumnName="MOTIVO" />
+                <ScalarProperty Name="PASADO_DESKTOP" ColumnName="PASADO_DESKTOP" />
+                <ScalarProperty Name="PASADO_INTERNET" ColumnName="PASADO_INTERNET" />
+                <ScalarProperty Name="FECHA_SISTEMA" ColumnName="FECHA_SISTEMA" />
+                <ScalarProperty Name="HORA_SISTEMA" ColumnName="HORA_SISTEMA" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_MWL_GetTipoVisitaAllowed" FunctionName="Medinet_GV2Model.Store.SP_MWL_GetTipoVisitaAllowed" >
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Medinet_GV2Model.SP_GetTipoVisitaAllowed_Result" >
+                <ScalarProperty Name="TIPO" ColumnName="TIPO" />
+                <ScalarProperty Name="CODIGO" ColumnName="CODIGO" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_MWL_GetFarmaciasByZonaAndText" FunctionName="Medinet_GV2Model.Store.SP_MWL_GetFarmaciasByZonaAndText">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Medinet_GV2Model.SP_MWL_GetFarmaciasByZonaAndText_Result">
+                <ScalarProperty Name="NUMERO" ColumnName="NUMERO" />
+                <ScalarProperty Name="FARMACIA" ColumnName="FARMACIA" />
+                <ScalarProperty Name="FECHA_VISITA" ColumnName="FECHA_VISITA" />
+                <ScalarProperty Name="TIPO" ColumnName="TIPO" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_MWL_InsertVisitaFarmacia" FunctionName="Medinet_GV2Model.Store.SP_MWL_InsertVisitaFarmacia">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Medinet_GV2Model.SP_MWL_InsertVisitaFarmacia_Result">
+                <ScalarProperty Name="NU_ANO" ColumnName="NU_ANO" />
+                <ScalarProperty Name="CICLO" ColumnName="CICLO" />
+                <ScalarProperty Name="NUMERO" ColumnName="NUMERO" />
+                <ScalarProperty Name="CICLO_VISITA" ColumnName="CICLO_VISITA" />
+                <ScalarProperty Name="ZONA" ColumnName="ZONA" />
+                <ScalarProperty Name="FARMACIA" ColumnName="FARMACIA" />
+                <ScalarProperty Name="FECHA_VISITA" ColumnName="FECHA_VISITA" />
+                <ScalarProperty Name="MOTIVO" ColumnName="MOTIVO" />
+                <ScalarProperty Name="ATENDIO" ColumnName="ATENDIO" />
+                <ScalarProperty Name="ATENDIO_NOMBRE" ColumnName="ATENDIO_NOMBRE" />
+                <ScalarProperty Name="PRODUCTO_EVALUADO1" ColumnName="PRODUCTO_EVALUADO1" />
+                <ScalarProperty Name="COMENTARIOS" ColumnName="COMENTARIOS" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_MWL_GetInfoFarmacia" FunctionName="Medinet_GV2Model.Store.SP_MWL_GetInfoFarmacia">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Medinet_GV2Model.SP_MWL_GetInfoFarmacia_Result">
+                <ScalarProperty Name="NUMERO" ColumnName="NUMERO" />
+                <ScalarProperty Name="FARMACIA" ColumnName="FARMACIA" />
+                <ScalarProperty Name="RUTA" ColumnName="RUTA" />
+                <ScalarProperty Name="CADENA" ColumnName="CADENA" />
+                <ScalarProperty Name="NU_ANO" ColumnName="NU_ANO" />
+                <ScalarProperty Name="CICLO" ColumnName="CICLO" />
+                <ScalarProperty Name="FECHA_VISITA" ColumnName="FECHA_VISITA" />
+                <ScalarProperty Name="MOTIVO" ColumnName="MOTIVO" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_MWL_GetVisitasFarmacias" FunctionName="Medinet_GV2Model.Store.SP_MWL_GetVisitasFarmacias">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Medinet_GV2Model.SP_MWL_GetVisitasFarmacias_Result">
+                <ScalarProperty Name="NUMERO" ColumnName="NUMERO" />
+                <ScalarProperty Name="FARMACIA" ColumnName="FARMACIA" />
+                <ScalarProperty Name="FECHA_VISITA" ColumnName="FECHA_VISITA" />
+                <ScalarProperty Name="MOTIVO" ColumnName="MOTIVO" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_MWL_EliminarVisitaFarmacia" FunctionName="Medinet_GV2Model.Store.SP_MWL_EliminarVisitaFarmacia">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Medinet_GV2Model.SP_MWL_EliminarVisitaFarmacia_Result">
+                <ScalarProperty Name="NU_ANO" ColumnName="NU_ANO" />
+                <ScalarProperty Name="CICLO" ColumnName="CICLO" />
+                <ScalarProperty Name="NUMERO" ColumnName="NUMERO" />
+                <ScalarProperty Name="CICLO_VISITA" ColumnName="CICLO_VISITA" />
+                <ScalarProperty Name="ZONA" ColumnName="ZONA" />
+                <ScalarProperty Name="FARMACIA" ColumnName="FARMACIA" />
+                <ScalarProperty Name="FECHA_VISITA" ColumnName="FECHA_VISITA" />
+                <ScalarProperty Name="MOTIVO" ColumnName="MOTIVO" />
+                <ScalarProperty Name="ATENDIO" ColumnName="ATENDIO" />
+                <ScalarProperty Name="ATENDIO_NOMBRE" ColumnName="ATENDIO_NOMBRE" />
+                <ScalarProperty Name="PRODUCTO_EVALUADO1" ColumnName="PRODUCTO_EVALUADO1" />
+                <ScalarProperty Name="COMENTARIOS" ColumnName="COMENTARIOS" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_MWL_GetHospitalByZonaAndText" FunctionName="Medinet_GV2Model.Store.SP_MWL_GetHospitalByZonaAndText">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Medinet_GV2Model.SP_MWL_GetHospitalByZonaAndText_Result">
+                <ScalarProperty Name="NUMERO" ColumnName="NUMERO" />
+                <ScalarProperty Name="HOSPITAL" ColumnName="HOSPITAL" />
+                <ScalarProperty Name="FECHA_VISITA" ColumnName="FECHA_VISITA" />
+                <ScalarProperty Name="TIPO" ColumnName="TIPO" />
+                <ScalarProperty Name="SERVICIO" ColumnName="SERVICIO" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_MWL_InsertVisitaHospital" FunctionName="Medinet_GV2Model.Store.SP_MWL_InsertVisitaHospital">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Medinet_GV2Model.SP_MWL_InsertVisitaHospital_Result">
+                <ScalarProperty Name="NU_ANO" ColumnName="NU_ANO" />
+                <ScalarProperty Name="CICLO" ColumnName="CICLO" />
+                <ScalarProperty Name="NUMERO" ColumnName="NUMERO" />
+                <ScalarProperty Name="CICLO_VISITA" ColumnName="CICLO_VISITA" />
+                <ScalarProperty Name="ZONA" ColumnName="ZONA" />
+                <ScalarProperty Name="HOSPITAL" ColumnName="HOSPITAL" />
+                <ScalarProperty Name="FECHA_VISITA" ColumnName="FECHA_VISITA" />
+                <ScalarProperty Name="SERVICIO" ColumnName="SERVICIO" />
+                <ScalarProperty Name="MOTIVO" ColumnName="MOTIVO" />
+                <ScalarProperty Name="ACOMPANADO" ColumnName="ACOMPANADO" />
+                <ScalarProperty Name="NUM_MEDICO" ColumnName="NUM_MEDICO" />
+                <ScalarProperty Name="ATENDIDO" ColumnName="ATENDIDO" />
+                <ScalarProperty Name="COMENTARIOS" ColumnName="COMENTARIOS" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_MWL_GetInfoHospital" FunctionName="Medinet_GV2Model.Store.SP_MWL_GetInfoHospital">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Medinet_GV2Model.SP_MWL_GetInfoHospital_Result">
+                <ScalarProperty Name="NUMERO" ColumnName="NUMERO" />
+                <ScalarProperty Name="HOSPITAL" ColumnName="HOSPITAL" />
+                <ScalarProperty Name="RUTA" ColumnName="RUTA" />
+                <ScalarProperty Name="INSTITUCION" ColumnName="INSTITUCION" />
+                <ScalarProperty Name="NU_ANO" ColumnName="NU_ANO" />
+                <ScalarProperty Name="CICLO" ColumnName="CICLO" />
+                <ScalarProperty Name="FECHA_VISITA" ColumnName="FECHA_VISITA" />
+                <ScalarProperty Name="MOTIVO" ColumnName="MOTIVO" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_MWL_EliminarVisitaHospital" FunctionName="Medinet_GV2Model.Store.SP_MWL_EliminarVisitaHospital">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Medinet_GV2Model.SP_MWL_EliminarVisitaHospital_Result">
+                <ScalarProperty Name="NU_ANO" ColumnName="NU_ANO" />
+                <ScalarProperty Name="CICLO" ColumnName="CICLO" />
+                <ScalarProperty Name="NUMERO" ColumnName="NUMERO" />
+                <ScalarProperty Name="CICLO_VISITA" ColumnName="CICLO_VISITA" />
+                <ScalarProperty Name="ZONA" ColumnName="ZONA" />
+                <ScalarProperty Name="HOSPITAL" ColumnName="HOSPITAL" />
+                <ScalarProperty Name="FECHA_VISITA" ColumnName="FECHA_VISITA" />
+                <ScalarProperty Name="SERVICIO" ColumnName="SERVICIO" />
+                <ScalarProperty Name="MOTIVO" ColumnName="MOTIVO" />
+                <ScalarProperty Name="ACOMPANADO" ColumnName="ACOMPANADO" />
+                <ScalarProperty Name="NUM_MEDICO" ColumnName="NUM_MEDICO" />
+                <ScalarProperty Name="ATENDIDO" ColumnName="ATENDIDO" />
+                <ScalarProperty Name="COMENTARIOS" ColumnName="COMENTARIOS" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_MWL_GetVisitasHospitales" FunctionName="Medinet_GV2Model.Store.SP_MWL_GetVisitasHospitales">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Medinet_GV2Model.SP_MWL_GetVisitasHospitales_Result">
+                <ScalarProperty Name="NUMERO" ColumnName="NUMERO" />
+                <ScalarProperty Name="HOSPITAL" ColumnName="HOSPITAL" />
+                <ScalarProperty Name="FECHA_VISITA" ColumnName="FECHA_VISITA" />
+                <ScalarProperty Name="MOTIVO" ColumnName="MOTIVO" />
+                <ScalarProperty Name="SERVICIO" ColumnName="SERVICIO" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_MWL_GetCoberturas" FunctionName="Medinet_GV2Model.Store.SP_MWL_GetCoberturas">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Medinet_GV2Model.SP_MWL_GetCoberturas_Result">
+                <ScalarProperty Name="Fichados" ColumnName="Fichados" />
+                <ScalarProperty Name="Visitados" ColumnName="Visitados" />
+                <ScalarProperty Name="PorcentajeFichadoVisitados" ColumnName="PorcentajeFichadoVisitados" />
+                <ScalarProperty Name="Revisitas" ColumnName="Revisitas" />
+                <ScalarProperty Name="Revisitados" ColumnName="Revisitados" />
+                <ScalarProperty Name="PorcentajeRevisitasRevisitados" ColumnName="PorcentajeRevisitasRevisitados" />
+                <ScalarProperty Name="PDR" ColumnName="PDR" />
+                <ScalarProperty Name="Mix" ColumnName="Mix" />
+                <ScalarProperty Name="MINPDR" ColumnName="MINPDR" />
+                <ScalarProperty Name="MINFARMACIAS" ColumnName="MINFARMACIAS" />
+                <ScalarProperty Name="MINHOSPITALES" ColumnName="MINHOSPITALES" />
+                <ScalarProperty Name="FARMACIAS" ColumnName="FARMACIAS" />
+                <ScalarProperty Name="HOSPITALES" ColumnName="HOSPITALES" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_MWL_GetClinicas" FunctionName="Medinet_GV2Model.Store.SP_MWL_GetClinicas" />
+          <FunctionImportMapping FunctionImportName="SP_MWL_GetRutas" FunctionName="Medinet_GV2Model.Store.SP_MWL_GetRutas" />
+          <FunctionImportMapping FunctionImportName="SP_MWL_AltaMedico" FunctionName="Medinet_GV2Model.Store.SP_MWL_AltaMedico" />
+          <FunctionImportMapping FunctionImportName="SP_MWL_GetFichero" FunctionName="Medinet_GV2Model.Store.SP_MWL_GetFichero">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Medinet_GV2Model.SP_MWL_GetFichero_Result">
+                <ScalarProperty Name="REGISTRO" ColumnName="REGISTRO" />
+                <ScalarProperty Name="DOCTOR" ColumnName="DOCTOR" />
+                <ScalarProperty Name="ESPECIALIDAD" ColumnName="ESPECIALIDAD" />
+                <ScalarProperty Name="CLASIFICACION" ColumnName="CLASIFICACION" />
+                <ScalarProperty Name="RUTA" ColumnName="RUTA" />
+                <ScalarProperty Name="REVISITA" ColumnName="REVISITA" />
+                <ScalarProperty Name="CLINICA" ColumnName="CLINICA" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_MWL_BajaMedico" FunctionName="Medinet_GV2Model.Store.SP_MWL_BajaMedico" />
+          <FunctionImportMapping FunctionImportName="SP_MW_MoverFicheroAsistido" FunctionName="Medinet_GV2Model.Store.SP_MW_MoverFicheroAsistido" />
+          <FunctionImportMapping FunctionImportName="SP_MW_Visitadores_FicVis2" FunctionName="Medinet_GV2Model.Store.SP_MW_Visitadores_FicVis2">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Medinet_GV2Model.SP_MW_Visitadores_FicVis2_Result">
+                <ScalarProperty Name="ID_Visitador" ColumnName="ID_Visitador" />
+                <ScalarProperty Name="TX_Nombre" ColumnName="TX_Nombre" />
+                <ScalarProperty Name="TX_Apellido" ColumnName="TX_Apellido" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_MWL_Ciclos_Act" FunctionName="Medinet_GV2Model.Store.SP_MWL_Ciclos_Act">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Medinet_GV2Model.SP_MWL_Ciclos_Act_Result">
+                <ScalarProperty Name="ID_Ciclo" ColumnName="ID_Ciclo" />
+                <ScalarProperty Name="TX_Ciclo" ColumnName="TX_Ciclo" />
+                <ScalarProperty Name="NU_Ano" ColumnName="NU_Ano" />
+                <ScalarProperty Name="NU_Ciclo" ColumnName="NU_Ciclo" />
+                <ScalarProperty Name="FE_CicloIni" ColumnName="FE_CicloIni" />
+                <ScalarProperty Name="FE_CicloFin" ColumnName="FE_CicloFin" />
+                <ScalarProperty Name="FE_CicloProrroga" ColumnName="FE_CicloProrroga" />
+                <ScalarProperty Name="NU_DiasCancelarVehiculo" ColumnName="NU_DiasCancelarVehiculo" />
+                <ScalarProperty Name="NU_DiasHabiles" ColumnName="NU_DiasHabiles" />
+                <ScalarProperty Name="FE_CargaInv" ColumnName="FE_CargaInv" />
+                <ScalarProperty Name="FE_IniDistribucion" ColumnName="FE_IniDistribucion" />
+                <ScalarProperty Name="FE_FinDistribucion" ColumnName="FE_FinDistribucion" />
+                <ScalarProperty Name="NU_Estatus" ColumnName="NU_Estatus" />
+                <ScalarProperty Name="BO_Activo" ColumnName="BO_Activo" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_MWL_AltaMedicoValidar" FunctionName="Medinet_GV2Model.Store.SP_MWL_AltaMedicoValidar" />
+          <FunctionImportMapping FunctionImportName="SP_MWL_GetFarmacias" FunctionName="Medinet_GV2Model.Store.SP_MWL_GetFarmacias">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Medinet_GV2Model.SP_MWL_GetFarmacias_Result">
+                <ScalarProperty Name="ID_Farmacia" ColumnName="ID_Farmacia" />
+                <ScalarProperty Name="TX_Farmacia" ColumnName="TX_Farmacia" />
+                <ScalarProperty Name="TX_Estado" ColumnName="TX_Estado" />
+                <ScalarProperty Name="TX_Ruta" ColumnName="TX_Ruta" />
+                <ScalarProperty Name="TX_Cadena" ColumnName="TX_Cadena" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_MWL_AltaFarmacia" FunctionName="Medinet_GV2Model.Store.SP_MWL_AltaFarmacia" />
+          <FunctionImportMapping FunctionImportName="SP_MWL_GetFicheroFarmacias" FunctionName="Medinet_GV2Model.Store.SP_MWL_GetFicheroFarmacias">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Medinet_GV2Model.SP_MWL_GetFicheroFarmacias_Result">
+                <ScalarProperty Name="NUMERO" ColumnName="NUMERO" />
+                <ScalarProperty Name="FARMACIA" ColumnName="FARMACIA" />
+                <ScalarProperty Name="RUTA" ColumnName="RUTA" />
+                <ScalarProperty Name="CADENA" ColumnName="CADENA" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_MWL_BajaFarmacia" FunctionName="Medinet_GV2Model.Store.SP_MWL_BajaFarmacia" />
+          <FunctionImportMapping FunctionImportName="SP_MWL_GetHospitales" FunctionName="Medinet_GV2Model.Store.SP_MWL_GetHospitales">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Medinet_GV2Model.SP_MWL_GetHospitales_Result">
+                <ScalarProperty Name="ID_Hospital" ColumnName="ID_Hospital" />
+                <ScalarProperty Name="TX_Hospital" ColumnName="TX_Hospital" />
+                <ScalarProperty Name="TX_Estado" ColumnName="TX_Estado" />
+                <ScalarProperty Name="TX_Ruta" ColumnName="TX_Ruta" />
+                <ScalarProperty Name="TX_Institucion" ColumnName="TX_Institucion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_MWL_AltaHospital" FunctionName="Medinet_GV2Model.Store.SP_MWL_AltaHospital" />
+          <FunctionImportMapping FunctionImportName="SP_MWL_BajaHospital" FunctionName="Medinet_GV2Model.Store.SP_MWL_BajaHospital" />
+          <FunctionImportMapping FunctionImportName="SP_MWL_GetFicheroHospitales" FunctionName="Medinet_GV2Model.Store.SP_MWL_GetFicheroHospitales">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Medinet_GV2Model.SP_MWL_GetFicheroHospitales_Result">
+                <ScalarProperty Name="NUMERO" ColumnName="NUMERO" />
+                <ScalarProperty Name="HOSPITAL" ColumnName="HOSPITAL" />
+                <ScalarProperty Name="RUTA" ColumnName="RUTA" />
+                <ScalarProperty Name="INSTITUCION" ColumnName="INSTITUCION" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_MW_EliminarFicheroAsistido" FunctionName="Medinet_GV2Model.Store.SP_MW_EliminarFicheroAsistido" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

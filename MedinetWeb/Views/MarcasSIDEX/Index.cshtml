@@ -1,0 +1,96 @@
+﻿@{
+    ViewBag.Title = "Marcas SIDEX";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.MirrorEntityModel.MMWS_MarcasSIDEX>()
+        // Grid Name
+    .Name("Grid")
+
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                     // Cretae all the columns base on Model
+                     columns.Bound(r => r.ID_MarcaSIDEX).Title("ID");
+                     columns.ForeignKey(p => p.ID_MarcaMedinet, (System.Collections.IEnumerable)ViewData["dvMarcas"], "ID", "TX")
+                        .Title("Marca")
+                        .EditorTemplateName("IDMarcasMedinetAllowNull");
+                     columns.Bound(r => r.TX_IDMarcaCliente).Title("ID Laboratorio");
+                     columns.Bound(r => r.TX_Marca).Title("Marca Laboratorio");
+                     columns.Bound(r => r.BO_Activo).Title("Activo")
+                         .ClientTemplate("<input type='checkbox' #= BO_Activo ? checked='checked' : '' # disabled='disabled'}></input>");
+
+                     // Edit and Delete button column
+                     columns.Command(command =>
+                                         {
+                                             command.Edit().Text("Editar");
+                                         }).Width(180);
+                 })
+
+    // Declare ajax datasource.
+        // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+        // Set the model Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+
+                                .Model(model =>
+                                    {
+                                        model.Id(record => record.ID_MarcaSIDEX);
+                                    }
+                                )
+                                .Read(read => read.Action("GetAll", "MarcasSIDEX"))
+                                .Update(update => update.Action("Update", "MarcasSIDEX"))
+                                .PageSize(5)
+    )
+
+    .Events(e => e.Edit("onEdit"))
+
+    // Set grid editable.
+    .Editable(editable => editable.Mode(GridEditMode.InLine))
+
+    // Set grid sortable.
+    .Sortable()
+
+    // Set grid selectable.
+    .Selectable()
+
+    // Set grid groupable.
+    .Groupable()
+
+    // Set grid filterable.
+    .Filterable()
+
+    // Set grid pagable.
+    .Pageable(pageable =>
+                  {
+                      pageable.Refresh(true);
+                      pageable.PageSizes(true);
+                  })
+)
+
+<script>
+    function onEdit(e) {
+        var dropDown = $("#ID_MarcaMedinet").data("kendoDropDownList");
+
+        if (dropDown) {
+            if (dropDown._optionID == "ID_MarcaMedinet_option_selected") {
+                dropDown.bind("change", function (e) {
+                    var grid = e.sender.wrapper.closest(".k-grid").data("kendoGrid");
+                    var dataItem = grid.dataItem(e.sender.wrapper.closest("tr"));
+                    //If current value is null
+                    if (!dataItem.ID_MarcaMedinet) {
+                        //change the model value
+                        dataItem.ID_MarcaMedinet = 0;
+                        //get the currently selected value from the DDL
+                        var currentlySelectedValue = e.sender.value();
+                        //set the value to the model
+                        dataItem.set('ID_MarcaMedinet', currentlySelectedValue);
+                    }
+                })
+            }
+        }
+    }
+</script>

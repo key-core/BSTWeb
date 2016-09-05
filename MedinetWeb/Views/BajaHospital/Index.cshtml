@@ -1,0 +1,236 @@
+﻿@{
+    ViewBag.Title = "Baja de Hospitales";
+}
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+@(Html.Kendo().Grid<MedinetWeb.SP_MWL_GetFicheroHospitales_Result>()
+        // Grid Name
+    .Name("Grid")
+
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                     columns.Bound(r => r.NUMERO).Title("NUMERO");
+                     columns.Bound(r => r.HOSPITAL).Title("HOSPITAL");
+                     columns.Bound(r => r.RUTA).Title("RUTA");
+                     columns.Bound(r => r.INSTITUCION).Title("INSTITUCION");
+                     columns.Command(c =>
+                     {
+                         c.Custom("DeleteVisitMedico").Text("Eliminar").Click("goToDelete");
+                     });
+                 })
+
+    // Declare ajax datasource.
+        // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+        // Set the model Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+                                .Model(model =>
+                                    {
+                                        model.Id(record => record.NUMERO);
+                                    }
+                                )
+                                .Read(read => read.Action("GetAll", "BajaHospital"))
+
+    )
+
+    //.Events(e => e.DataBound("onDataBound"))
+
+    // Set grid selectable.
+    .Selectable()
+
+    // Set grid sortable.
+    .Sortable()
+
+    // Set grid groupable.
+    //.Groupable()
+
+    // Set grid filterable.
+    .Filterable()
+    // Set grid pagable.
+    .Pageable(pageable =>
+                    {
+                        pageable.Refresh(true);
+                        pageable.PageSizes(true);
+                    })
+)
+
+
+
+<style scoped>
+    
+
+    #tableParametros {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
+    #Grid {
+        margin-top: 10px;
+    }
+
+    td {
+        padding: 0em 0.5em 0.25em 0em;
+        border: 0 none;
+    }
+
+    #getFicheroVis {
+        visibility: hidden;
+    }
+
+    .k-detail-cell .k-tabstrip .k-content {
+        padding: 0.2em;
+    }
+
+    .general-details ul {
+        list-style: none;
+        font-style: italic;
+        margin: 15px;
+        padding: 0;
+    }
+
+        .general-details ul li {
+            margin: 0;
+            line-height: 1.7em;
+        }
+
+    .general-details label {
+        display: inline-block;
+        width: 180px;
+        padding-right: 10px;
+        text-align: right;
+        font-style: normal;
+        font-weight: bold;
+    }
+
+    .profesional-details ul {
+        list-style: none;
+        font-style: italic;
+        margin: 15px;
+        padding: 0;
+    }
+
+        .profesional-details ul li {
+            margin: 0;
+            line-height: 1.7em;
+        }
+
+    .profesional-details label {
+        display: inline-block;
+        width: 180px;
+        padding-right: 10px;
+        text-align: right;
+        font-style: normal;
+        font-weight: bold;
+    }
+
+    .personal-details ul {
+        list-style: none;
+        font-style: italic;
+        margin: 15px;
+        padding: 0;
+    }
+
+        .personal-details ul li {
+            margin: 0;
+            line-height: 1.7em;
+        }
+
+    .personal-details label {
+        display: inline-block;
+        width: 180px;
+        padding-right: 10px;
+        text-align: right;
+        font-style: normal;
+        font-weight: bold;
+    }
+
+    .agendaVisita-details ul {
+        list-style: none;
+        font-style: italic;
+        margin: 15px;
+        padding: 0;
+    }
+
+        .agendaVisita-details ul li {
+            margin: 0;
+            line-height: 1.7em;
+        }
+
+    .agendaVisita-details label {
+        display: inline-block;
+        width: 180px;
+        padding-right: 10px;
+        text-align: right;
+        font-style: normal;
+        font-weight: bold;
+    }
+
+    .agendaRevisita-details ul {
+        list-style: none;
+        font-style: italic;
+        margin: 15px;
+        padding: 0;
+    }
+
+        .agendaRevisita-details ul li {
+            margin: 0;
+            line-height: 1.7em;
+        }
+
+    .agendaRevisita-details label {
+        display: inline-block;
+        width: 180px;
+        padding-right: 10px;
+        text-align: right;
+        font-style: normal;
+        font-weight: bold;
+    }
+     
+</style>
+
+<script>
+    
+    function goToDelete(e) {
+        var tr = $(e.currentTarget).closest("tr");
+        var item = $("#Grid").data("kendoGrid").dataItem(tr);
+
+        var REGISTRO = item.NUMERO;
+        var HOSPITAL = item.HOSPITAL.toUpperCase();
+        var RUTA = item.RUTA.toUpperCase();
+        var INSTITUCION = item.INSTITUCION.toUpperCase();
+
+        var retVal = confirm("Ha seleccionado un registro con los siguientes datos:\n\rHOSPITAL: " +
+                                HOSPITAL + "\n\rRUTA: " + RUTA + " \n\rINSTITUCION: " +
+                                INSTITUCION + "\n\r¿Desea eliminar el hospital seleccionado?");
+        if (retVal == true) {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Delete")',
+                dataType: 'json',
+                data: {
+                    NUM: REGISTRO
+                },
+                success: function (resp) {
+               
+                    if (resp) {
+                        alert("¡Hospital eliminado exitosamente!");
+                        //window.location.href = "@Url.Action("Index","BajaFarmacia")";
+                        $("#Grid").data("kendoGrid").dataSource.read();
+                    } else {
+                        alert("¡El hospital no pudo ser eliminado correctamente! Contacte con el administrador");
+                    }
+                    //alert(resp.mensaje);
+                },
+                error: function (ex) {
+                    alert('Falló eliminando hospital...');
+                }
+            });
+            return true;
+        }
+
+        
+    }
+    
+</script>

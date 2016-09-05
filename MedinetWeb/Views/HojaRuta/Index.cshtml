@@ -1,0 +1,280 @@
+﻿@{
+    ViewBag.Title = "Hoja de rutas";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.SP_MW_HojaRutaPorRegLin_Result>()
+        // Grid Name
+    .Name("Grid")
+
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                     columns.ForeignKey(p => p.ID_Region, (System.Collections.IEnumerable)ViewData["dvRegiones"], "ID", "TX")
+                         .Title("Región")
+                         .Width(40);
+                     columns.Bound(r => r.NU_Visitadores).Title("Nro. Visitadores")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Format("{0:n0}")
+                         .Width(40);
+                     columns.Bound(r => r.Creadas).Title("Creadas")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Format("{0:n0}")
+                         .Width(40);
+                 })
+
+    .ToolBar(toolbar =>
+    {
+        toolbar.Template(@<text>
+        <div class="toolbar">
+            <label class="ciclo-label" for="ciclo">Ciclo:</label>
+            @(Html.Kendo().DropDownList()
+                                    .Name("ddCiclos")
+                                    .OptionLabel("Select")
+                                    .DataTextField("TX")
+                                    .DataValueField("ID")
+                                    .AutoBind(false)
+                                    .Events(e => e.Change("ciclosChange"))
+                                    .DataSource(ds =>
+                                    {
+                                        ds.Read("GetCiclosConData", "Ciclos");
+                                    })
+                                )
+        </div>
+        </text>);
+    })
+
+    // Declare ajax datasource.
+        // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+        // Set the model Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+
+                                .Read(read => read.Action("GetAllReg", "HojaRuta").Data("paramConsulta"))
+    )
+
+    // Set grid sortable.
+    .Sortable(sortable => sortable
+    .AllowUnsort(true)
+    .SortMode(GridSortMode.MultipleColumn))
+
+    // Set grid selectable.
+    .Selectable()
+    
+    // Llama al detalle
+    .ClientDetailTemplateId("templateRegLin")
+)
+
+<script>
+    function ciclosChange() {
+        $("#Grid").data("kendoGrid").dataSource.read();
+    }
+
+    function paramConsulta() {
+        return {
+            cicloID: $("#ddCiclos").val() != "" ? $("#ddCiclos").val() : 0
+        }
+    }
+</script>
+
+
+<script id="templateRegLin" type="text/kendo-tmpl">
+    @(Html.Kendo().Grid<MedinetWeb.Models.SP_MW_HojaRutaPorRegLin_Result>()
+            .Name("Grid_#=ID_Region#")
+            .Columns(columns =>
+            {
+                    columns.ForeignKey(p => p.ID_Linea, (System.Collections.IEnumerable)ViewData["dvLineas"], "ID", "TX")
+                        .Title("Línea")
+                        .Width(40);
+                    columns.Bound(r => r.NU_Visitadores).Title("Nro. Visitadores")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n0}")
+                        .Width(40);
+                    columns.Bound(r => r.Creadas).Title("Creadas")
+                        .HtmlAttributes(new { style = "text-align:right" })
+                        .Format("{0:n0}")
+                        .Width(40);
+            })
+                        
+            // Llama al detalle
+            .ClientDetailTemplateId("templateRegLinVis")
+
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                //.PageSize(10)
+                .Read(read => read.Action("GetAllRegLin", "HojaRuta", 
+                    new { cicloID = "#=ID_Ciclo#", regionID = "#=ID_Region#"}))
+            )
+            //.Pageable()
+            
+            // Set grid selectable.
+            .Selectable()
+            
+            // Set grid sortable.
+            .Sortable(sortable => sortable
+            .AllowUnsort(true)
+            .SortMode(GridSortMode.MultipleColumn))
+            
+            .ToClientTemplate()
+    )
+</script>
+
+<script id="templateRegLinVis" type="text/kendo-tmpl">
+    @(Html.Kendo().Grid<MedinetWeb.Models.SP_MW_HojaRutaPorRegLinVis_Result>()
+            .Name("Grid_#=ID_Region#_#=ID_Linea#")
+            .Columns(columns =>
+            {
+                columns.ForeignKey(p => p.ID_Visitador, (System.Collections.IEnumerable)ViewData["dvVisitadores"], "ID", "TX")
+                        .Title("Visitador")
+                        .Width(60);
+                columns.Bound(r => r.NU_Visitadores).Title("Nro. Visitadores")
+                    .HtmlAttributes(new { style = "text-align:right" })
+                    .Format("{0:n0}")
+                    .Width(40);
+                columns.Bound(r => r.Creadas).Title("Creadas")
+                    .HtmlAttributes(new { style = "text-align:right" })
+                    .Format("{0:n0}")
+                    .Width(40);
+            })
+
+            // Llama al detalle
+            .ClientDetailTemplateId("templateRutasDetalle")
+
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                //.PageSize(10)
+                .Read(read => read.Action("GetAllRegLinVis", "HojaRuta", 
+                    new { cicloID = "#=ID_Ciclo#", regionID = "#=ID_Region#", lineaID = "#=ID_Linea#" }))
+            )
+            //.Pageable()
+            
+            // Set grid selectable.
+            .Selectable()
+            
+            // Set grid sortable.
+            .Sortable(sortable => sortable
+            .AllowUnsort(true)
+            .SortMode(GridSortMode.MultipleColumn))
+            
+            .ToClientTemplate()
+    )
+</script>
+
+<script id="templateRutasDetalle" type="text/kendo-tmpl">
+    @(Html.Kendo().TabStrip()
+            .Name("tabStrip_#=ID_Region#_#=ID_Linea#_#=ID_Visitador#")
+            .SelectedIndex(0)
+            .Animation(animation => animation.Open(open => open.Fade(FadeDirection.In)))
+            .Items(items =>
+            {
+                items.Add().Text("Hoja de rutas").Content(
+                    @<text>
+                    @(Html.Kendo().Grid<MedinetWeb.Models.SP_MW_HojaRutaPorRegLinVisRutas_Result>()
+                        .Name("GridRutas_#=ID_Region#_#=ID_Linea#_#=ID_Visitador#")
+                        .Columns(columns =>
+                        {
+                            columns.Bound(r => r.Semana).Title("Semana")
+                                .Width(40);
+                            columns.Bound(r => r.Dia).Title("Fecha")
+                                .Width(50);
+                            columns.Bound(r => r.Am).Title("Am")
+                                .Width(150);
+                            columns.Bound(r => r.Pm).Title("Pm")
+                                .Width(150);
+                        })
+                        .DataSource(dataSource => dataSource
+                            .Ajax()
+                            .Read(read => read.Action("GetAllRutas", "HojaRuta", 
+                                new { cicloID = "#=ID_Ciclo#", visitadorID = "#=ID_Visitador#" }))
+                        )
+                        // Set grid selectable.
+                        .Selectable()
+            
+                        // Set grid sortable.
+                        .Sortable(sortable => sortable
+                        .AllowUnsort(true)
+                        .SortMode(GridSortMode.MultipleColumn))
+                        .ToClientTemplate())
+                </text>
+                );
+
+                items.Add().Text("Agenda").Content(
+                    @<text>
+                    @(Html.Kendo().Grid<MedinetWeb.Models.SP_MW_HojaRutaPorRegLinVisDetalle_Result>()
+                        .Name("GridAgenda_#=ID_Region#_#=ID_Linea#_#=ID_Visitador#")
+                        .Columns(columns =>
+                        {
+                            columns.Bound(r => r.Semana).Title("Semana")
+                                .Width(50);
+                            columns.Bound(r => r.Fecha).Title("Fecha")
+                                .Width(60);
+                            columns.Bound(r => r.Horario).Title("Horario")
+                                .Width(50);
+                            columns.Bound(r => r.Hora).Title("Hora")
+                                .Width(40);
+                            columns.Bound(r => r.Tipo).Title("Tipo")
+                                .Width(40);
+                            columns.Bound(r => r.Medico).Title("Médico")
+                                .Width(90);
+                            columns.Bound(r => r.Especialidad).Title("Especialidad")
+                                .Width(90);
+                            columns.Bound(r => r.Clinica).Title("Clínica")
+                                .Width(90);
+                        })
+                        .DataSource(dataSource => dataSource
+                            .Ajax()
+                            .Read(read => read.Action("GetAllDetalle", "HojaRuta",
+                                new { cicloID = "#=ID_Ciclo#", visitadorID = "#=ID_Visitador#" }))
+                        )
+                            // Set grid selectable.
+                        .Selectable()
+
+                        // Set grid sortable.
+                        .Sortable(sortable => sortable
+                        .AllowUnsort(true)
+                        .SortMode(GridSortMode.MultipleColumn))
+                        .ToClientTemplate())
+                </text>
+                );
+            })
+            .ToClientTemplate())
+</script>
+
+
+<script>
+    //function dataBound() {
+    //    this.expandRow(this.tbody.find("tr.k-master-row").first());
+    //}
+</script>
+
+<style scoped="scoped">
+    /*#Grid .k-toolbar {
+        min-height: 27px;
+        padding: 1.3em;
+    }*/
+
+    .ciclo-label {
+        vertical-align: middle;
+        padding-right: .5em;
+    }
+
+    #ciclo {
+        vertical-align: middle;
+    }
+
+    .toolbar {
+        float: right;
+    }
+
+    label {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .k-grid .k-hierarchy-col {
+      width: 5px;
+    }
+</style>

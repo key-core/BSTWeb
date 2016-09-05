@@ -1,0 +1,102 @@
+﻿@{
+    ViewBag.Title = "Aprobación distribución";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.SP_MWS_ArticulosDistribucion_AprDis_Result>()
+    // Grid Name
+    .Name("Grid")
+
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                     columns.Bound(r => r.TX_IDArticuloCliente).Title("ID");
+                     columns.Bound(r => r.TX_Articulo).Title("Nombre");
+                     columns.Bound(r => r.NU_UnidadEntregar).Title("Distribuido")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Format("{0:n0}");
+
+                     // Edit and Delete button column
+                     columns.Command(command =>
+                        {
+                            command.Destroy().Text("Eliminar");
+                        }).Width(180);
+                 })
+
+    // Declare ajax datasource.
+    // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+    // Set themodel Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+
+                                .Model(model =>
+                                    {
+                                        model.Id(record => record.ID_Articulo);
+                                    }
+                                )
+                                .Read(read => read.Action("GetAll", "AprDistribucion"))
+                                .Destroy(delete => delete.Action("Delete", "AprDistribucion"))
+    )
+
+    // Set grid sortable.
+    .Sortable()
+
+    // Set grid selectable.
+    .Selectable()
+)
+
+<tr>
+    <td>
+        <button class="k-button" id="btAtras" onclick="window.location.href = '/AprDistribucion/ResumenDist'">Atras</button>
+    </td>
+</tr>
+
+<table id="tbBotonera">
+    <tr>
+        <td>
+            <button class="k-button" id="setAprobacionDist">Aprobar distribución</button>
+        </td>
+    </tr>
+</table>
+
+<style scoped>
+    td {
+        padding: 0em 0.5em 0.25em 0em;
+        border: 0 none;
+    }
+
+    #tbBotonera {
+        float: right;
+        margin-top: 15px;
+    }
+
+    #btAtras {
+        float: left;
+        margin-top: 15px;
+        margin-left: 0.5em;
+    }
+</style>
+
+<script>
+    $("#setAprobacionDist").click(function () {
+        if (confirm("¿Seguro que desea aprobar la distribución?"))
+            $.ajax({
+                url: "/AprDistribucion/SetAprDistribucion",
+                type: "POST",
+                async: false,
+                success: function (result) {
+                    alert('Notificación:\n\nSe ha aprobado la distribución satisfactoriamente.');
+
+                    window.location.href = "/Home/Index";
+                },
+                error: function (e) {
+                    alert('Fallo en ejecución:\n\nNo fue posible aprobar la distribución. Error:' + e.responseText);
+                }
+            });
+        else
+            return false;
+    })
+</script>

@@ -1,0 +1,150 @@
+﻿@{
+    ViewBag.Title = "Notas de entrega";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.MWS_NotaEntregaCabecera>()
+        // Grid Name
+    .Name("Grid")
+
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                     columns.Bound(r => r.ID_NotaEntrega).Title("ID");
+                     columns.ForeignKey(p => p.ID_VisitadoresHistorial, (System.Collections.IEnumerable)ViewData["dvVisitadoresHistorial"], "ID", "TX")
+                         .Title("Visitador");
+                     columns.Bound(r => r.FE_Registro).Title("Fecha")
+                         .Format("{0:dd/MM/yyyy}");
+                     columns.Bound(r => r.BO_Activo).Title("Activo")
+                        .ClientTemplate("<input type='checkbox' #= BO_Activo ? checked='checked' : '' # disabled='disabled'}></input>");
+                 })
+
+    .ToolBar(toolbar =>
+    {
+        toolbar.Template(@<text>
+            <div class="toolbar">
+                <label class="ciclo-label" for="ciclo">Ciclo:</label>
+                @(Html.Kendo().DropDownList()
+                                    .Name("ddCiclos")
+                                    .OptionLabel("Select")
+                                    .DataTextField("TX")
+                                    .DataValueField("ID")
+                                    .AutoBind(false)
+                                    .Events(e => e.Change("ciclosChange"))
+                                    .DataSource(ds =>
+                                    {
+                                        ds.Read("GetCiclosDistribucion", "Ciclos");
+                                    })
+                )
+            </div>
+        </text>);
+    })
+
+    // Declare ajax datasource.
+        // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+        // Set the model Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+
+                                .Read(read => read.Action("GetAllCabecera", "NotasEntrega").Data("paramNotasEntrega"))
+    )
+
+    // Set grid sortable.
+    .Sortable(sortable => sortable
+    .AllowUnsort(true)
+    .SortMode(GridSortMode.MultipleColumn))
+
+    // Set grid selectable.
+    .Selectable()
+
+    // Llama al detalle
+    .ClientDetailTemplateId("templateNotasEntregaDetalle")
+)
+
+<script>
+    function ciclosChange() {
+        $("#Grid").data("kendoGrid").dataSource.read();
+    }
+
+    function paramNotasEntrega() {
+        return {
+            cicloID: $("#ddCiclos").val() != "" ? $("#ddCiclos").val() : 0
+        }
+    }
+</script>
+
+<script id="templateNotasEntregaDetalle" type="text/kendo-tmpl">
+    @(Html.Kendo().Grid<MedinetWeb.Models.SP_MWS_NotaEntregaDetalle_NotEnt_Result>()
+            .Name("Grid_#=ID_NotaEntrega#")
+            .Columns(columns =>
+            {
+                columns.Bound(r => r.TX_Articulo).Title("Artículo");
+                columns.Bound(r => r.TX_Lote).Title("Lote");
+                columns.Bound(r => r.TX_Ubicacion).Title("Ubicación");
+                columns.Bound(r => r.NU_UnidadEntregar).Title("Uni. Entregar")
+                    .HtmlAttributes(new { style = "text-align:right" })
+                    .Format("{0:n0}");
+                columns.Bound(r => r.NU_UMEntregar).Title("UM. Entregar")
+                    .HtmlAttributes(new { style = "text-align:right" })
+                    .Format("{0:n}");
+                columns.Bound(r => r.NU_Costo).Title("Costo")
+                    .HtmlAttributes(new { style = "text-align:right" })
+                    .Format("{0:n0}");
+                columns.Bound(r => r.NU_Total).Title("Total")
+                    .HtmlAttributes(new { style = "text-align:right" })
+                    .Format("{0:n0}");
+                //columns.Template(c => { }).Title("Total")
+                //    .ClientTemplate("#=calculateField(data)#")
+                //    .HtmlAttributes(new { style = "text-align:right" });
+            })
+
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                        .Read(read => read.Action("GetAllDetalle", "NotasEntrega",
+                            new { notaEntregaID = "#=ID_NotaEntrega#" }))
+            )
+            // Set grid selectable.
+            .Selectable()
+
+            // Set grid sortable.
+            .Sortable(sortable => sortable
+            .AllowUnsort(true)
+            .SortMode(GridSortMode.MultipleColumn))
+
+            .ToClientTemplate()
+    )
+
+</script>
+
+<script>
+    function calculateField(data) {
+        return data.NU_UnidadEntregar * data.NU_Costo;
+    }
+</script>
+
+<style scoped="scoped">
+    .ciclo-label {
+        vertical-align: middle;
+        padding-right: .5em;
+    }
+
+    #ciclo {
+        vertical-align: middle;
+    }
+
+    .toolbar {
+        float: right;
+    }
+
+    label {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .k-grid .k-hierarchy-col {
+        width: 5px;
+    }
+</style>

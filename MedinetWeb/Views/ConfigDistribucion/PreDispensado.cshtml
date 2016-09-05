@@ -1,0 +1,75 @@
+﻿@{
+    ViewBag.Title = "PreDispensado";
+    Layout = "~/Views/Shared/_LayoutReport.cshtml";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.SP_MWS_PreDispensado_ConDis_Result>()
+    // Grid Name
+    .Name("Grid")
+    
+    // Declare grid column
+    .Columns(columns =>
+                 {
+                    // Cretae all the columns base on Model
+                     columns.ForeignKey(p => p.ID_Linea, (System.Collections.IEnumerable)ViewData["dvLineas"], "ID", "TX")
+                        .Title("Línea")
+                        .ClientFooterTemplate("<div>Totales: </div>");
+                     columns.ForeignKey(p => p.ID_VisitadoresHistorial, (System.Collections.IEnumerable)ViewData["dvVisitadoresHistorial"], "ID", "TX")
+                        .Title("Visitador");
+                     columns.Bound(r => r.NU_Contactos).Title("Contactos")
+                         .HtmlAttributes(new { style = "text-align:right" });
+                     columns.Bound(r => r.NU_UnidadAsignada).Title("Uni asignadas")
+                         .HtmlAttributes(new { style = "text-align:right" });
+                     columns.Bound(r => r.NU_UMCalculada).Title("UM calculadas")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .Format("{0:n}");
+                     columns.Bound(r => r.NU_UnidadEntregar).Title("Uni entregar")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .ClientFooterTemplate("<div style='text-align:right'>#= sum #  </div>");
+                     columns.Bound(r => r.NU_UMEntregar).Title("UM entregar")
+                         .HtmlAttributes(new { style = "text-align:right" })
+                         .ClientFooterTemplate("<div style='text-align:right'>#= sum #  </div>");
+                     columns.Bound(r => r.NU_UnidadAsignada).Title(" ")
+                         .Format("{0:n}").ClientTemplate(
+                                "# if (NU_UnidadAsignada > NU_UnidadEntregar) { #" +
+                                    "<img src='" + Url.Content("~/Content/Images/Menu/") + "down-26.png' />" +
+                                "# } else if (NU_UnidadAsignada < NU_UnidadEntregar) { #" +
+                                    "<img src='" + Url.Content("~/Content/Images/Menu/") + "up-26.png' />" +
+                                "# } else { #" +
+                                    "<img src='" + Url.Content("~/Content/Images/Menu/") + "record-26.png' />" +
+                                "# } #"
+                            ).Filterable(false).Sortable(false);
+                 })
+                 
+    // Declare ajax datasource.
+    // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+    // Set the model Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+                                
+                                .Read(read => read.Action("GetPreDispensado", "ConfigDistribucion", new { articuloID = ViewBag.articuloID, 
+                                    lineasIDs = ViewBag.lineasIDs, especialidadesIDs = ViewBag.especialidadesIDs, 
+                                    nuNF = ViewBag.nuNF }))
+
+                                .Aggregates(aggregates =>
+                                {
+                                    aggregates.Add(p => p.NU_UnidadEntregar).Sum();
+                                    aggregates.Add(p => p.NU_UMEntregar).Sum();
+                                })
+    )
+    
+    // Set grid sortable.
+    .Sortable()
+    
+    // Set grid selectable.
+    .Selectable()
+    
+    // Set grid filterable.
+    .Filterable()    
+
+)
+

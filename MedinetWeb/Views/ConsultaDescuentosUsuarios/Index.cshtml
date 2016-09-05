@@ -1,0 +1,145 @@
+﻿@{
+    ViewBag.Title = "Consulta descuentos usuarios";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+@(Html.Kendo().Grid<MedinetWeb.Models.SP_MW_DescuentosUsuarios_ConDesUsu_Result>()
+    // Grid Name
+    .Name("Grid")
+    
+    // Declare grid column
+    .Columns(columns =>
+                 {
+    // Cretae all the columns base on Model
+                     // Cretae all the columns base on Model
+                     columns.Bound(r => r.ID_DescuentosUsuarios).Title("ID")
+                         .Width(50);
+                     columns.ForeignKey(p => p.ID_Ciclo, (System.Collections.IEnumerable)ViewData["dvCiclos"], "ID", "TX")
+                        .Title("Ciclo")
+                        .Width(80);
+                     columns.ForeignKey(p => p.ID_Usuario, (System.Collections.IEnumerable)ViewData["dvUsuarios"], "ID", "TX")
+                        .Title("Usuario")
+                        .Width(180);
+                     columns.ForeignKey(p => p.ID_Cargo, (System.Collections.IEnumerable)ViewData["dvCargos"], "ID", "TX")
+                        .Title("Cargo")
+                        .Width(150);
+                     columns.ForeignKey(p => p.ID_ConceptoDescuento, (System.Collections.IEnumerable)ViewData["dvConceptoDescuentos"], "ID", "TX")
+                         .Title("Concepto descuento")
+                         .Width(200);
+                     columns.Bound(r => r.FE_DescuentoIni).Title("Fecha inicio")
+                        .Width(130)
+                        .Format("{0:dd/MM/yyyy}");
+                     columns.Bound(r => r.FE_DescuentoFin).Title("Fecha fin")
+                         .Width(130)
+                         .Format("{0:dd/MM/yyyy}");
+                     columns.Bound(r => r.BO_MedioDia).Title("Medio día")
+                         .Width(110)
+                         .ClientTemplate("<input type='checkbox' #= BO_MedioDia ? checked='checked' : '' # disabled='disabled'}></input>");
+                     columns.Bound(r => r.NU_TotalDescuento).Title("Dias desc.")
+                         .Width(110);
+                     columns.Bound(r => r.TX_Comentario).Title("Comentario")
+                         .Width(250);
+                 })
+                 
+    // Declare ajax datasource.
+    // CRUD operation are wired back to ASP MVC Controller/Action e.g. HomeController, GetAll
+    // Set the model Id
+    .DataSource(datasoure => datasoure.Ajax()
+                                .Events(events => events.Error("GridError"))
+                                
+                                .Model(model =>
+                                    {
+                                        model.Id(record => record.ID_DescuentosUsuarios);
+                                    }
+                                )
+                                .Read(read => read.Action("GetAll", "ConsultaDescuentosUsuarios").Data("paramConsulta"))
+                                .PageSize(5)
+    )
+    
+    .ToolBar(toolbar =>
+    {
+        toolbar.Template(@<text>
+        <div class="toolbar">
+            <label class="ciclo-label" for="ciclo">Ciclo:</label>
+            @(Html.Kendo().DropDownList()
+                                    .Name("ddCiclos")
+                                    .OptionLabel("Select")
+                                    .DataTextField("TX")
+                                    .DataValueField("ID")
+                                    .AutoBind(false)
+                                    .Events(e => e.Change("ciclosChange"))
+                                    .DataSource(ds =>
+                                    {
+                                        ds.Read("GetCiclosConData", "Ciclos");
+                                    })
+                                )
+        </div>
+        </text>);
+    })
+
+    // Set grid sortable.
+    .Sortable()
+    
+    // Set grid selectable.
+    .Selectable()
+    
+    // Set grid groupable.
+    .Groupable()
+    
+    // Set grid filterable.
+    .Filterable()    
+
+    // Set grid Scrollable.
+    .Scrollable(scrolling => scrolling.Enabled(true).Height(220))
+
+    // Set grid pagable.
+    .Pageable(pageable =>
+                  {
+                      pageable.Refresh(true);
+                      pageable.PageSizes(true);
+                  })
+)
+
+<script>
+    function ciclosChange() {
+        $("#Grid").data("kendoGrid").dataSource.read();
+    }
+
+    function paramConsulta() {
+        return {
+            cicloID: $("#ddCiclos").val() != "" ? $("#ddCiclos").val() : 0
+        }
+    }
+</script>
+
+<style scoped="scoped">
+    /*#Grid .k-toolbar {
+        min-height: 27px;
+        padding: 1.3em;
+    }*/
+
+    .ciclo-label {
+        vertical-align: middle;
+        padding-right: .5em;
+    }
+
+    #ciclo {
+        vertical-align: middle;
+    }
+
+    .toolbar {
+        float: right;
+    }
+
+    label {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .k-grid .k-hierarchy-col {
+      width: 5px;
+    }
+</style>

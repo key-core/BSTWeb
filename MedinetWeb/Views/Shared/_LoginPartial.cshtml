@@ -1,0 +1,22 @@
+﻿@if (Request.IsAuthenticated) {
+    <text>
+        
+        <strong>
+            Hola, @Html.ActionLink(User.Identity.Name, "ChangePassword", "Acceso", routeValues: null, htmlAttributes: new { @class = "username", title = "Manage" })!
+        </strong>
+        
+        @using (Html.BeginForm("LogOff", "Acceso", FormMethod.Post, new { id = "logoutForm" })) {
+            @Html.AntiForgeryToken()
+            
+            <strong>
+                <a href="javascript:document.getElementById('logoutForm').submit()" style="background-color:transparent">Salir</a>
+            </strong>
+        }
+   </text>
+}
+ 
+ @*else {
+    <ul>
+        <li>@Html.ActionLink("Acceso", "Login", "Acceso", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>
+}*@
